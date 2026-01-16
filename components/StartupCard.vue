@@ -1,102 +1,115 @@
 <template>
-  <div class="block group relative bg-white border border-gray-100 rounded-xl hover:shadow-md transition-all hover:border-blue-200 overflow-hidden">
-    <div class="flex items-center gap-4 p-3">
-      
-      <div v-if="rank" class="text-gray-300 font-mono text-xs font-bold w-6 text-center flex-shrink-0">
-        {{ rank }}
+  <NuxtLink
+    :to="`/startup/${startup.trustmrr_profile_url}`"
+    class="group relative flex items-center gap-4 py-0 px-4 rounded-xl glass-card hover-glow border-[1px] border-white/5 transition-all duration-300"
+    role="listitem"
+    :aria-label="`View details for ${startup.startup_name}`"
+  >
+    <!-- Rank Badge (Absolute) -->
+    <div 
+      v-if="rank" 
+      class="absolute -left-2 -top-2 w-5 h-5 rounded-full flex items-center justify-center font-black font-mono text-[9px] shadow-lg border border-white/10 z-10"
+      :class="[
+        rank === 1 ? 'bg-yellow-400 text-yellow-900' : 
+        rank === 2 ? 'bg-slate-300 text-slate-900' : 
+        rank === 3 ? 'bg-amber-600 text-amber-100' : 
+        'bg-slate-800 text-slate-400'
+      ]"
+    >
+      {{ rank }}
+    </div>
+
+    <!-- LEFT SIDE (35%): Logo + Name + Tagline (2 rows) -->
+    <div class="w-[35%] flex items-center gap-3 flex-shrink-0 min-w-0">
+      <!-- Logo -->
+      <div class="relative flex-shrink-0">
+        <img
+          :src="`https://www.google.com/s2/favicons?domain=${startup.domain || startup.website_url}&sz=64`"
+          :alt="`${startup.startup_name} logo`"
+          class="relative w-8 h-8 rounded-lg border border-white/10 bg-slate-900 object-cover"
+          loading="lazy"
+          width="32"
+          height="32"
+          @error="handleImageError"
+        >
       </div>
 
-      <NuxtLink :to="`/startup/${startup.trustmrr_profile_url}`" class="flex-grow flex items-center gap-4 min-w-0 pr-4 md:w-1/2">
-        <div class="flex-shrink-0">
-          <img 
-            :src="`https://www.google.com/s2/favicons?domain=${startup.domain || startup.website_url}&sz=128`" 
-            class="w-10 h-10 rounded-lg border border-gray-200 bg-gray-50 object-cover"
-            alt="Logo"
-            loading="lazy"
-          >
-        </div>
-
-        <div class="min-w-0">
-          <div class="flex items-center gap-2 mb-0.5">
-            <h3 class="font-bold text-sm text-gray-900 truncate group-hover:text-blue-600 transition-colors">
-              {{ startup.startup_name }}
-            </h3>
-            <span v-if="startup.category" class="hidden sm:inline-block px-1.5 py-0.5 rounded-full bg-gray-100 text-gray-500 text-[9px] font-semibold uppercase tracking-wide">
-              {{ startup.category }}
-            </span>
-          </div>
-          <p class="text-xs text-gray-500 truncate">{{ startup.tagline || startup.full_description }}</p>
-        </div>
-      </NuxtLink>
-
-      <div class="flex items-center justify-end gap-4 md:gap-6 flex-shrink-0 ml-auto">
-        
-        <div class="hidden md:flex items-center gap-2 text-right w-40 justify-end relative z-10">
-           <NuxtLink 
-            v-if="isFounderValid" 
-            :to="`/founder/${getFounderSlug(startup.founder_name)}`" 
-            class="min-w-0 flex-1 hover:opacity-80 transition-opacity"
-           >
-             <div class="text-xs font-bold text-gray-700 truncate underline decoration-dotted decoration-gray-300 underline-offset-2">
-               {{ startup.founder_name }}
-             </div>
-             <div class="text-[9px] text-gray-400 uppercase font-medium">Founder</div>
-           </NuxtLink>
-           <div v-else class="min-w-0 flex-1">
-             <div class="text-xs font-bold text-gray-400 truncate italic">Anonymous</div>
-             <div class="text-[9px] text-gray-400 uppercase font-medium">Founder</div>
-           </div>
-           
-           <img 
-            v-if="startup.founder_image_local_path"
-            :src="`/founder_images/small/${startup.founder_image_local_path}`" 
-            class="w-8 h-8 rounded-full object-cover border border-gray-100 bg-gray-50 flex-shrink-0"
-            alt=""
-          >
-        </div>
-
-        <NuxtLink :to="`/startup/${startup.trustmrr_profile_url}`" class="flex items-center gap-4 md:gap-6">
-          <div class="text-right w-24">
-            <div class="font-mono font-bold text-sm text-gray-900">{{ startup.mrr }}</div>
-            <div class="text-[9px] text-gray-400 uppercase font-medium">MRR</div>
-          </div>
-
-          <div class="text-right w-16">
-            <div v-if="isValidGrowth" class="font-mono font-bold text-sm text-green-600">{{ startup.mom_growth }}</div>
-            <div v-else class="font-mono font-bold text-sm text-gray-300">-</div>
-            <div class="text-[9px] text-gray-400 uppercase font-medium">Growth</div>
-          </div>
-        </NuxtLink>
-
+      <!-- Name & Tagline (Stacked) -->
+      <div class="flex flex-col min-w-0">
+        <h3 class="font-normal text-sm text-white truncate group-hover:text-blue-400 transition-colors">
+          {{ startup.startup_name }}
+        </h3>
+        <p class="text-[11px] text-slate-400 truncate font-light mt-0.5">
+          {{ startup.tagline || startup.full_description }}
+        </p>
       </div>
     </div>
-  </div>
+
+      <!-- RIGHT SIDE (65%): Founder + Financials -->
+      <div class="w-[65%] flex items-center px-4 border-l border-white/5">
+        <!-- Founder Section -->
+        <div class="flex items-center gap-2 w-[140px] flex-shrink-0">
+          <div class="w-6 h-6 rounded-full overflow-hidden border border-white/20 bg-slate-800 flex-shrink-0">
+            <img
+              v-if="startup.founder_image_local_path"
+              :src="`/founder_images/${startup.founder_image_local_path}`"
+              :alt="startup.founder_name"
+              class="w-full h-full object-cover"
+              @error="(e) => (e.target as HTMLImageElement).style.display = 'none'"
+            >
+            <div v-else class="w-full h-full flex items-center justify-center text-[8px] font-bold text-slate-500 uppercase">
+              {{ (startup.founder_name || 'A').charAt(0) }}
+            </div>
+          </div>
+          <div class="text-sm font-medium text-slate-300 truncate">
+            {{ startup.founder_name || 'Anonymous' }}
+          </div>
+        </div>
+
+        <!-- Total Revenue -->
+        <div class="w-28 text-right ml-10">
+          <div class="font-mono font-bold text-lg text-white">{{ startup.total_revenue || '$0' }}</div>
+        </div>
+
+        <!-- MRR -->
+        <div class="w-32 text-right ml-auto">
+          <div class="font-mono font-bold text-lg text-slate-200 whitespace-nowrap">{{ startup.mrr }}</div>
+        </div>
+
+        <!-- Growth -->
+        <div class="w-16 text-right ml-4">
+          <div 
+            v-if="hasValidGrowth" 
+            class="font-mono font-bold text-[15px]"
+            :class="isGrowthPositive ? 'text-green-400' : 'text-red-400'"
+          >
+            {{ startup.mom_growth }}
+          </div>
+          <div v-else class="font-mono text-[15px] text-slate-600">-</div>
+        </div>
+      </div>
+  </NuxtLink>
 </template>
 
-<script setup>
-const props = defineProps({
-  startup: { type: Object, required: true },
-  rank: { type: Number, default: null }
+<script setup lang="ts">
+import { computed } from 'vue'
+import { isValidGrowth } from '~/utils/helpers'
+import type { Startup } from '~/types/startup'
+
+const props = defineProps<{
+  startup: Startup
+  rank?: number | null
+}>()
+
+const hasValidGrowth = computed(() => isValidGrowth(props.startup.mom_growth))
+const isGrowthPositive = computed(() => {
+  if (!props.startup.mom_growth) return false
+  return !props.startup.mom_growth.startsWith('-')
 })
 
-// Helper to clean founder names for URLs (matching the sitemap and config)
-const getFounderSlug = (name) => {
-  if (!name) return ''
-  return name
-    .replace(/[^a-zA-Z0-9 ]/g, "")
-    .trim()
-    .replace(/\s+/g, "-")
-    .toLowerCase()
+// Image error handling
+const handleImageError = (e: Event) => {
+  const img = e.target as HTMLImageElement
+  img.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23334155" width="100" height="100" rx="12"/><text x="50" y="60" font-size="40" text-anchor="middle" fill="%2394a3b8">?</text></svg>'
 }
-
-const isFounderValid = computed(() => {
-  return props.startup.founder_name && 
-         props.startup.founder_name !== 'null,' && 
-         props.startup.founder_name.length > 2
-})
-
-const isValidGrowth = computed(() => {
-  return props.startup.mom_growth && 
-         props.startup.mom_growth.includes('%')
-})
 </script>

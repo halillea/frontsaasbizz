@@ -1,166 +1,138 @@
 <template>
-  <div class="min-h-screen bg-[#F9FAFB] font-sans text-slate-800">
-    
-    <div class="bg-slate-900 text-white py-6 px-4 text-center border-b border-slate-800 relative z-50">
-      <a href="https://saasitron.com" target="_blank" class="group flex flex-col md:flex-row items-center justify-center gap-3 hover:text-blue-200 transition-colors">
-        <span class="bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded uppercase tracking-wide">Main Sponsor</span>
-        <span class="text-base md:text-lg font-medium">
-          <span class="font-bold text-blue-400">SAASitron:</span> 
-          Stop coding from scratch. Ship your SaaS in days with the ultimate boilerplate kit.
-        </span>
-        <span class="group-hover:translate-x-1 transition-transform text-lg">→</span>
-      </a>
+  <div>
+    <!-- Not Found State -->
+    <div v-if="!profile" class="text-center py-20 glass-card rounded-3xl">
+      <h1 class="text-2xl font-bold text-white">Founder not found</h1>
+      <NuxtLink
+        to="/"
+        class="mt-4 inline-block text-blue-400 font-bold hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#0B1120] rounded"
+      >
+        Go Home
+      </NuxtLink>
     </div>
 
-    <header class="bg-white border-b border-gray-200 sticky top-0 z-40 backdrop-blur-md bg-white/90">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        <NuxtLink to="/" class="flex items-center gap-2">
-          <div class="w-8 h-8 bg-blue-600 rounded flex items-center justify-center text-white font-bold shadow-sm shadow-blue-200">S</div>
-          <span class="text-xl font-bold tracking-tight text-slate-900">SaaSBizz</span>
-        </NuxtLink>
-        <div class="hidden md:flex gap-6 text-sm font-medium text-gray-600">
-          <NuxtLink to="/" class="hover:text-blue-600">Leaderboard</NuxtLink>
-          <NuxtLink to="/submit" class="hover:text-blue-600">Submit</NuxtLink>
-          <button class="text-blue-600 bg-blue-50 px-3 py-1.5 rounded-md hover:bg-blue-100 transition-colors">Advertise</button>
+    <!-- Founder Profile -->
+    <article v-else class="glass-card rounded-3xl p-8 min-h-[80vh]">
+      <!-- Profile Header -->
+      <header class="flex flex-col items-center text-center mb-12">
+        <div class="relative">
+          <div class="absolute inset-0 bg-blue-500/20 blur-xl rounded-full"></div>
+          <NuxtImg
+            v-if="profile.founder_image_local_path"
+            :src="`/founder_images/${profile.founder_image_local_path}`"
+            :alt="`${profile.founder_name} profile photo`"
+            class="relative w-32 h-32 rounded-full object-cover border-4 border-white/10 shadow-xl mb-6 bg-slate-900"
+            width="128"
+            height="128"
+            loading="eager"
+            @error="handleImageError"
+          />
+          <div 
+            v-else 
+            class="relative w-32 h-32 rounded-full bg-slate-800 flex items-center justify-center text-4xl font-black text-slate-500 border-4 border-white/10 mb-6"
+          >
+            {{ profile.founder_name?.charAt(0) || '?' }}
+          </div>
         </div>
-      </div>
-    </header>
+        <h1 class="text-4xl font-black text-white tracking-tight">{{ profile.founder_name }}</h1>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div class="mt-3 flex items-center justify-center gap-2 text-sm text-slate-400 font-medium flex-wrap">
+          <span class="text-white font-bold">{{ projects.length }} startup{{ projects.length !== 1 ? 's' : '' }}</span>
+          <span class="text-slate-600" aria-hidden="true">·</span>
+          <span>{{ formatFollowers(profile.x_follower_count) }} X followers</span>
+          <a
+            v-if="profile.founder_social"
+            :href="`https://x.com/${profile.founder_social.replace('@', '')}`"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-blue-400 hover:underline hover:text-blue-300 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
+            :aria-label="`${profile.founder_name} on X (opens in new tab)`"
+          >
+            @{{ profile.founder_social.replace('@', '') }}
+          </a>
+        </div>
+      </header>
 
-        <aside class="hidden lg:block lg:col-span-2 space-y-4 sticky top-24">
-          <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Sponsored</div>
-          <Transition name="fade" mode="out-in">
-            <div :key="adGroupIndex" class="space-y-4">
-              <div v-for="ad in currentLeftAds" :key="ad.id">
-                 <a href="#" class="block p-3 rounded-lg border border-blue-100 hover:shadow-md transition-all group" :style="{ backgroundColor: ad.bg }">
-                    <div class="flex items-center gap-2 mb-1.5">
-                      <span class="text-lg">{{ ad.emoji }}</span>
-                      <span class="font-bold text-xs text-gray-900 group-hover:text-blue-700">{{ ad.name }}</span>
-                    </div>
-                    <p class="text-[11px] leading-snug text-slate-600">{{ ad.copy }}</p>
-                 </a>
-              </div>
-            </div>
-          </Transition>
-        </aside>
+      <!-- Portfolio Section -->
+      <section aria-labelledby="portfolio-heading">
+        <h2 id="portfolio-heading" class="text-xl font-bold text-white border-b border-white/10 pb-2 tracking-tight uppercase italic flex items-center justify-between mb-6">
+          <span>Portfolio</span>
+        </h2>
+        <div class="space-y-4" role="list" aria-label="Founder's startups">
+          <StartupCard v-for="startup in projects" :key="startup.id" :startup="startup" />
+        </div>
+      </section>
 
-        <section class="col-span-1 lg:col-span-8">
-          <div v-if="!profile" class="text-center py-20 bg-white rounded-3xl border border-gray-100">
-            <h1 class="text-2xl font-bold text-gray-900">Founder not found</h1>
-            <NuxtLink to="/" class="mt-4 inline-block text-blue-600 font-bold hover:underline">Go Home</NuxtLink>
-          </div>
-
-          <div v-else class="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm min-h-[80vh]">
-            <div class="flex flex-col items-center text-center mb-12">
-              <img v-if="profile.founder_image_local_path" :src="`/founder_images/${profile.founder_image_local_path}`" class="w-32 h-32 rounded-full object-cover border-4 border-white shadow-xl mb-6 bg-gray-50">
-              <h1 class="text-4xl font-black text-gray-900 tracking-tight">{{ profile.founder_name }}</h1>
-              
-              <div class="mt-3 flex items-center justify-center gap-2 text-sm text-slate-600 font-medium flex-wrap">
-                <span class="text-slate-900 font-bold">{{ projects.length }} startups</span>
-                <span class="text-slate-300">·</span>
-                <span>{{ formatFollowers(profile.x_follower_count) }} 𝕏 followers</span>
-                <a 
-                  v-if="profile.founder_social"
-                  :href="`https://x.com/${profile.founder_social.replace('@', '')}`" 
-                  target="_blank" 
-                  class="text-blue-500 hover:underline hover:text-blue-600 font-semibold"
-                >
-                  @{{ profile.founder_social.replace('@', '') }}
-                </a>
-              </div>
-            </div>
-
-            <div class="space-y-6">
-              <h2 class="text-xl font-bold text-gray-900 border-b pb-2 tracking-tight uppercase italic flex items-center justify-between">
-                <span>Portfolio</span>
-              </h2>
-              <div class="space-y-4">
-                <StartupCard v-for="startup in projects" :key="startup.id" :startup="startup" />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <aside class="hidden lg:block lg:col-span-2 space-y-4 sticky top-24">
-          <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Featured Tools</div>
-          <Transition name="fade" mode="out-in">
-            <div :key="adGroupIndex" class="space-y-4">
-              <div v-for="ad in currentRightAds" :key="ad.id">
-                 <a href="#" class="block p-3 rounded-lg border border-blue-100 hover:shadow-md transition-all group" :style="{ backgroundColor: ad.bg }">
-                    <div class="flex items-center gap-2 mb-1.5">
-                      <span class="w-5 h-5 rounded bg-white/50 text-blue-600 flex items-center justify-center text-[10px] font-bold">Ad</span>
-                      <span class="font-bold text-xs text-gray-900 group-hover:text-blue-700">{{ ad.name }}</span>
-                    </div>
-                    <p class="text-[11px] leading-snug text-slate-600">{{ ad.copy }}</p>
-                 </a>
-              </div>
-            </div>
-          </Transition>
-        </aside>
-
-      </div>
-    </main>
+      <!-- Search Section -->
+      <SearchSection />
+    </article>
   </div>
 </template>
 
-<script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
 import allStartups from '~/content/startups.json'
+import { getFounderSlug, formatFollowers } from '~/utils/helpers'
+import type { Startup } from '~/types/startup'
 
 const route = useRoute()
+const startups = allStartups as Startup[]
 
-// 1. Clean the slug from URL to match data
-const currentSlug = decodeURIComponent(route.params.slug)
+const currentSlug = decodeURIComponent(route.params.slug as string)
 
-// Helper to clean founder names from JSON to match URL slug
-const getFounderSlug = (name) => {
-  if (!name) return ''
-  return name.replace(/[^a-zA-Z0-9 ]/g, "").trim().replace(/\s+/g, "-").toLowerCase()
-}
-
-// Helper to format large numbers (e.g. 1910 -> 1.9k)
-const formatFollowers = (count) => {
-  if (!count) return '0'
-  const num = Number(count.toString().replace(/,/g, '')) // Remove commas if present in string
-  if (isNaN(num)) return count
-  return num.toLocaleString() // Formats 1910 as "1,910" per your example
-}
-
-// 2. Filter Startups belonging to this founder
-const projects = computed(() => {
-  return allStartups.filter(s => getFounderSlug(s.founder_name) === currentSlug)
-})
+const projects = computed(() =>
+  startups.filter(s => getFounderSlug(s.founder_name) === currentSlug)
+)
 
 const profile = computed(() => projects.value.length > 0 ? projects.value[0] : null)
 
-// --- ADVERTISING LOGIC ---
-const bluePalette = [ '#eff6ff', '#dbeafe', '#e0f2fe', '#cffafe', '#e0e7ff' ]
-const adInventory = Array.from({ length: 20 }, (_, i) => ({ 
-  id: i, 
-  name: `Partner ${i + 1}`, 
-  emoji: ['🚀', '⚡', '🔥', '💎'][i % 4], 
-  copy: 'Scale your SaaS today.', 
-  bg: bluePalette[i % 5] 
-}))
+// Image error handling
+const handleImageError = (e: Event) => {
+  const img = e.target as HTMLImageElement
+  img.style.display = 'none'
+}
 
-const adGroupIndex = ref(0)
-const currentLeftAds = computed(() => adInventory.slice(adGroupIndex.value === 0 ? 0 : 10, adGroupIndex.value === 0 ? 5 : 15))
-const currentRightAds = computed(() => adInventory.slice(adGroupIndex.value === 0 ? 5 : 15, adGroupIndex.value === 0 ? 10 : 20))
-
-let adInterval = null
-onMounted(() => { 
-  adInterval = setInterval(() => { adGroupIndex.value = adGroupIndex.value === 0 ? 1 : 0 }, 12000) 
+// SEO Meta
+useSeoMeta({
+  title: () => profile.value ? `${profile.value.founder_name} - Founder Profile` : 'Founder Not Found',
+  description: () => profile.value
+    ? `${profile.value.founder_name} is building ${projects.value.length} verified SaaS startup${projects.value.length !== 1 ? 's' : ''} on SaaSBizz.`
+    : 'View founder profile on SaaSBizz',
+  ogTitle: () => profile.value ? `${profile.value.founder_name} - Founder Profile` : 'Founder Not Found',
+  ogDescription: () => profile.value
+    ? `${profile.value.founder_name} is building ${projects.value.length} verified SaaS startup${projects.value.length !== 1 ? 's' : ''} on SaaSBizz.`
+    : 'View founder profile on SaaSBizz',
+  ogUrl: () => `https://saasbizz.com/founder/${route.params.slug}/`,
+  twitterTitle: () => profile.value ? `${profile.value.founder_name} - Founder Profile` : 'Founder Not Found',
+  twitterDescription: () => profile.value
+    ? `${profile.value.founder_name} is building ${projects.value.length} verified SaaS startup${projects.value.length !== 1 ? 's' : ''} on SaaSBizz.`
+    : 'View founder profile on SaaSBizz',
 })
-onUnmounted(() => { if (adInterval) clearInterval(adInterval) })
 
+// JSON-LD Structured Data
 useHead({
-  title: profile.value ? `${profile.value.founder_name} - Founder Profile` : 'Founder Not Found'
+  script: profile.value ? [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Person',
+        name: profile.value.founder_name,
+        url: `https://saasbizz.com/founder/${currentSlug}/`,
+        sameAs: profile.value.founder_social
+          ? [`https://x.com/${profile.value.founder_social.replace('@', '')}`]
+          : [],
+        image: profile.value.founder_image_local_path
+          ? `https://saasbizz.com/founder_images/${profile.value.founder_image_local_path}`
+          : undefined,
+        jobTitle: 'Founder',
+        worksFor: projects.value.map(p => ({
+          '@type': 'Organization',
+          name: p.startup_name,
+          url: p.website_url
+        }))
+      })
+    }
+  ] : []
 })
 </script>
-
-<style scoped>
-.fade-enter-active, .fade-leave-active { transition: opacity 0.8s ease-in-out; }
-.fade-enter-from, .fade-leave-to { opacity: 0; }
-</style>

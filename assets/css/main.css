@@ -1,0 +1,191 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CSS Custom Properties for Theming */
+:root {
+  --color-bg-main: #030712;
+  --color-bg-card: #151E32;
+  --color-border: rgba(255, 255, 255, 0.05);
+  --color-text-primary: #e2e8f0;
+  --color-text-secondary: #94a3b8;
+  --color-accent: #3b82f6;
+  --glow-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+}
+
+@layer base {
+  body {
+    @apply bg-[#030712] text-slate-200 font-sans antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+@layer components {
+
+  /* Glass Card Effect */
+  .glass-card {
+    @apply bg-[#151E32]/80 backdrop-blur-md border border-white/5 shadow-xl;
+  }
+
+  /* Premium Hover Glow - Using CSS variable to avoid Tailwind space issue */
+  .hover-glow {
+    @apply transition-all duration-300 hover:border-blue-500/30;
+  }
+
+  .hover-glow:hover {
+    box-shadow: var(--glow-shadow);
+  }
+
+  /* Active button press effect */
+  .btn-press {
+    @apply active:scale-95 transition-transform;
+  }
+}
+
+/* Custom Scrollbar for a sleek look */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-main);
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-700 rounded-full hover:bg-slate-600;
+}
+
+/* =========================
+   WHITE THEME STYLES
+   ========================= */
+[data-theme="white"] {
+  --color-bg-main: #f8fafc;
+  --color-bg-card: #ffffff;
+  --color-border: rgba(0, 0, 0, 0.08);
+  --color-text-primary: #1e293b;
+  --color-text-secondary: #64748b;
+  --color-accent: #3b82f6;
+  --glow-shadow: 0 0 20px rgba(59, 130, 246, 0.1);
+}
+
+[data-theme="white"] body {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
+  color: #1e293b;
+}
+
+[data-theme="white"] .min-h-screen {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%) !important;
+}
+
+[data-theme="white"] .glass-card {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="white"] .hover-glow:hover {
+  box-shadow: 0 4px 25px rgba(59, 130, 246, 0.15);
+}
+
+/* Header & Footer in white theme */
+[data-theme="white"] header[role="banner"] {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="white"] footer {
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+/* Sponsor Banner in white/sunny theme - keep dark for contrast */
+[data-theme="white"] div[role="banner"]:first-of-type {
+  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #0ea5e9 100%);
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+[data-theme="white"] div[role="banner"]:first-of-type .text-white {
+  color: #ffffff !important;
+}
+
+[data-theme="white"] div[role="banner"]:first-of-type .text-blue-400 {
+  color: #bfdbfe !important;
+}
+
+/* Text colors in white theme */
+[data-theme="white"] .text-white {
+  color: #1e293b !important;
+}
+
+[data-theme="white"] .text-slate-200,
+[data-theme="white"] .text-slate-300 {
+  color: #475569 !important;
+}
+
+[data-theme="white"] .text-slate-400,
+[data-theme="white"] .text-slate-500 {
+  color: #64748b !important;
+}
+
+[data-theme="white"] .text-slate-600 {
+  color: #94a3b8 !important;
+}
+
+/* Input fields in white theme */
+[data-theme="white"] input,
+[data-theme="white"] textarea {
+  background: rgba(241, 245, 249, 0.8) !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+  color: #1e293b !important;
+}
+
+[data-theme="white"] input::placeholder,
+[data-theme="white"] textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Scrollbar in white theme */
+[data-theme="white"] ::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+[data-theme="white"] ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+}
+
+[data-theme="white"] ::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Article content in white theme */
+[data-theme="white"] .article-content h2,
+[data-theme="white"] .article-content h3 {
+  color: #0f172a !important;
+}
+
+[data-theme="white"] .article-content p,
+[data-theme="white"] .article-content li {
+  color: #334155 !important;
+}
+
+[data-theme="white"] .article-content strong {
+  color: #0f172a !important;
+}
+
+[data-theme="white"] .article-content a {
+  color: #2563eb !important;
+}
+
+/* News cards in white theme */
+[data-theme="white"] .glass-card h2 {
+  color: #0f172a !important;
+}
+
+[data-theme="white"] .glass-card p {
+  color: #475569 !important;
+}
+
+[data-theme="white"] .glass-card .text-blue-400 {
+  color: #2563eb !important;
+}

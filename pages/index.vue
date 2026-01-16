@@ -1,157 +1,196 @@
 <template>
-  <div class="min-h-screen bg-[#F9FAFB] font-sans text-slate-800">
-    
-    <div class="bg-slate-900 text-white py-6 px-4 text-center border-b border-slate-800 relative z-50">
-      <a href="https://saasitron.com" target="_blank" class="group flex flex-col md:flex-row items-center justify-center gap-3 hover:text-blue-200 transition-colors">
-        <span class="bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded uppercase tracking-wide">Main Sponsor</span>
-        <span class="text-base md:text-lg font-medium">
-          <span class="font-bold text-blue-400">SAASitron:</span> 
-          Stop coding from scratch. Ship your SaaS in days with the ultimate boilerplate & SDK kit.
-        </span>
-        <span class="group-hover:translate-x-1 transition-transform text-lg">→</span>
-      </a>
+  <div class="space-y-12">
+    <!-- Loading State -->
+    <div v-if="isLoading">
+      <div class="flex items-center gap-3 mb-6">
+        <span class="text-2xl">🏆</span>
+        <h2 class="text-2xl font-black tracking-tight text-white uppercase italic">Top Earners</h2>
+      </div>
+      <LoadingSkeleton :count="10" />
     </div>
 
-    <header class="bg-white border-b border-gray-200 sticky top-0 z-40 backdrop-blur-md bg-white/90">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        <NuxtLink to="/" class="flex items-center gap-2">
-          <div class="w-8 h-8 bg-blue-600 rounded flex items-center justify-center text-white font-bold shadow-sm shadow-blue-200">S</div>
-          <span class="text-xl font-bold tracking-tight text-slate-900">SaaSBizz</span>
-        </NuxtLink>
-        <div class="hidden md:flex gap-6 text-sm font-medium text-gray-600">
-          <NuxtLink to="/" class="text-blue-600">Leaderboard</NuxtLink>
-          <NuxtLink to="/submit" class="hover:text-blue-600">Submit</NuxtLink>
-          <button class="text-blue-600 bg-blue-50 px-3 py-1.5 rounded-md hover:bg-blue-100 transition-colors">Advertise</button>
+    <!-- Content -->
+    <template v-else>
+      <!-- Top Earners Section -->
+      <section aria-labelledby="top-earners-heading">
+        <div class="flex items-center gap-3 mb-0">
+          <span class="text-2xl" aria-hidden="true">🏆</span>
+          <h2 id="top-earners-heading" class="text-2xl font-black tracking-tight text-white uppercase italic">
+            Top 40 Earners
+          </h2>
         </div>
-      </div>
-    </header>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
-        <aside class="hidden lg:block lg:col-span-2 space-y-4 sticky top-24">
-          <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Sponsored</div>
-          <Transition name="fade" mode="out-in">
-            <div :key="adGroupIndex" class="space-y-4">
-              <div v-for="ad in currentLeftAds" :key="ad.id">
-                 <a href="#" class="block p-3 rounded-lg border border-blue-100 hover:shadow-md transition-all group" :style="{ backgroundColor: ad.bg }">
-                    <div class="flex items-center gap-2 mb-1.5">
-                      <span class="text-lg">{{ ad.emoji }}</span>
-                      <span class="font-bold text-xs text-gray-900 group-hover:text-blue-700">{{ ad.name }}</span>
-                    </div>
-                    <p class="text-[11px] leading-snug text-slate-600">{{ ad.copy }}</p>
-                 </a>
-              </div>
-            </div>
-          </Transition>
-        </aside>
-
-        <section class="col-span-1 lg:col-span-8 space-y-12">
-          
-          <div>
-            <div class="flex items-center gap-3 mb-6">
-              <span class="text-2xl">🏆</span>
-              <h2 class="text-2xl font-black tracking-tight text-gray-900 uppercase italic">Top 30 Earners</h2>
-            </div>
-            <div class="space-y-3">
-              <StartupCard 
-                v-for="(startup, index) in topEarners" 
-                :key="'earner-' + startup.id" 
-                :startup="startup" 
-                :rank="index + 1"
-              />
-            </div>
+        <!-- Column Headers -->
+        <div class="hidden lg:flex items-center gap-4 px-4 py-1 mb-1 text-[10px] font-bold text-slate-500 uppercase tracking-widest border-b border-white/5">
+          <div class="w-[35%] flex gap-12">
+            <span>Startup</span>
           </div>
-
-          <div>
-            <div class="flex items-center gap-3 mb-6">
-              <span class="text-2xl">✨</span>
-              <h2 class="text-2xl font-black tracking-tight text-gray-900 uppercase italic">Recently Added</h2>
-            </div>
-            <div class="space-y-3">
-              <StartupCard 
-                v-for="startup in recentlyAdded" 
-                :key="'recent-' + startup.id" 
-                :startup="startup"
-              />
-            </div>
+          <div class="w-[65%] flex items-center px-4">
+            <span class="w-[140px] text-left">Founder</span>
+            <span class="w-28 text-right ml-10">Total Revenue</span>
+            <span class="w-32 text-right ml-auto">MRR</span>
+            <span class="w-16 text-right ml-4">MoM Growth</span>
           </div>
+        </div>
 
-        </section>
+        <div class="space-y-2" role="list" aria-label="Top earning startups">
+          <StartupCard
+            v-for="(startup, index) in paginatedTopEarners"
+            :key="'earner-' + startup.id"
+            :startup="startup"
+            :rank="(topEarnersPage - 1) * EARNER_PER_PAGE + index + 1"
+          />
+        </div>
+        <!-- Pagination for Top Earners -->
+        <Pagination
+          :current-page="topEarnersPage"
+          :total-pages="topEarnersTotalPages"
+          item-name="top earners"
+          aria-label="Top earners pagination"
+          @prev="topEarnersPage--"
+          @next="topEarnersPage++"
+        />
+      </section>
 
-        <aside class="hidden lg:block lg:col-span-2 space-y-4 sticky top-24">
-          <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Featured Tools</div>
-          <Transition name="fade" mode="out-in">
-            <div :key="adGroupIndex" class="space-y-4">
-              <div v-for="ad in currentRightAds" :key="ad.id">
-                 <a href="#" class="block p-3 rounded-lg border border-blue-100 hover:shadow-md transition-all group" :style="{ backgroundColor: ad.bg }">
-                    <div class="flex items-center gap-2 mb-1.5">
-                      <span class="w-5 h-5 rounded bg-white/50 text-blue-600 flex items-center justify-center text-[10px] font-bold">Ad</span>
-                      <span class="font-bold text-xs text-gray-900 group-hover:text-blue-700">{{ ad.name }}</span>
-                    </div>
-                    <p class="text-[11px] leading-snug text-slate-600">{{ ad.copy }}</p>
-                 </a>
-              </div>
-            </div>
-          </Transition>
-        </aside>
+      <!-- News Box -->
+      <NewsBox />
 
-      </div>
-    </main>
+      <!-- Recently Added Section -->
+      <section aria-labelledby="recent-heading" class="mt-16">
+        <div class="flex items-center gap-3 mb-0">
+          <span class="text-2xl" aria-hidden="true">✨</span>
+          <h2 id="recent-heading" class="text-2xl font-black tracking-tight text-white uppercase italic">
+            Recently Added (30)
+          </h2>
+        </div>
+
+        <!-- Column Headers -->
+        <div class="hidden lg:flex items-center gap-4 px-4 py-1 mb-1 text-[10px] font-bold text-slate-500 uppercase tracking-widest border-b border-white/5">
+          <div class="w-[35%] flex gap-12">
+            <span>Startup</span>
+          </div>
+          <div class="w-[65%] flex items-center px-4">
+            <span class="w-[140px] text-left">Founder</span>
+            <span class="w-28 text-right ml-10">Total Revenue</span>
+            <span class="w-32 text-right ml-auto">MRR</span>
+            <span class="w-16 text-right ml-4">MoM Growth</span>
+          </div>
+        </div>
+
+        <div class="space-y-2" role="list" aria-label="Recently added startups">
+          <StartupCard
+            v-for="startup in paginatedRecentlyAdded"
+            :key="'recent-' + startup.id"
+            :startup="startup"
+          />
+        </div>
+        <!-- Pagination for Recently Added -->
+        <Pagination
+          :current-page="recentPage"
+          :total-pages="recentTotalPages"
+          item-name="recent startups"
+          aria-label="Recently added pagination"
+          @prev="recentPage--"
+          @next="recentPage++"
+        />
+      </section>
+
+      <!-- Search & Category Section -->
+      <SearchSection />
+    </template>
   </div>
 </template>
 
-<script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue'
 import allStartups from '~/content/startups.json'
+import { parseRevenue } from '~/utils/helpers'
+import type { Startup } from '~/types/startup'
 
-// --- LEADERBOARD LOGIC ---
+const EARNER_PER_PAGE = 40
+const RECENT_PER_PAGE = 30
+const startups = allStartups as Startup[]
 
-// Helper: Clean string "$116,350" into number 116350
-const parseRev = (val) => {
-  if (!val || typeof val !== 'string') return 0
-  return Number(val.replace(/[^0-9.-]+/g, ""))
-}
+// Loading state
+const isLoading = ref(true)
+onMounted(() => {
+  // Simulate brief loading for smooth UX
+  setTimeout(() => { isLoading.value = false }, 100)
+})
 
+// Pagination state
+const topEarnersPage = ref(1)
+const recentPage = ref(1)
+
+// Sorted data
 const topEarners = computed(() => {
-  return [...allStartups]
-    .sort((a, b) => parseRev(b.total_revenue) - parseRev(a.total_revenue))
-    .slice(0, 30)
+  return [...startups]
+    .sort((a, b) => parseRevenue(b.total_revenue) - parseRevenue(a.total_revenue))
+    .slice(0, 150) // Support up to 150 earners
 })
 
 const recentlyAdded = computed(() => {
   const topEarnerIds = new Set(topEarners.value.map(s => s.id))
-  return [...allStartups]
+  return [...startups]
     .filter(s => !topEarnerIds.has(s.id))
-    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-    .slice(0, 30)
+    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+    .slice(0, 60) // Support up to 60 recent startups
 })
 
-useHead({ title: 'SaaSBizz - Verified SaaS Leaderboard' })
-
-// --- ADVERTISING LOGIC (Rotation) ---
-const bluePalette = [ '#eff6ff', '#dbeafe', '#e0f2fe', '#cffafe', '#e0e7ff' ]
-const adInventory = Array.from({ length: 20 }, (_, i) => ({
-  id: i,
-  name: `Advertiser ${i + 1}`,
-  emoji: ['🚀', '⚡', '🔥', '💎'][i % 4],
-  copy: 'Increase your MRR by 30% in 30 days.',
-  bg: bluePalette[i % 5]
-}))
-
-const adGroupIndex = ref(0)
-let adInterval = null
-
-const currentLeftAds = computed(() => adInventory.slice(adGroupIndex.value === 0 ? 0 : 10, adGroupIndex.value === 0 ? 5 : 15))
-const currentRightAds = computed(() => adInventory.slice(adGroupIndex.value === 0 ? 5 : 15, adGroupIndex.value === 0 ? 10 : 20))
-
-onMounted(() => {
-  adInterval = setInterval(() => { adGroupIndex.value = adGroupIndex.value === 0 ? 1 : 0 }, 12000)
+// Paginated data
+const paginatedTopEarners = computed(() => {
+  const start = (topEarnersPage.value - 1) * EARNER_PER_PAGE
+  return topEarners.value.slice(start, start + EARNER_PER_PAGE)
 })
-onUnmounted(() => { if (adInterval) clearInterval(adInterval) })
+
+const paginatedRecentlyAdded = computed(() => {
+  const start = (recentPage.value - 1) * RECENT_PER_PAGE
+  return recentlyAdded.value.slice(start, start + RECENT_PER_PAGE)
+})
+
+// Total pages
+const topEarnersTotalPages = computed(() => Math.ceil(topEarners.value.length / EARNER_PER_PAGE))
+const recentTotalPages = computed(() => Math.ceil(recentlyAdded.value.length / RECENT_PER_PAGE))
+
+// SEO Meta
+useSeoMeta({
+  title: 'SaaSBizz - Verified SaaS Leaderboard',
+  description: 'Discover verified SaaS startups ranked by revenue. Real MRR data from founders building in public.',
+  ogTitle: 'SaaSBizz - Verified SaaS Leaderboard',
+  ogDescription: 'Discover verified SaaS startups ranked by revenue. Real MRR data from founders building in public.',
+  ogUrl: 'https://saasbizz.com',
+  twitterTitle: 'SaaSBizz - Verified SaaS Leaderboard',
+  twitterDescription: 'Discover verified SaaS startups ranked by revenue. Real MRR data from founders building in public.',
+})
+
+// JSON-LD Structured Data
+useHead({
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'WebSite',
+        name: 'SaaSBizz',
+        url: 'https://saasbizz.com',
+        description: 'Verified SaaS Leaderboard - Real MRR data from founders building in public',
+        publisher: {
+          '@type': 'Organization',
+          name: 'SaaSBizz',
+          url: 'https://saasbizz.com'
+        }
+      })
+    }
+  ],
+  style: [
+    {
+      innerHTML: `
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-10px); }
+        }
+      `
+    }
+  ]
+})
 </script>
-
-<style scoped>
-.fade-enter-active, .fade-leave-active { transition: opacity 0.8s ease-in-out; }
-.fade-enter-from, .fade-leave-to { opacity: 0; }
-</style>

@@ -1,217 +1,210 @@
 <template>
-  <div class="min-h-screen bg-[#F9FAFB] font-sans text-slate-800">
-    
-    <div class="bg-slate-900 text-white py-6 px-4 text-center border-b border-slate-800 relative z-50">
-      <a href="https://saasitron.com" target="_blank" class="group flex flex-col md:flex-row items-center justify-center gap-3 hover:text-blue-200 transition-colors">
-        <span class="bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded uppercase tracking-wide">Main Sponsor</span>
-        <span class="text-base md:text-lg font-medium">
-          <span class="font-bold text-blue-400">SAASitron:</span> 
-          Stop coding from scratch. Ship your SaaS in days with the ultimate boilerplate kit.
-        </span>
-        <span class="group-hover:translate-x-1 transition-transform text-lg">→</span>
-      </a>
+  <article class="glass-card rounded-3xl p-8 min-h-[80vh]">
+    <!-- Not Found State -->
+    <div v-if="!startup" class="text-center py-20 text-slate-400">
+      <h1 class="text-2xl font-bold text-white">Startup not found</h1>
+      <NuxtLink
+        to="/"
+        class="text-blue-400 underline mt-4 block focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#0B1120] rounded"
+      >
+        Return to Leaderboard
+      </NuxtLink>
     </div>
 
-    <header class="bg-white border-b border-gray-200 sticky top-0 z-40 backdrop-blur-md bg-white/90">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        <NuxtLink to="/" class="flex items-center gap-2">
-          <div class="w-8 h-8 bg-blue-600 rounded flex items-center justify-center text-white font-bold shadow-sm shadow-blue-200">S</div>
-          <span class="text-xl font-bold tracking-tight text-slate-900">SaaSBizz</span>
-        </NuxtLink>
-        <div class="hidden md:flex gap-6 text-sm font-medium text-gray-600">
-          <NuxtLink to="/" class="hover:text-blue-600">Leaderboard</NuxtLink>
-          <NuxtLink to="/submit" class="hover:text-blue-600">Submit</NuxtLink>
-          <button class="text-blue-600 bg-blue-50 px-3 py-1.5 rounded-md hover:bg-blue-100 transition-colors">Advertise</button>
+    <!-- Startup Content -->
+    <div v-else>
+      <!-- Header -->
+      <header class="flex flex-col md:flex-row gap-6 mb-10 items-start">
+        <div class="relative flex-shrink-0">
+          <div class="absolute inset-0 bg-blue-500/20 blur-xl rounded-3xl"></div>
+          <img
+            :src="`https://www.google.com/s2/favicons?domain=${startup.domain || startup.website_url}&sz=256`"
+            :alt="`${startup.startup_name} logo`"
+            class="relative w-32 h-32 rounded-3xl border-4 border-white/10 shadow-lg bg-slate-900 object-contain p-2"
+            width="128"
+            height="128"
+            @error="handleLogoError"
+          >
+        </div>
+        <div class="flex-1 pt-1">
+          <div class="flex justify-between items-start">
+            <h1 class="text-5xl font-black text-white tracking-tight mb-3">{{ startup.startup_name }}</h1>
+            <a
+              v-if="startup.website_url"
+              :href="startup.website_url"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="hidden md:flex items-center gap-1 bg-blue-600 text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-blue-500 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#0B1120] active:scale-95"
+              :aria-label="`Visit ${startup.startup_name} website (opens in new tab)`"
+            >
+              Visit Website
+            </a>
+          </div>
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-slate-500 text-xs font-medium">Verified SaaS</span>
+          </div>
+          <p class="text-lg text-slate-400 leading-relaxed font-medium">{{ startup.tagline || startup.full_description }}</p>
+        </div>
+      </header>
+
+      <!-- Stats Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10" role="group" aria-label="Startup statistics">
+        <!-- Total Revenue -->
+        <div class="bg-slate-800/50 p-5 rounded-2xl border border-white/5 flex flex-col justify-center h-32">
+          <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2 truncate">
+            Total Revenue <span class="text-blue-400 font-extrabold ml-2">#{{ startupRank }}</span>
+          </div>
+          <div class="text-2xl font-mono font-bold text-white">{{ startup.total_revenue }}</div>
+          <div v-if="hasValidGrowth" class="text-[10px] text-green-400 font-bold mt-1">
+            <span aria-hidden="true">↑</span> {{ startup.mom_growth }} Monthly Growth
+          </div>
+        </div>
+
+        <!-- MRR -->
+        <div class="bg-slate-800/50 p-5 rounded-2xl border border-white/5 flex flex-col justify-center h-32">
+          <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">MRR</div>
+          <div class="text-2xl font-mono font-bold text-white">{{ startup.mrr }}</div>
+          <div v-if="startup.subscriptions" class="text-[10px] text-slate-500 font-bold mt-1">
+            {{ startup.subscriptions }} Subscribers
+          </div>
+        </div>
+
+        <!-- Founder -->
+        <div class="bg-slate-800/50 p-5 rounded-2xl border border-white/5 flex flex-col justify-center h-32">
+          <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Founder</div>
+          <div class="flex items-center gap-3">
+            <NuxtLink
+              v-if="hasValidFounder"
+              :to="`/founder/${founderSlug}`"
+              class="flex-shrink-0 group focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-full"
+              :aria-label="`View ${startup.founder_name}'s profile`"
+            >
+              <NuxtImg
+                v-if="startup.founder_image_local_path"
+                :src="`/founder_images/${startup.founder_image_local_path}`"
+                :alt="`${startup.founder_name} profile photo`"
+                class="w-10 h-10 rounded-full object-cover border border-white/10 group-hover:border-blue-400"
+                width="40"
+                height="40"
+                loading="lazy"
+              />
+              <div v-else class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-slate-400 font-bold text-xs" aria-hidden="true">
+                {{ startup.founder_name?.charAt(0) || '?' }}
+              </div>
+            </NuxtLink>
+            <div class="min-w-0 overflow-hidden">
+              <NuxtLink
+                v-if="hasValidFounder"
+                :to="`/founder/${founderSlug}`"
+                class="text-sm font-bold text-white truncate hover:text-blue-400 transition-colors block focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
+              >
+                {{ startup.founder_name }}
+              </NuxtLink>
+              <span v-else class="text-sm font-bold text-slate-500 block">Anonymous</span>
+
+              <a
+                v-if="startup.founder_social"
+                :href="`https://x.com/${startup.founder_social.replace('@', '')}`"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-[9px] text-blue-400 hover:underline block mt-0.5 truncate focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
+                :aria-label="`${startup.founder_name} on X - ${formatFollowers(startup.x_follower_count)} followers (opens in new tab)`"
+              >
+                {{ formatFollowers(startup.x_follower_count) }} followers on X @{{ startup.founder_social.replace('@', '') }}
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Founded -->
+        <div class="bg-slate-800/50 p-5 rounded-2xl border border-white/5 flex flex-col justify-center h-32">
+          <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2 truncate">
+            Founded <span class="text-slate-400 ml-2">{{ startup.category }}</span>
+          </div>
+          <div class="text-lg font-bold text-white">{{ startup.founded_date || 'N/A' }}</div>
+          <div v-if="startup.country" class="text-[10px] text-slate-500 font-bold mt-1 uppercase tracking-tight flex items-center gap-1">
+            <span aria-hidden="true">📍</span> {{ startup.country }}
+          </div>
         </div>
       </div>
-    </header>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <!-- Business Overview -->
+      <section class="bg-slate-800/50 rounded-2xl p-6 border border-white/5" aria-labelledby="overview-heading">
+        <h2 id="overview-heading" class="text-sm font-bold text-white uppercase tracking-wide mb-4 border-b border-white/10 pb-2">Business Overview</h2>
+        <p class="text-slate-400 leading-7 whitespace-pre-wrap">{{ startup.full_description }}</p>
+      </section>
 
-        <aside class="hidden lg:block lg:col-span-2 space-y-4 sticky top-24">
-          <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Sponsored</div>
-          <Transition name="fade" mode="out-in">
-            <div :key="adGroupIndex" class="space-y-4">
-              <div v-for="ad in currentLeftAds" :key="ad.id">
-                 <a href="#" class="block p-3 rounded-lg border border-blue-100 hover:shadow-md transition-all group" :style="{ backgroundColor: ad.bg }">
-                    <div class="flex items-center gap-2 mb-1.5">
-                      <span class="text-lg">{{ ad.emoji }}</span>
-                      <span class="font-bold text-xs text-gray-900 group-hover:text-blue-700">{{ ad.name }}</span>
-                    </div>
-                    <p class="text-[11px] leading-snug text-slate-600">{{ ad.copy }}</p>
-                 </a>
-              </div>
-            </div>
-          </Transition>
-        </aside>
-
-        <section class="col-span-1 lg:col-span-8 bg-gradient-to-br from-emerald-50 to-sky-50 rounded-3xl p-8 border border-blue-200 shadow-sm min-h-[80vh]">
-          <div v-if="!startup" class="text-center py-20 text-gray-500">
-            <h2 class="text-2xl font-bold">Startup not found</h2>
-            <NuxtLink to="/" class="text-blue-600 underline mt-4 block">Return to Leaderboard</NuxtLink>
-          </div>
-          
-          <div v-else>
-            <div class="flex flex-col md:flex-row gap-6 mb-10 items-start">
-               <img :src="`https://www.google.com/s2/favicons?domain=${startup.domain || startup.website_url}&sz=256`" class="w-32 h-32 rounded-3xl border-4 border-white shadow-lg bg-white object-contain p-2 flex-shrink-0">
-              <div class="flex-1 pt-1">
-                <div class="flex justify-between items-start">
-                  <h1 class="text-5xl font-black text-gray-900 tracking-tight mb-3">{{ startup.startup_name }}</h1>
-                  <a v-if="startup.website_url" :href="startup.website_url" target="_blank" class="hidden md:flex items-center gap-1 bg-slate-900 text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-slate-700 transition-all">Visit Website</a>
-                </div>
-                <div class="flex items-center gap-2 mb-3">
-                    <span class="text-slate-400 text-xs font-medium">Verified SaaS</span>
-                </div>
-                <p class="text-lg text-slate-600 leading-relaxed font-medium">{{ startup.tagline || startup.full_description }}</p>
-              </div>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-              
-              <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-center h-32">
-                <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2 truncate">
-                  Total Revenue &nbsp;&nbsp;&nbsp; <span class="text-blue-600 font-extrabold">#{{ startupRank }}</span>
-                </div>
-                <div class="text-2xl font-mono font-bold text-gray-900">{{ startup.total_revenue }}</div>
-                <div v-if="isValidGrowth" class="text-[10px] text-green-600 font-bold mt-1">
-                  ↑ {{ startup.mom_growth }} Monthly Growth
-                </div>
-              </div>
-
-              <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-center h-32">
-                <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">MRR</div>
-                <div class="text-2xl font-mono font-bold text-gray-900">{{ startup.mrr }}</div>
-                <div v-if="startup.subscriptions" class="text-[10px] text-gray-500 font-bold mt-1">
-                   {{ startup.subscriptions }} Subscribers
-                </div>
-              </div>
-
-              <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-center h-32">
-                <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Founder</div>
-                <div class="flex items-center gap-3">
-                   <NuxtLink v-if="isFounderValid" :to="`/founder/${getFounderSlug(startup.founder_name)}`" class="flex-shrink-0 group">
-                     <img v-if="startup.founder_image_local_path" :src="`/founder_images/${startup.founder_image_local_path}`" class="w-10 h-10 rounded-full object-cover border border-gray-200 group-hover:border-blue-400">
-                     <div v-else class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 font-bold text-xs">?</div>
-                   </NuxtLink>
-                   <div class="min-w-0 overflow-hidden">
-                     <NuxtLink v-if="isFounderValid" :to="`/founder/${getFounderSlug(startup.founder_name)}`" class="text-sm font-bold text-gray-900 truncate hover:text-blue-600 transition-colors block">
-                       {{ startup.founder_name }}
-                     </NuxtLink>
-                     <span v-else class="text-sm font-bold text-gray-400 block">Anonymous</span>
-                     
-                     <a v-if="startup.founder_social" 
-                        :href="`https://x.com/${startup.founder_social.replace('@', '')}`" 
-                        target="_blank" 
-                        class="text-[9px] text-blue-500 hover:underline block mt-0.5 truncate">
-                        {{ formatFollowers(startup.x_follower_count) }} followers on 𝕏 @{{ startup.founder_social.replace('@', '') }}
-                     </a>
-                   </div>
-                </div>
-              </div>
-
-              <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-center h-32">
-                <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2 truncate">
-                  Founded &nbsp;&nbsp;&nbsp; <span class="text-gray-600">{{ startup.category }}</span>
-                </div>
-                <div class="text-lg font-bold text-gray-900">{{ startup.founded_date || 'N/A' }}</div>
-                
-                <div v-if="startup.country" class="text-[10px] text-gray-500 font-bold mt-1 uppercase tracking-tight flex items-center gap-1">
-                  <span>📍</span> {{ startup.country }}
-                </div>
-              </div>
-
-            </div>
-
-            <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
-              <h3 class="text-sm font-bold text-gray-900 uppercase tracking-wide mb-4 border-b pb-2">Business Overview</h3>
-              <p class="text-slate-600 leading-7 whitespace-pre-wrap">{{ startup.full_description }}</p>
-            </div>
-          </div>
-        </section>
-
-        <aside class="hidden lg:block lg:col-span-2 space-y-4 sticky top-24">
-          <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Featured Tools</div>
-          <Transition name="fade" mode="out-in">
-            <div :key="adGroupIndex" class="space-y-4">
-              <div v-for="ad in currentRightAds" :key="ad.id">
-                 <a href="#" class="block p-3 rounded-lg border border-blue-100 hover:shadow-md transition-all group" :style="{ backgroundColor: ad.bg }">
-                    <div class="flex items-center gap-2 mb-1.5">
-                      <span class="w-5 h-5 rounded bg-white/50 text-blue-600 flex items-center justify-center text-[10px] font-bold">Ad</span>
-                      <span class="font-bold text-xs text-gray-900 group-hover:text-blue-700">{{ ad.name }}</span>
-                    </div>
-                    <p class="text-[11px] leading-snug text-slate-600">{{ ad.copy }}</p>
-                 </a>
-              </div>
-            </div>
-          </Transition>
-        </aside>
-
-      </div>
-    </main>
-  </div>
+      <!-- Search Section -->
+      <SearchSection />
+    </div>
+  </article>
 </template>
 
-<script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+<script setup lang="ts">
+import { computed } from 'vue'
 import allStartups from '~/content/startups.json'
+import { parseRevenue, getFounderSlug, isValidFounder, isValidGrowth, formatFollowers } from '~/utils/helpers'
+import type { Startup } from '~/types/startup'
 
 const route = useRoute()
-const startup = computed(() => allStartups.find(s => s.trustmrr_profile_url === route.params.slug))
+const startups = allStartups as Startup[]
 
-// --- RANKING CALCULATION ---
-const parseRev = (val) => {
-  if (!val || typeof val !== 'string') return 0
-  return Number(val.replace(/[^0-9.-]+/g, ""))
-}
+const startup = computed(() =>
+  startups.find(s => s.trustmrr_profile_url === route.params.slug)
+)
 
 const startupRank = computed(() => {
   if (!startup.value) return '-'
-  const sorted = [...allStartups].sort((a, b) => parseRev(b.total_revenue) - parseRev(a.total_revenue))
-  return sorted.findIndex(s => s.id === startup.value.id) + 1
+  const sorted = [...startups].sort((a, b) => parseRevenue(b.total_revenue) - parseRevenue(a.total_revenue))
+  return sorted.findIndex(s => s.id === startup.value!.id) + 1
 })
 
-const isFounderValid = computed(() => startup.value?.founder_name && startup.value.founder_name !== 'null,' && startup.value.founder_name.length > 2)
-const isValidGrowth = computed(() => startup.value?.mom_growth?.includes('%'))
+const hasValidFounder = computed(() => isValidFounder(startup.value?.founder_name))
+const hasValidGrowth = computed(() => isValidGrowth(startup.value?.mom_growth))
+const founderSlug = computed(() => getFounderSlug(startup.value?.founder_name))
 
-const getFounderSlug = (name) => {
-  if (!name) return ''
-  return name.replace(/[^a-zA-Z0-9 ]/g, "").trim().replace(/\s+/g, "-").toLowerCase()
+// Image error handling
+const handleLogoError = (e: Event) => {
+  const img = e.target as HTMLImageElement
+  img.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23334155" width="100" height="100"/><text x="50" y="60" font-size="40" text-anchor="middle" fill="%2394a3b8">?</text></svg>'
 }
 
-const formatFollowers = (count) => {
-  if (!count) return '0'
-  const num = Number(count)
-  if (num >= 1000) return (num / 1000).toFixed(1) + 'k'
-  return num.toString()
-}
-
-// --- ADVERTISING LOGIC ---
-const bluePalette = [ '#eff6ff', '#dbeafe', '#e0f2fe', '#cffafe', '#e0e7ff' ]
-const adInventory = Array.from({ length: 20 }, (_, i) => ({ 
-  id: i, 
-  name: `Partner ${i + 1}`, 
-  emoji: ['🚀', '⚡', '🔥', '💎'][i % 4], 
-  copy: 'Scale your SaaS today.', 
-  bg: bluePalette[i % 5] 
-}))
-
-const adGroupIndex = ref(0)
-const currentLeftAds = computed(() => adInventory.slice(adGroupIndex.value === 0 ? 0 : 10, adGroupIndex.value === 0 ? 5 : 15))
-const currentRightAds = computed(() => adInventory.slice(adGroupIndex.value === 0 ? 5 : 15, adGroupIndex.value === 0 ? 10 : 20))
-
-let adInterval = null
-onMounted(() => { 
-  adInterval = setInterval(() => { adGroupIndex.value = adGroupIndex.value === 0 ? 1 : 0 }, 12000) 
+// SEO Meta
+useSeoMeta({
+  title: () => startup.value ? `${startup.value.startup_name} - Verified SaaS Stats` : 'Startup Not Found',
+  description: () => startup.value?.tagline || startup.value?.full_description || 'View verified SaaS startup metrics',
+  ogTitle: () => startup.value ? `${startup.value.startup_name} - Verified SaaS Stats` : 'Startup Not Found',
+  ogDescription: () => startup.value?.tagline || startup.value?.full_description || 'View verified SaaS startup metrics',
+  ogUrl: () => `https://saasbizz.com/startup/${route.params.slug}/`,
+  twitterTitle: () => startup.value ? `${startup.value.startup_name} - Verified SaaS Stats` : 'Startup Not Found',
+  twitterDescription: () => startup.value?.tagline || startup.value?.full_description || 'View verified SaaS startup metrics',
 })
-onUnmounted(() => { if (adInterval) clearInterval(adInterval) })
 
+// JSON-LD Structured Data
 useHead({
-  title: startup.value ? `${startup.value.startup_name} - Verified SaaS Stats` : 'Startup Not Found'
+  script: startup.value ? [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'SoftwareApplication',
+        name: startup.value.startup_name,
+        description: startup.value.full_description || startup.value.tagline,
+        url: startup.value.website_url,
+        applicationCategory: startup.value.category || 'BusinessApplication',
+        operatingSystem: 'Web',
+        author: startup.value.founder_name ? {
+          '@type': 'Person',
+          name: startup.value.founder_name
+        } : undefined,
+        datePublished: startup.value.founded_date,
+        aggregateRating: {
+          '@type': 'AggregateRating',
+          ratingValue: '5',
+          ratingCount: '1'
+        }
+      })
+    }
+  ] : []
 })
 </script>
-
-<style scoped>
-.fade-enter-active, .fade-leave-active { transition: opacity 0.8s ease-in-out; }
-.fade-enter-from, .fade-leave-to { opacity: 0; }
-</style>

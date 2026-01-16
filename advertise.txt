@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advertise on Saasbizz | Checkout</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #0052FF;
+            --dark-blue: #001A41;
+            --light-bg: #F8FAFC;
+            --border-color: #E2E8F0;
+            --success-green: #108F68;
+            --text-main: #1E293B;
+            --text-muted: #64748B;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            background-color: var(--light-bg);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .checkout-card {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            max-width: 480px;
+            width: 100%;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-blue);
+            text-align: center;
+            margin-bottom: 20px;
+            display: block;
+            text-decoration: none;
+        }
+        .logo span { color: var(--dark-blue); }
+
+        h2 { margin-top: 0; color: var(--dark-blue); text-align: center; font-size: 1.6rem; }
+        .subtitle { color: var(--text-muted); text-align: center; font-size: 0.95rem; margin-bottom: 30px; }
+
+        .info-section { margin-bottom: 25px; }
+        .info-section h3 { font-size: 1rem; margin-bottom: 8px; color: var(--dark-blue); }
+        .info-section p { font-size: 0.9rem; margin: 0; color: var(--text-main); line-height: 1.6; }
+
+        .status-box {
+            background: #F1F5F9;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-blue);
+            margin-bottom: 25px;
+        }
+        .status-box p { margin: 4px 0; font-size: 0.9rem; }
+        .status-box .available { color: var(--success-green); font-weight: 700; }
+
+        .price-box {
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+        .price-box .rate { font-size: 2.2rem; font-weight: 800; color: var(--dark-blue); }
+        .price-box .period { color: var(--text-muted); font-size: 1.1rem; }
+
+        /* PayPal Container Styling */
+        #paypal-button-container-P-6LY87750XT365015WNFLLZOQ {
+            margin-top: 20px;
+            min-height: 150px; /* Ensures space is reserved for the button to load */
+        }
+    </style>
+</head>
+<body>
+
+<div class="checkout-card">
+    <a href="https://saasbizz.com" class="logo">SAAS<span>BIZZ</span></a>
+    
+    <h2>Advertise on Saasbizz</h2>
+    <p class="subtitle">Reach thousands of entrepreneurs and founders daily</p>
+
+    <div class="info-section">
+        <h3>How it works</h3>
+        <p>Your startup appears in rotating sponsor slots on sidebars and mobile banners across all Saasbizz pages. Sponsors rotate every 10 seconds to ensure high visibility.</p>
+    </div>
+
+    <div class="status-box">
+        <p><strong>Maximum spots:</strong> 20</p>
+        <p><strong>Current status:</strong> <span class="available">Spots Available</span></p>
+    </div>
+
+    <div class="price-box">
+        <span class="rate">$999</span><span class="period">/month</span>
+    </div>
+
+    <div id="paypal-button-container-P-6LY87750XT365015WNFLLZOQ"></div>
+</div>
+
+<script src="https://www.paypal.com/sdk/js?client-id=AWjiSeIg9VVJvWMs9BdmcdshPfMY4a31dAiTYDCgD7Cag2_SPO8W-V8zhSnvNmuEeDD0h89smU_1UF7e&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
+
+<script>
+  // Script logic to render the PayPal button [cite: 3, 6]
+  paypal.Buttons({
+      style: {
+          shape: 'rect',
+          color: 'gold',
+          layout: 'vertical',
+          label: 'subscribe'
+      },
+      createSubscription: function(data, actions) {
+        return actions.subscription.create({
+          /* Creates the subscription using the specific Plan ID [cite: 2, 5] */
+          plan_id: 'P-6LY87750XT365015WNFLLZOQ'
+        });
+      },
+      onApprove: function(data, actions) {
+        // success message for the subscriber [cite: 2, 5]
+        alert('Subscription successful! ID: ' + data.subscriptionID); 
+        window.location.href = "https://saasbizz.com/success";
+      }
+  }).render('#paypal-button-container-P-6LY87750XT365015WNFLLZOQ'); // Target the matching ID [cite: 3, 6]
+</script>
+
+</body>
+</html>
