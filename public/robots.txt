@@ -1,2 +1,10 @@
-User-Agent: *
-Disallow:
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Disallow admin and login pages
+Disallow: /admin
+Disallow: /login
+
+# Sitemap location
+Sitemap: https://saasbizz.com/sitemap.xml

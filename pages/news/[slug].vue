@@ -94,12 +94,50 @@ function formatDate(dateStr: string) {
 }
 
 // SEO
+const config = useRuntimeConfig()
+const baseUrl = config.public?.siteUrl || 'https://saasbizz.com'
+const canonicalUrl = `${baseUrl}/news/${slug}`
+
 useSeoMeta({
   title: article.value ? `${article.value.title} - SaaSBizz News` : 'Article Not Found - SaaSBizz',
   description: article.value?.excerpt || 'Article not found',
   ogTitle: article.value?.title,
   ogDescription: article.value?.excerpt,
   ogImage: article.value?.featured_image,
+  ogType: 'article',
+})
+
+// Canonical URL + JSON-LD Structured Data
+useHead({
+  link: [
+    { rel: 'canonical', href: canonicalUrl }
+  ],
+  script: article.value ? [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        'headline': article.value.title,
+        'description': article.value.excerpt,
+        'image': article.value.featured_image || '',
+        'datePublished': article.value.created_at,
+        'author': {
+          '@type': 'Person',
+          'name': article.value.author
+        },
+        'publisher': {
+          '@type': 'Organization',
+          'name': 'SaaSBizz',
+          'url': baseUrl
+        },
+        'mainEntityOfPage': {
+          '@type': 'WebPage',
+          '@id': canonicalUrl
+        }
+      })
+    }
+  ] : []
 })
 </script>
 
