@@ -16,18 +16,9 @@
     </div>
 
     <!-- Article Content -->
-    <article v-else class="space-y-8">
-      <!-- Featured Image -->
-      <div v-if="article.featured_image" class="rounded-2xl overflow-hidden">
-        <img 
-          :src="article.featured_image" 
-          :alt="article.title"
-          class="w-48 h-48 object-cover rounded-xl float-left mr-6 mb-4"
-        >
-      </div>
-
+    <article v-else class="space-y-6">
       <!-- Header -->
-      <header class="space-y-4">
+      <header class="space-y-3 mb-4">
         <div class="flex items-center gap-3 text-xs text-slate-500 uppercase tracking-widest">
           <span class="bg-blue-500/20 text-blue-400 px-2 py-1 rounded">{{ article.category }}</span>
           <span>{{ formatDate(article.created_at) }}</span>
@@ -35,21 +26,26 @@
         <h1 class="text-3xl md:text-4xl font-black text-white leading-tight">
           {{ article.title }}
         </h1>
-        <div class="flex items-center gap-4 text-slate-400">
-          <span>By {{ article.author }}</span>
-          <a v-if="article.source" :href="article.source" target="_blank" rel="noopener" class="text-blue-400 hover:underline text-sm">
-            View Source →
-          </a>
-        </div>
       </header>
 
-      <!-- Content -->
-      <div class="prose prose-invert prose-lg max-w-none clear-both">
+      <!-- Content with embedded image -->
+      <div class="prose prose-invert prose-lg max-w-none">
+        <!-- Image floated left -->
+        <img 
+          v-if="article.featured_image"
+          :src="article.featured_image" 
+          :alt="article.title"
+          class="w-32 h-32 object-cover rounded-xl float-left mr-3 mb-2"
+          loading="lazy"
+          width="128"
+          height="128"
+        >
+        <p class="text-slate-400 text-sm mb-3">Author: {{ normalizedAuthor }}</p>
         <div v-html="renderedContent" class="article-content"></div>
       </div>
 
       <!-- Footer -->
-      <footer class="pt-8 border-t border-white/10">
+      <footer class="pt-8 border-t border-white/10 clear-both">
         <div class="flex items-center justify-between">
           <NuxtLink to="/news" class="text-blue-400 hover:text-blue-300 font-medium">
             ← More Articles
@@ -71,10 +67,18 @@ const article = computed(() =>
   allArticles.find(a => a.slug === slug && a.status === 'published')
 )
 
-// Simple markdown to HTML conversion
+// Simple markdown to HTML conversion - removes title and source from body
 const renderedContent = computed(() => {
   if (!article.value) return ''
-  let html = article.value.content
+  let content = article.value.content
+    // Remove the title (## heading) since we show it in header
+    .replace(/^##\s+.+$/m, '')
+    // Remove Source: line
+    .replace(/\*\*Source:\*\*.*/gi, '')
+    // Remove Author: line (already shown separately)
+    .replace(/\*\*Author:\*\*.*/gi, '')
+  
+  let html = content
     .replace(/^### (.+)$/gm, '<h3>$1</h3>')
     .replace(/^## (.+)$/gm, '<h2>$1</h2>')
     .replace(/^\* (.+)$/gm, '<li>$1</li>')
@@ -82,7 +86,23 @@ const renderedContent = computed(() => {
     .replace(/\*(.+?)\*/g, '<em>$1</em>')
     .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank" rel="noopener" class="text-blue-400 hover:underline">$1</a>')
     .replace(/\n\n/g, '</p><p>')
-  return `<p>${html}</p>`.replace(/<p><h/g, '<h').replace(/<\/h(\d)><\/p>/g, '</h$1>')
+    .trim()
+  return `<p>${html}</p>`.replace(/<p><h/g, '<h').replace(/<\/h(\d)><\/p>/g, '</h$1>').replace(/<p><\/p>/g, '')
+})
+
+// Normalize author name - use default for generic authors
+const normalizedAuthor = computed(() => {
+  const author = article.value?.author?.toLowerCase() || ''
+  const genericAuthors = ['staff writer', 'press release', 'staff', 'admin', 'editor', 'team', 'saasbizz team', 'anonymous']
+  
+  // Check if it's a generic author or not a full name (no space = not full name)
+  const isGeneric = genericAuthors.some(g => author.includes(g))
+  const hasFullName = author.trim().includes(' ') && author.length > 5
+  
+  if (isGeneric || !hasFullName) {
+    return 'Hal Smith'
+  }
+  return article.value?.author || 'Hal Smith'
 })
 
 function formatDate(dateStr: string) {
