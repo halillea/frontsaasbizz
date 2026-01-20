@@ -1,7 +1,7 @@
 <template>
   <div 
     class="w-full h-11 flex items-center gap-3 p-1.5 mb-1 rounded-2xl border transition-colors duration-300"
-    :class="themeColor === 'white' ? 'bg-slate-300 border-slate-400' : 'bg-slate-800/50 border-white/5'"
+    :class="themeColor === 'white' ? 'bg-slate-50 border-slate-200' : 'bg-slate-800/50 border-white/5'"
   >
     <!-- Label (Directly on outer bg) -->
     <div class="pl-3 shrink-0">
@@ -19,13 +19,13 @@
       :class="themeColor === 'white' ? 'bg-white border-slate-200 shadow-sm' : 'bg-slate-100/95 border-white/10'"
     >
       <!-- Ticker Track -->
-      <div class="flex items-center gap-12 whitespace-nowrap animate-ticker pl-4">
+      <div class="flex items-center gap-6 whitespace-nowrap animate-ticker pl-4">
         <div 
           v-for="startup in tickerStartups" 
           :key="startup.id"
           class="flex items-baseline gap-3 text-xs"
         >
-          <span class="font-bold text-slate-800 transition-colors">
+          <span class="font-bold transition-colors text-blue-500">
             {{ startup.startup_name }}
           </span>
           <span class="font-black font-mono text-black transition-colors">
@@ -71,7 +71,7 @@
           :key="'dup-' + startup.id"
           class="flex items-baseline gap-3 text-xs"
         >
-          <span class="font-bold text-slate-800 transition-colors">
+          <span class="font-bold transition-colors text-blue-500">
             {{ startup.startup_name }}
           </span>
           <span class="font-black font-mono text-black transition-colors">

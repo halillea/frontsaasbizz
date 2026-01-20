@@ -31,7 +31,7 @@
       <NuxtLink
         v-for="startup in paginatedStartups"
         :key="startup.id"
-        :to="`/startup/${startup.trustmrr_profile_url}`"
+        :to="`/startup/${startup.trustmrr_link}`"
         class="group relative flex items-center gap-4 py-2 px-4 rounded-xl glass-card hover-glow border-[1px] border-white/5 transition-all duration-300"
         role="listitem"
       >
@@ -39,7 +39,7 @@
         <div class="w-[35%] flex items-center gap-3 flex-shrink-0 min-w-0">
           <div class="relative flex-shrink-0">
             <img
-              :src="`https://www.google.com/s2/favicons?domain=${startup.domain || startup.website_url}&sz=64`"
+              :src="`https://www.google.com/s2/favicons?domain=${startup.domain}&sz=64`"
               :alt="`${startup.startup_name} logo`"
               class="relative w-8 h-8 rounded-lg border border-white/10 bg-slate-900 object-cover"
               loading="lazy"
@@ -82,13 +82,13 @@
           <!-- Financials -->
           <div class="flex items-center gap-5 flex-shrink-0 text-right min-w-[280px] justify-end">
             <div class="w-28 text-right">
-              <div class="font-mono font-bold text-lg text-white">{{ startup.total_revenue || '$0' }}</div>
+              <div class="font-mono font-bold text-lg text-white">{{ formatCurrency(startup.total_revenue) }}</div>
             </div>
             <div class="w-24 text-right">
-              <div class="font-mono font-bold text-lg text-slate-200">{{ startup.mrr }}</div>
+              <div class="font-mono font-bold text-lg text-slate-200">{{ formatCurrency(startup.mrr) }}</div>
             </div>
             <div class="w-16 text-right">
-              <div class="font-mono text-xs text-slate-400">{{ formatDate(startup.created_at) }}</div>
+              <div class="font-mono text-xs text-slate-400">{{ formatDate(startup.fetched_at) }}</div>
             </div>
           </div>
         </div>
@@ -113,16 +113,17 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import allStartups from '~/content/startups.json'
+import { formatCurrency } from '~/utils/helpers'
 import type { Startup } from '~/types/startup'
 
 const PER_PAGE = 30
 const currentPage = ref(1)
 const startups = allStartups as Startup[]
 
-// Sort by created_at descending (newest first)
+// Sort by fetched_at descending (newest first)
 const sortedStartups = computed(() => {
   return [...startups].sort((a, b) => 
-    new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    new Date(b.fetched_at || '').getTime() - new Date(a.fetched_at || '').getTime()
   )
 })
 

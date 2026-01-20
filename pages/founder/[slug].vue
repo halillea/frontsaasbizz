@@ -129,7 +129,7 @@ useHead({
         worksFor: projects.value.map(p => ({
           '@type': 'Organization',
           name: p.startup_name,
-          url: p.website_url
+          url: p.domain ? `https://${p.domain}` : undefined
         }))
       })
     }

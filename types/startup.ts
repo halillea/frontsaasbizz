@@ -30,11 +30,11 @@ export interface Startup {
   is_published: boolean
   trustmrr_founder: string | null
 
-  // Legacy/Computed fields (Not in DB schema)
-  created_at?: string // Likely administrative
-  trustmrr_profile_url?: string // Not in DB
-  country?: string | null // Not in DB
-  website_url?: string | null // Deprecated
+  // Legacy fields for backward compatibility (deprecated)
+  created_at?: string // Use fetched_at instead
+  trustmrr_profile_url?: string // Use trustmrr_link instead
+  country?: string | null // Use location instead
+  website_url?: string | null // Use domain instead
 }
 
 export interface Ad {

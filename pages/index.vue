@@ -133,7 +133,7 @@ const recentlyAdded = computed(() => {
   const topEarnerIds = new Set(topEarners.value.map(s => s.id))
   return [...startups]
     .filter(s => !topEarnerIds.has(s.id))
-    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+    .sort((a, b) => new Date(b.fetched_at || '').getTime() - new Date(a.fetched_at || '').getTime())
     .slice(0, 60) // Support up to 60 recent startups
 })
 

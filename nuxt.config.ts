@@ -31,7 +31,7 @@ export default defineNuxtConfig({
       crawlLinks: true, // Auto-discover links (Vercel handles well)
       routes: [
         '/',
-        ...allStartups.map(s => `/startup/${s.trustmrr_profile_url}`),
+        ...allStartups.map(s => `/startup/${s.trustmrr_link}`),
         ...allStartups
           .filter(s => s.founder_name && s.founder_name !== 'null,' && s.founder_name.length > 1)
           .map(s => `/founder/${s.founder_name}`)

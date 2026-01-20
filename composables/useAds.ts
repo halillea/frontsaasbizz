@@ -4,8 +4,8 @@ import type { Ad } from '~/types/startup'
 /** Blue-themed color palette for ad backgrounds */
 const BLUE_PALETTE = ['#eff6ff', '#dbeafe', '#e0f2fe', '#cffafe', '#e0e7ff'] as const
 
-/** Rotation interval in milliseconds (15 seconds) */
-const ROTATION_INTERVAL = 15000
+/** Rotation interval in milliseconds (12 seconds) */
+const ROTATION_INTERVAL = 12000
 
 /**
  * Composable for managing advertisement display and rotation.

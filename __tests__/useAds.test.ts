@@ -35,9 +35,9 @@ describe('useAds', () => {
         expect(adGroupIndex.value).toBe(0)
     })
 
-    it('returns 8 ads in currentRightAds', () => {
+    it('returns 6 ads in currentRightAds', () => {
         const { currentRightAds } = useAds()
-        expect(currentRightAds.value).toHaveLength(8)
+        expect(currentRightAds.value).toHaveLength(6)
     })
 
     it('each ad has required properties', () => {
@@ -67,10 +67,10 @@ describe('useAds', () => {
         expect(currentRightAds.value[0].id).toBe(0)
     })
 
-    it('first ad has id 8 when group is 1', () => {
+    it('first ad has id 6 when group is 1', () => {
         const { adGroupIndex, currentRightAds } = useAds()
         adGroupIndex.value = 1
 
-        expect(currentRightAds.value[0].id).toBe(8)
+        expect(currentRightAds.value[0].id).toBe(6)
     })
 })

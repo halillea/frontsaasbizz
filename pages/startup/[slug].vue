@@ -74,16 +74,16 @@
           <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2 truncate">
             Total Revenue <span class="text-blue-400 font-extrabold ml-2">#{{ startupRank }}</span>
           </div>
-          <div class="text-2xl font-mono font-bold text-white">{{ startup.total_revenue }}</div>
+          <div class="text-2xl font-mono font-bold text-white">{{ formatCurrency(startup.total_revenue) }}</div>
           <div v-if="hasValidGrowth" class="text-[10px] text-green-400 font-bold mt-1">
-            <span aria-hidden="true">↑</span> {{ startup.mom_growth }} Monthly Growth
+            <span aria-hidden="true">↑</span> {{ formatGrowth(startup.mom_growth) }} Monthly Growth
           </div>
         </div>
 
         <!-- MRR -->
         <div class="bg-slate-800/50 p-5 rounded-2xl border border-white/5 flex flex-col justify-center h-32">
           <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">MRR</div>
-          <div class="text-2xl font-mono font-bold text-white">{{ startup.mrr }}</div>
+          <div class="text-2xl font-mono font-bold text-white">{{ formatCurrency(startup.mrr) }}</div>
           <div v-if="startup.subscriptions" class="text-[10px] text-slate-500 font-bold mt-1">
             {{ startup.subscriptions }} Subscribers
           </div>
@@ -142,8 +142,8 @@
             Founded <span class="text-slate-400 ml-2">{{ startup.category }}</span>
           </div>
           <div class="text-lg font-bold text-white">{{ startup.founded_date || 'N/A' }}</div>
-          <div v-if="startup.country" class="text-[10px] text-slate-500 font-bold mt-1 uppercase tracking-tight flex items-center gap-1">
-            <span aria-hidden="true">📍</span> {{ startup.country }}
+          <div v-if="startup.location" class="text-[10px] text-slate-500 font-bold mt-1 uppercase tracking-tight flex items-center gap-1">
+            <span aria-hidden="true">📍</span> {{ startup.location }}
           </div>
         </div>
       </div>
@@ -163,14 +163,14 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import allStartups from '~/content/startups.json'
-import { parseRevenue, getFounderSlug, isValidFounder, isValidGrowth, formatFollowers } from '~/utils/helpers'
+import { parseRevenue, getFounderSlug, isValidFounder, isValidGrowth, formatFollowers, formatCurrency, formatGrowth } from '~/utils/helpers'
 import type { Startup } from '~/types/startup'
 
 const route = useRoute()
 const startups = allStartups as Startup[]
 
 const startup = computed(() =>
-  startups.find(s => s.trustmrr_profile_url === route.params.slug)
+  startups.find(s => s.trustmrr_link === route.params.slug)
 )
 
 const startupRank = computed(() => {

@@ -1,6 +1,6 @@
 <template>
   <NuxtLink
-    :to="`/startup/${startup.trustmrr_profile_url}`"
+    :to="`/startup/${startup.trustmrr_link}`"
     class="group relative flex items-center gap-4 py-0 px-4 rounded-xl glass-card hover-glow border-[1px] border-white/5 transition-all duration-300"
     role="listitem"
     :aria-label="`View details for ${startup.startup_name}`"
@@ -24,7 +24,7 @@
       <!-- Logo -->
       <div class="relative flex-shrink-0">
         <img
-          :src="`https://www.google.com/s2/favicons?domain=${startup.domain || startup.website_url}&sz=64`"
+          :src="`https://www.google.com/s2/favicons?domain=${startup.domain}&sz=64`"
           :alt="`${startup.startup_name} logo`"
           class="relative w-8 h-8 rounded-lg border border-white/10 bg-slate-900 object-cover"
           loading="lazy"
@@ -68,12 +68,12 @@
 
         <!-- Total Revenue -->
         <div class="w-28 text-right ml-10">
-          <div class="font-mono font-bold text-lg text-white">{{ startup.total_revenue || '$0' }}</div>
+          <div class="font-mono font-bold text-lg text-white">{{ formatCurrency(startup.total_revenue) }}</div>
         </div>
 
         <!-- MRR -->
         <div class="w-32 text-right ml-auto">
-          <div class="font-mono font-bold text-lg text-slate-200 whitespace-nowrap">{{ startup.mrr }}</div>
+          <div class="font-mono font-bold text-lg text-slate-200 whitespace-nowrap">{{ formatCurrency(startup.mrr) }}</div>
         </div>
 
         <!-- Growth -->
@@ -83,7 +83,7 @@
             class="font-mono font-bold text-[15px]"
             :class="isGrowthPositive ? 'text-green-400' : 'text-red-400'"
           >
-            {{ startup.mom_growth }}
+            {{ formatGrowth(startup.mom_growth) }}
           </div>
           <div v-else class="font-mono text-[15px] text-slate-600">-</div>
         </div>
@@ -93,7 +93,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { isValidGrowth } from '~/utils/helpers'
+import { isValidGrowth, formatCurrency, formatGrowth } from '~/utils/helpers'
 import type { Startup } from '~/types/startup'
 
 const props = defineProps<{
@@ -103,8 +103,9 @@ const props = defineProps<{
 
 const hasValidGrowth = computed(() => isValidGrowth(props.startup.mom_growth))
 const isGrowthPositive = computed(() => {
-  if (!props.startup.mom_growth) return false
-  return !props.startup.mom_growth.startsWith('-')
+  if (props.startup.mom_growth === null || props.startup.mom_growth === undefined) return false
+  if (typeof props.startup.mom_growth === 'number') return props.startup.mom_growth >= 0
+  return !String(props.startup.mom_growth).startsWith('-')
 })
 
 // Image error handling

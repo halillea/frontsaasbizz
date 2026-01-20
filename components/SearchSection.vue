@@ -33,13 +33,13 @@
             <NuxtLink
               v-for="(startup, index) in filteredSuggestions"
               :key="startup.id"
-              :to="`/startup/${startup.trustmrr_profile_url}`"
+              :to="`/startup/${startup.trustmrr_link}`"
               class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 transition-colors border-b border-white/5 last:border-b-0"
               :class="{ 'bg-slate-800': index === selectedIndex }"
-              @mousedown.prevent="navigateToStartup(startup.trustmrr_profile_url)"
+              @mousedown.prevent="navigateToStartup(startup.trustmrr_link)"
             >
               <img
-                :src="`https://www.google.com/s2/favicons?domain=${startup.domain || startup.website_url}&sz=64`"
+                :src="`https://www.google.com/s2/favicons?domain=${startup.domain}&sz=64`"
                 :alt="`${startup.startup_name} logo`"
                 class="w-10 h-10 rounded-lg border border-white/10 bg-slate-800 object-contain p-1 flex-shrink-0"
                 @error="handleLogoError"
@@ -61,15 +61,20 @@
       </div>
       
       <div class="flex flex-wrap justify-center gap-3 max-w-5xl mx-auto">
-        <button 
+        <NuxtLink 
           v-for="cat in categories" 
           :key="cat.name"
-          @click="searchByCategory(cat.name)"
-          class="group flex items-center gap-2.5 px-5 py-3 rounded-xl bg-slate-900/40 border border-white/5 hover:border-blue-500/20 hover:bg-slate-800 transition-all duration-500"
+          :to="`/category/${cat.slug}`"
+          class="group flex items-center gap-2.5 px-5 py-3 rounded-xl transition-all duration-500 border"
+          :class="themeColor === 'white' 
+            ? 'bg-slate-100 text-slate-900 border-slate-200 hover:bg-white' 
+            : 'bg-slate-900/40 text-slate-400 border-white/5 hover:border-blue-500/20 hover:bg-slate-800'"
         >
-          <span class="text-lg grayscale group-hover:grayscale-0 transition-all duration-300">{{ cat.icon }}</span>
-          <span class="text-sm font-bold text-slate-400 group-hover:text-blue-400 transition-colors uppercase tracking-wide">{{ cat.name }}</span>
-        </button>
+          <span class="text-lg transition-all duration-300" :class="themeColor === 'white' ? '' : 'grayscale group-hover:grayscale-0'">{{ cat.icon }}</span>
+          <span class="text-sm font-bold transition-colors uppercase tracking-wide"
+            :class="themeColor === 'white' ? 'group-hover:text-blue-600' : 'group-hover:text-blue-400'"
+          >{{ cat.name }}</span>
+        </NuxtLink>
       </div>
     </div>
 
@@ -97,8 +102,12 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import { useTheme } from '~/composables/useTheme'
 import allStartups from '~/content/startups.json'
 import type { Startup } from '~/types/startup'
+
+const { themeColor } = useTheme()
 
 const router = useRouter()
 const route = useRoute()
@@ -126,26 +135,26 @@ watch(() => route.query.search, (newSearch) => {
 })
 
 const categories = [
-  { name: 'Artificial Intelligence', icon: '🤖' },
-  { name: 'SaaS', icon: '☁️' },
-  { name: 'Developer Tools', icon: '🛠️' },
-  { name: 'Fintech', icon: '💰' },
-  { name: 'Productivity', icon: '✅' },
-  { name: 'Marketing', icon: '📣' },
-  { name: 'E-commerce', icon: '🛒' },
-  { name: 'Design Tools', icon: '🎨' },
-  { name: 'No-Code', icon: '📦' },
-  { name: 'Analytics', icon: '📊' },
-  { name: 'Education', icon: '🎓' },
-  { name: 'Health & Fitness', icon: '❤️' },
-  { name: 'Social Media', icon: '📱' },
-  { name: 'Content Creation', icon: '✍️' },
-  { name: 'Sales', icon: '📈' },
-  { name: 'Customer Support', icon: '🎧' },
-  { name: 'Recruiting & HR', icon: '👥' },
-  { name: 'Real Estate', icon: '🏠' },
-  { name: 'Travel', icon: '✈️' },
-  { name: 'Security', icon: '🛡️' }
+  { name: 'Artificial Intelligence', slug: 'ai', icon: '🤖' },
+  { name: 'SaaS', slug: 'saas', icon: '☁️' },
+  { name: 'Developer Tools', slug: 'developer-tools', icon: '🛠️' },
+  { name: 'Fintech', slug: 'fintech', icon: '💰' },
+  { name: 'Productivity', slug: 'productivity', icon: '✅' },
+  { name: 'Marketing', slug: 'marketing', icon: '📣' },
+  { name: 'E-commerce', slug: 'ecommerce', icon: '🛒' },
+  { name: 'Design Tools', slug: 'design-tools', icon: '🎨' },
+  { name: 'No-Code', slug: 'no-code', icon: '📦' },
+  { name: 'Analytics', slug: 'analytics', icon: '📊' },
+  { name: 'Education', slug: 'education', icon: '🎓' },
+  { name: 'Health & Fitness', slug: 'health-fitness', icon: '❤️' },
+  { name: 'Social Media', slug: 'social-media', icon: '📱' },
+  { name: 'Content Creation', slug: 'content-creation', icon: '✍️' },
+  { name: 'Sales', slug: 'sales', icon: '📈' },
+  { name: 'Customer Support', slug: 'customer-support', icon: '🎧' },
+  { name: 'Recruiting & HR', slug: 'recruiting-hr', icon: '👥' },
+  { name: 'Real Estate', slug: 'real-estate', icon: '🏠' },
+  { name: 'Travel', slug: 'travel', icon: '✈️' },
+  { name: 'Security', slug: 'security', icon: '🛡️' }
 ]
 
 // Suggestions for dropdown (max 8)
@@ -196,7 +205,7 @@ function navigateUp() {
 function selectCurrent() {
   if (filteredSuggestions.value.length > 0 && showDropdown.value) {
     const startup = filteredSuggestions.value[selectedIndex.value]
-    navigateToStartup(startup.trustmrr_profile_url)
+    navigateToStartup(startup.trustmrr_link)
   } else {
     showDropdown.value = false
     scrollToResults()
@@ -212,12 +221,6 @@ function scrollToResults() {
   setTimeout(() => {
     document.getElementById('search-results')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }, 100)
-}
-
-function searchByCategory(categoryName: string) {
-  searchQuery.value = categoryName
-  showDropdown.value = false
-  scrollToResults()
 }
 
 function handleLogoError(e: Event) {

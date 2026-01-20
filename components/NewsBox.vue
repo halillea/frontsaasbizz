@@ -13,7 +13,10 @@
         v-for="article in displayedArticles" 
         :key="article.id"
         :to="`/news/${article.slug}`"
-        class="group block bg-slate-800/50 rounded-lg p-2 hover:bg-slate-700/50 transition-all cursor-pointer"
+        class="group block rounded-lg p-2 transition-all cursor-pointer"
+        :class="themeColor === 'white' 
+          ? 'bg-slate-100/80 hover:bg-slate-200/80' 
+          : 'bg-slate-800/50 hover:bg-slate-700/50'"
       >
         <div class="flex items-start gap-2">
           <!-- Thumbnail -->
@@ -43,7 +46,12 @@
               <span class="text-[9px] text-slate-500 uppercase">{{ article.category }}</span>
             </div>
             <!-- Headline -->
-            <h4 class="text-[11px] font-bold text-slate-200 group-hover:text-blue-400 line-clamp-2 leading-tight transition-colors">
+            <h4 
+              class="text-[11px] font-bold line-clamp-2 leading-tight transition-colors"
+              :class="themeColor === 'white' 
+                ? 'text-slate-800 group-hover:text-blue-600' 
+                : 'text-slate-200 group-hover:text-blue-400'"
+            >
               {{ article.title }}
             </h4>
           </div>
@@ -55,7 +63,10 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useTheme } from '~/composables/useTheme'
 import allArticles from '~/content/articles.json'
+
+const { themeColor } = useTheme()
 
 // Get 4 most recent published articles
 const displayedArticles = computed(() => 

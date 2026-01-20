@@ -158,3 +158,27 @@ export function formatGrowth(growth: string | number | null | undefined): string
   return `${num}%`
 }
 
+/**
+ * Truncate text to a maximum length, adding ellipsis if truncated.
+ * Trims whitespace before processing.
+ * 
+ * @param text - Text to truncate (may be null/undefined)
+ * @param maxLength - Maximum number of characters before ellipsis
+ * @returns Truncated text with "..." suffix, or original if short enough
+ * 
+ * @example
+ * truncateText("Hello World", 8)  // "Hello..."
+ * truncateText("Hi", 10)          // "Hi"
+ * truncateText(null, 10)          // ""
+ */
+export function truncateText(text: string | null | undefined, maxLength: number): string {
+  if (text === null || text === undefined) return ''
+
+  const trimmed = text.trim()
+  if (trimmed === '') return ''
+
+  if (trimmed.length <= maxLength) return trimmed
+
+  return trimmed.slice(0, maxLength) + '...'
+}
+
