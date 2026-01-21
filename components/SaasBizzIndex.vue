@@ -115,7 +115,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref, onMounted } from 'vue'
 import tickerData from '~/content/startups-ticker.json'
 import { useTheme } from '~/composables/useTheme'
 import { formatCurrency } from '~/utils/helpers'
@@ -123,16 +123,18 @@ import type { Startup } from '~/types/startup'
 
 const { themeColor } = useTheme()
 
-// Pre-filtered ticker data from JSON - no runtime computation needed
-// Shuffle once on component mount for variety
-const tickerStartups = computed(() => {
-  const data = tickerData as Startup[]
-  const shuffled = [...data]
+// Shuffle once on mount, not on every access
+const tickerStartups = ref<Startup[]>(tickerData as Startup[])
+
+onMounted(() => {
+  const shuffled = [...tickerStartups.value] as Startup[]
   for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+    const j = Math.floor(Math.random() * (i + 1))
+    const temp = shuffled[i]!
+    shuffled[i] = shuffled[j]!
+    shuffled[j] = temp
   }
-  return shuffled
+  tickerStartups.value = shuffled
 })
 
 function getGrowthColor(growth: string | number | null | undefined) {

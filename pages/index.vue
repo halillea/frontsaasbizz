@@ -102,26 +102,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue'
-import homepageData from '~/content/startups-homepage.json'
+import { ref, computed, onMounted } from 'vue'
+import allStartups from '~/content/startups.json'
+import { parseRevenue } from '~/utils/helpers'
 import type { Startup } from '~/types/startup'
 
 const EARNER_PER_PAGE = 30
 const RECENT_PER_PAGE = 20
 
-// Homepage data is pre-sorted: first 30 are top earners, next 20 are recent
-const homepageStartups = homepageData as Startup[]
-
-// Pagination data (lazy loaded when needed)
-const paginationStartups = ref<Startup[]>([])
-const paginationLoaded = ref(false)
-
-async function loadPaginationData() {
-  if (paginationLoaded.value) return
-  const data = await import('~/content/startups-pagination.json')
-  paginationStartups.value = data.default as Startup[]
-  paginationLoaded.value = true
-}
+const startups = allStartups as Startup[]
 
 // Loading state
 const isLoading = ref(true)
@@ -133,21 +122,16 @@ onMounted(() => {
 const topEarnersPage = ref(1)
 const recentPage = ref(1)
 
-// Pre-sorted top earners: homepage has top 30, pagination has 31-150
-const topEarners = computed(() => {
-  const top30 = homepageStartups.slice(0, 30)
-  if (!paginationLoaded.value) return top30
-  const top31to150 = paginationStartups.value.slice(0, 120)
-  return [...top30, ...top31to150]
-})
+// Simple sort + slice - computed caches result
+const topEarners = computed(() =>
+  [...startups].sort((a, b) => parseRevenue(b.mrr) - parseRevenue(a.mrr)).slice(0, 150)
+)
 
-// Pre-sorted recent: homepage has recent 20, pagination has 21-60
-const recentlyAdded = computed(() => {
-  const recent20 = homepageStartups.slice(30, 50)
-  if (!paginationLoaded.value) return recent20
-  const recent21to60 = paginationStartups.value.slice(120)
-  return [...recent20, ...recent21to60]
-})
+const recentlyAdded = computed(() =>
+  [...startups].sort((a, b) =>
+    new Date(b.fetched_at || 0).getTime() - new Date(a.fetched_at || 0).getTime()
+  ).slice(0, 60)
+)
 
 // Paginated data
 const paginatedTopEarners = computed(() => {
@@ -160,18 +144,9 @@ const paginatedRecentlyAdded = computed(() => {
   return recentlyAdded.value.slice(start, start + RECENT_PER_PAGE)
 })
 
-// Total pages - use fixed totals (150 top earners, 60 recent) for correct pagination display
-const TOTAL_TOP_EARNERS = 150
-const TOTAL_RECENT = 60
-const topEarnersTotalPages = computed(() => Math.ceil(TOTAL_TOP_EARNERS / EARNER_PER_PAGE)) // 5 pages
-const recentTotalPages = computed(() => Math.ceil(TOTAL_RECENT / RECENT_PER_PAGE)) // 3 pages
-
-// Lazy load pagination data when user tries to go past page 1
-watch([topEarnersPage, recentPage], ([earnersPage, recentPg]) => {
-  if (earnersPage > 1 || recentPg > 1) {
-    loadPaginationData()
-  }
-})
+// Total pages
+const topEarnersTotalPages = computed(() => Math.ceil(topEarners.value.length / EARNER_PER_PAGE))
+const recentTotalPages = computed(() => Math.ceil(recentlyAdded.value.length / RECENT_PER_PAGE))
 
 // SEO Meta
 useSeoMeta({
