@@ -49,7 +49,10 @@
                   :href="`https://${startup.domain}`"
                   target="_blank"  
                   rel="noopener noreferrer"
-                  class="inline-flex items-center justify-center w-full md:w-auto self-start gap-2 bg-blue-600 text-white text-sm font-bold px-6 py-3 rounded-xl hover:bg-blue-500 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#0B1120] active:scale-95 shadow-lg shadow-blue-500/20"
+                  :class="themeColor === 'white' 
+                    ? 'bg-slate-200 text-slate-700 hover:bg-slate-300 shadow-slate-200/20' 
+                    : 'bg-blue-600 text-white hover:bg-blue-500 shadow-blue-500/20'"
+                  class="inline-flex items-center justify-center w-full md:w-auto self-start gap-2 text-sm font-bold px-6 py-3 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#0B1120] active:scale-95 shadow-lg"
                   :aria-label="`Visit ${startup.startup_name} website (opens in new tab)`"
                 >
                   Visit Website
