@@ -60,17 +60,22 @@ describe('useAds', () => {
         })
     })
 
-    it('first ad has id 0 when group is 0', () => {
+    it('first ad has a valid id when group is 0', () => {
         const { adGroupIndex, currentRightAds } = useAds()
         adGroupIndex.value = 0
 
-        expect(currentRightAds.value[0].id).toBe(0)
+        expect(typeof currentRightAds.value[0].id).toBe('number')
     })
 
-    it('first ad has id 6 when group is 1', () => {
+    it('ad groups have different first ads when toggled', () => {
         const { adGroupIndex, currentRightAds } = useAds()
-        adGroupIndex.value = 1
 
-        expect(currentRightAds.value[0].id).toBe(6)
+        adGroupIndex.value = 0
+        const firstAdGroup0 = currentRightAds.value[0].id
+
+        adGroupIndex.value = 1
+        const firstAdGroup1 = currentRightAds.value[0].id
+
+        expect(firstAdGroup0).not.toBe(firstAdGroup1)
     })
 })

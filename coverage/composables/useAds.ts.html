@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">77.77% </span>
+                <span class="strong">82.6% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>14/18</span>
+                <span class='fraction'>19/23</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">54.16% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>6/12</span>
+                <span class='fraction'>13/24</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">66.66% </span>
+                <span class="strong">71.42% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>4/6</span>
+                <span class='fraction'>5/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">76.47% </span>
+                <span class="strong">80.95% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>13/17</span>
+                <span class='fraction'>17/21</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -130,7 +130,16 @@
 <a name='L65'></a><a href='#L65'>65</a>
 <a name='L66'></a><a href='#L66'>66</a>
 <a name='L67'></a><a href='#L67'>67</a>
-<a name='L68'></a><a href='#L68'>68</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -150,12 +159,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">42x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">42x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">84x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -164,11 +174,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">42x</span>
+<span class="cline-any cline-yes">42x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -193,15 +208,17 @@
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { ref, computed, onMounted, onUnmounted } from 'vue'
+import allSponsors from '~/content/sponsors.json'
 import type { Ad } from '~/types/startup'
 &nbsp;
-/** Blue-themed color palette for ad backgrounds */
-const BLUE_PALETTE = ['#eff6ff', '#dbeafe', '#e0f2fe', '#cffafe', '#e0e7ff'] as const
+/** Fallback emojis when no logo is available */
+const FALLBACK_EMOJIS = ['🚀', '⚡', '🔥', '💎', '💰', '📈', '🎯', '⭐', '🌟', '✨'] as const
 &nbsp;
 /** Rotation interval in milliseconds (12 seconds) */
 const ROTATION_INTERVAL = 12000
@@ -209,26 +226,32 @@ const ROTATION_INTERVAL = 12000
 /**
  * Composable for managing advertisement display and rotation.
  * 
- * Provides 12 placeholder ads divided into 2 groups of 6,
- * rotating between groups every 15 seconds.
+ * Loads sponsors from sponsors.json and displays them in rotating groups.
  * 
  * @returns {Object} Ad management utilities
  * @returns {Ref&lt;number&gt;} adGroupIndex - Current ad group (0 or 1)
  * @returns {ComputedRef&lt;Ad[]&gt;} currentRightAds - Currently visible ads (6 items)
- * 
- * @example
- * const { currentRightAds } = useAds()
- * // Use currentRightAds.value in template
  */
 export function useAds() {
-  /** Mock ad inventory - 12 placeholder ads */
-  const adInventory: Ad[] = Array.from({ length: 12 }, (_, i) =&gt; ({
-    id: i,
-    name: `Partner ${i + 1}`,
-    emoji: (['🚀', '⚡', '🔥', '💎', '💰', '📈', '🎯', '⭐'][i % 8] || <span class="branch-1 cbranch-no" title="branch not covered" >'🚀'),</span>
-    copy: 'Scale your SaaS faster. Join 500+ founders who trust us.',
-    bg: (BLUE_PALETTE[i % 5] || <span class="branch-1 cbranch-no" title="branch not covered" >BLUE_PALETTE[0])</span>
+  // Filter active sponsors only
+  const activeSponsors = (allSponsors as any[]).filter(s =&gt; s.status === 'active')
+&nbsp;
+  // Map sponsors to Ad format
+  const adInventory: Ad[] = activeSponsors.map((sponsor, i) =&gt; ({
+    id: sponsor.id || <span class="branch-1 cbranch-no" title="branch not covered" >i,</span>
+    name: sponsor.business_name || <span class="branch-1 cbranch-no" title="branch not covered" >sponsor.startup_name || <span class="branch-2 cbranch-no" title="branch not covered" >'</span>Sponsor',</span>
+    emoji: FALLBACK_EMOJIS[i % FALLBACK_EMOJIS.length] || <span class="branch-1 cbranch-no" title="branch not covered" >'🚀',</span>
+    logoUrl: sponsor.logo_url || '',
+    copy: sponsor.tagline || <span class="branch-1 cbranch-no" title="branch not covered" >sponsor.description || <span class="branch-2 cbranch-no" title="branch not covered" >'</span>Check out our sponsor',</span>
+    href: sponsor.website_url || <span class="branch-1 cbranch-no" title="branch not covered" >'#',</span>
+    bg: '#eff6ff'
   }))
+&nbsp;
+  // Ensure we have at least 12 ads for rotation (pad with duplicates if needed)
+  while (adInventory.length &lt; 12 &amp;&amp; adInventory.length &gt; 0) {
+    const sourceAd = adInventory[adInventory.length % activeSponsors.length]!
+    adInventory.push({ ...sourceAd, id: Date.now() + adInventory.length })
+  }
 &nbsp;
   const adGroupIndex = ref(0)
   let adInterval: ReturnType&lt;typeof setInterval&gt; | null = null
@@ -264,6 +287,7 @@ export function useAds() {
     currentRightAds
   }
 }
+&nbsp;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -271,7 +295,7 @@ export function useAds() {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-01-21T03:11:58.855Z
+                at 2026-01-21T18:29:41.314Z
             </div>
         <script src="../prettify.js"></script>
         <script>
