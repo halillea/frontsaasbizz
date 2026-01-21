@@ -70,7 +70,7 @@
       <!-- Stats Grid -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10" role="group" aria-label="Startup statistics">
         <!-- Total Revenue -->
-        <div class="bg-slate-800/50 p-5 rounded-2xl border border-white/5 flex flex-col justify-center h-32">
+        <div :class="themeColor === 'white' ? 'bg-slate-100 border-slate-200' : 'bg-slate-800/50 border-white/5'" class="p-5 rounded-2xl border flex flex-col justify-center h-32">
           <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2 truncate">
             Total Revenue <span class="text-blue-400 font-extrabold ml-2">#{{ startupRank }}</span>
           </div>
@@ -81,7 +81,7 @@
         </div>
 
         <!-- MRR -->
-        <div class="bg-slate-800/50 p-5 rounded-2xl border border-white/5 flex flex-col justify-center h-32">
+        <div :class="themeColor === 'white' ? 'bg-slate-100 border-slate-200' : 'bg-slate-800/50 border-white/5'" class="p-5 rounded-2xl border flex flex-col justify-center h-32">
           <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">MRR</div>
           <div class="text-2xl font-mono font-bold text-white">{{ formatCurrency(startup.mrr) }}</div>
           <div v-if="startup.subscriptions" class="text-[10px] text-slate-500 font-bold mt-1">
@@ -90,7 +90,7 @@
         </div>
 
         <!-- Founder -->
-        <div class="bg-slate-800/50 p-5 rounded-2xl border border-white/5 flex flex-col justify-center h-32">
+        <div :class="themeColor === 'white' ? 'bg-slate-100 border-slate-200' : 'bg-slate-800/50 border-white/5'" class="p-5 rounded-2xl border flex flex-col justify-center h-32">
           <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Founder</div>
           <div class="flex items-center gap-3">
             <NuxtLink
@@ -137,7 +137,7 @@
         </div>
 
         <!-- Founded -->
-        <div class="bg-slate-800/50 p-5 rounded-2xl border border-white/5 flex flex-col justify-center h-32">
+        <div :class="themeColor === 'white' ? 'bg-slate-100 border-slate-200' : 'bg-slate-800/50 border-white/5'" class="p-5 rounded-2xl border flex flex-col justify-center h-32">
           <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2 truncate">
             Founded <span class="text-slate-400 ml-2">{{ startup.category }}</span>
           </div>
@@ -149,7 +149,7 @@
       </div>
 
       <!-- Business Overview -->
-      <section class="bg-slate-800/50 rounded-2xl p-6 border border-white/5" aria-labelledby="overview-heading">
+      <section :class="themeColor === 'white' ? 'bg-slate-100 border-slate-200' : 'bg-slate-800/50 border-white/5'" class="rounded-2xl p-6 border" aria-labelledby="overview-heading">
         <h2 id="overview-heading" class="text-sm font-bold text-white uppercase tracking-wide mb-4 border-b border-white/10 pb-2">Business Overview</h2>
         <p class="text-slate-400 leading-7 whitespace-pre-wrap">{{ startup.full_description }}</p>
       </section>
@@ -164,8 +164,10 @@
 import { computed } from 'vue'
 import allStartups from '~/content/startups.json'
 import { parseRevenue, getFounderSlug, isValidFounder, isValidGrowth, formatFollowers, formatCurrency, formatGrowth } from '~/utils/helpers'
+import { useTheme } from '~/composables/useTheme'
 import type { Startup } from '~/types/startup'
 
+const { themeColor } = useTheme()
 const route = useRoute()
 const startups = allStartups as Startup[]
 

@@ -1,0 +1,865 @@
+ID: 2546
+Startup: Gumroad
+Corrupted Name: FounderSahil Lavingia383.5k followers on 𝕏
+Followers Field: undefined
+---
+ID: 2712
+Startup: easytools
+Corrupted Name: FounderGreg3,289 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2545
+Startup: HypeProxies
+Corrupted Name: FounderGunnar1,514 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2560
+Startup: Shugert Marketing
+Corrupted Name: FounderSamuel Noriega2,479 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2576
+Startup: Lopsided-Wrap2762
+Corrupted Name: FounderRomàn1,488 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2801
+Startup: Hidden Business
+Corrupted Name: FounderSatish Gaire1,072 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2802
+Startup: Digitiz.fr
+Corrupted Name: FounderLoïc3,466 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2553
+Startup: Replayed LTD
+Corrupted Name: FounderReplayed927 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2650
+Startup: ShipFast
+Corrupted Name: FounderMarc Lou233.2k followers on 𝕏
+Followers Field: undefined
+---
+ID: 2715
+Startup: Maynuu
+Corrupted Name: FounderCarl Poppa 🛸7,873 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2559
+Startup: PressWhizz
+Corrupted Name: FounderCharles Floate 📈89.3k followers on 𝕏
+Followers Field: undefined
+---
+ID: 2564
+Startup: BackPedal Ltd
+Corrupted Name: FounderJames Dunn124 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2762
+Startup: CodeFast
+Corrupted Name: FounderMarc Lou233.2k followers on 𝕏
+Followers Field: undefined
+---
+ID: 2794
+Startup: Tourcrib
+Corrupted Name: FounderRobeen133 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2608
+Startup: GOD OF PROMPT OÜ
+Corrupted Name: FounderGod of Prompt176.1k followers on 𝕏
+Followers Field: undefined
+---
+ID: 2763
+Startup: WebDevelopMe
+Corrupted Name: FounderLɪᴏʀ Cʜᴀᴍʟᴀ12.7k followers on 𝕏
+Followers Field: undefined
+---
+ID: 2795
+Startup: Little Exits Inc.
+Corrupted Name: FounderStephen Campbell2,298 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2718
+Startup: PULSE
+Corrupted Name: FounderPulse App25 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2703
+Startup: Yeema LTD
+Corrupted Name: FounderVexoa34 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2719
+Startup: Kassenmeister | AK Software GmbH
+Corrupted Name: FounderAmir Koklan240 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2543
+Startup: 5 Day Sprint
+Corrupted Name: FounderOmar Choudhry4,105 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2720
+Startup: Cure My Swing
+Corrupted Name: FounderShy Desai78 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2803
+Startup: Proven SaaS
+Corrupted Name: FounderNathan80 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2722
+Startup: ZeroToShipped
+Corrupted Name: Founderkitze 🇪🇺💶🔋🥐🏰🍃77.3k followers on 𝕏
+Followers Field: undefined
+---
+ID: 2796
+Startup: Property Vendors
+Corrupted Name: Foundercacho106 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2797
+Startup: MealSlash
+Corrupted Name: FounderAarav Dogra26 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2557
+Startup: Promethee (Eclipse)
+Corrupted Name: FounderN.11.0k followers on 𝕏
+Followers Field: undefined
+---
+ID: 2724
+Startup: EatCheap
+Corrupted Name: FounderLeo241 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2583
+Startup: Rabbit Holes AI
+Corrupted Name: FounderPraneeth Pike1,500 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2558
+Startup: Pasul.ro
+Corrupted Name: FounderAriel Constantinof4,075 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2804
+Startup: Inflect Labs Pty Ltd
+Corrupted Name: FounderEthan Trang115 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2656
+Startup: Larafast
+Corrupted Name: FounderSerg4,167 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2658
+Startup: MkSaaS
+Corrupted Name: FounderFox@MkSaaS.com8,748 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2798
+Startup: Altitude Cleaning Crew
+Corrupted Name: FounderRohan771 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2602
+Startup: SinCode AB
+Corrupted Name: FounderHugo86 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2660
+Startup: Web3Templates
+Corrupted Name: FounderSurjith S M ✪10.3k followers on 𝕏
+Followers Field: undefined
+---
+ID: 2606
+Startup: colorize.cc
+Corrupted Name: FounderAlexander Kozhevin547 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2692
+Startup: ARBICHAT, S.L.
+Corrupted Name: FounderMiki Palet132 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2765
+Startup: iCodeThis
+Corrupted Name: FounderFlorin Pop 👨🏻‍💻199.6k followers on 𝕏
+Followers Field: undefined
+---
+ID: 2799
+Startup: Shiny Go Clean USA
+Corrupted Name: FounderRohan771 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2800
+Startup: MealSlash
+Corrupted Name: FounderAarav Dogra24 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2566
+Startup: Helm
+Corrupted Name: FounderJason Francis⚡️551 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2567
+Startup: Pablo Escobar
+Corrupted Name: Founderfricoben5,100 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2568
+Startup: LavaReach Technologies Inc.
+Corrupted Name: FounderYiMing3,269 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2569
+Startup: BOT FOR DIGITAL SOLUTIONS LIMITED
+Corrupted Name: Founderلتس بوت - Lets Bot31 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2667
+Startup: Design Mojo
+Corrupted Name: FounderAmmar Shah654 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2571
+Startup: aiselfi.es
+Corrupted Name: FounderJon Kraayenbrink56 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2738
+Startup: Iconbuddy
+Corrupted Name: FounderMohd Danish12.0k followers on 𝕏
+Followers Field: undefined
+---
+ID: 2704
+Startup: UntalkedSEO
+Corrupted Name: FounderDeepakNess5,357 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2578
+Startup: Tasy AI GmbH
+Corrupted Name: Founderjulius45 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2668
+Startup: WrapFast
+Corrupted Name: FounderJuanjo Valiño10.4k followers on 𝕏
+Followers Field: undefined
+---
+ID: 2749
+Startup: IndiePage
+Corrupted Name: FounderMarc Lou233.2k followers on 𝕏
+Followers Field: undefined
+---
+ID: 2580
+Startup: LeadX
+Corrupted Name: FounderJohn Sokol341 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2805
+Startup: Directify
+Corrupted Name: FounderSerg4,120 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2767
+Startup: LLF MEDIA
+Corrupted Name: FounderLa langue française17.1k followers on 𝕏
+Followers Field: undefined
+---
+ID: 2585
+Startup: Decoratly
+Corrupted Name: FounderKamil Uhryn23 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2595
+Startup: Mkdirs
+Corrupted Name: FounderFox@MkSaaS.com8,634 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2806
+Startup: Anonymous Startup
+Corrupted Name: FounderTom Holliday1 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2548
+Startup: Sandimax
+Corrupted Name: Founder@D1mKat199 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2807
+Startup: TinyLaunch
+Corrupted Name: FounderChristopher Woggon5,511 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2784
+Startup: Quaily
+Corrupted Name: FounderQuaily358 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2679
+Startup: SuperDev Pro
+Corrupted Name: FounderMohd Danish12.0k followers on 𝕏
+Followers Field: undefined
+---
+ID: 2680
+Startup: Dirstarter
+Corrupted Name: FounderPiotr Kulpinski3,622 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2785
+Startup: LaunchViral
+Corrupted Name: FounderMarc Lou233.2k followers on 𝕏
+Followers Field: undefined
+---
+ID: 2563
+Startup: Storyfam
+Corrupted Name: FounderRobeen133 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2681
+Startup: ClaudeKit
+Corrupted Name: FounderDuy /zuey/1,924 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2694
+Startup: ZenVoice
+Corrupted Name: FounderMarc Lou246.6k followers on 𝕏
+Followers Field: undefined
+---
+ID: 2582
+Startup: VideoBGRemover
+Corrupted Name: FounderPaulo85 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2584
+Startup: Ronami AI
+Corrupted Name: FounderGrace Frank490 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2786
+Startup: Screen Charm
+Corrupted Name: FounderSergey Nazarov7,553 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2682
+Startup: Conare
+Corrupted Name: FounderArtem Murzin2,489 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2586
+Startup: Vibe3D AI
+Corrupted Name: FounderBrijesh Patel370 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2683
+Startup: UPSKY
+Corrupted Name: FounderDaniel Hernandez88 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2587
+Startup: ImageRouter
+Corrupted Name: FounderDaWe582 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2815
+Startup: Realtor Studio
+Corrupted Name: FounderX419 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2695
+Startup: KMG Vital Links Limited
+Corrupted Name: FounderTayari by KMG Vital Links528 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2787
+Startup: BlogBuster
+Corrupted Name: FounderMaximeB4,582 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2696
+Startup: Solana Systems
+Corrupted Name: FounderOrion600 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2808
+Startup: Indiedoers
+Corrupted Name: FounderDivy116 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2597
+Startup: Xona AI
+Corrupted Name: FounderEnes Poyraz184 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2601
+Startup: Automate & Chill
+Corrupted Name: FounderAbhishek Sood1,298 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2605
+Startup: AUSPICIOUS COMPANY
+Corrupted Name: FounderAri Nakos143 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2550
+Startup: Why Not Us Labs LLC
+Corrupted Name: FounderGavin McNamara1 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2684
+Startup: Canopy API
+Corrupted Name: FounderRyan Anderson318 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2710
+Startup: TapRefer
+Corrupted Name: Founderjitesh1,067 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2561
+Startup: ForYouGaming Inc.
+Corrupted Name: FounderForYouGaming.com1 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2685
+Startup: Launchtoday
+Corrupted Name: FounderPaul694 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2609
+Startup: RewriteBar
+Corrupted Name: FounderMathias Michel611 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2686
+Startup: Panara Studio
+Corrupted Name: FounderKamal Panara213 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2565
+Startup: Parlai
+Corrupted Name: FounderJuan Herrera4,988 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2740
+Startup: Omakase Design
+Corrupted Name: FounderOmakase44 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2570
+Startup: ZdjecieAI.pl
+Corrupted Name: FounderMaciej Pulikowski 🔥🚀2,692 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2709
+Startup: MIMR Growth Lab
+Corrupted Name: Foundermimrgrowthlab2 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2688
+Startup: UPSKY LLC
+Corrupted Name: FounderDaniel Hernandez94 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2714
+Startup: equiphoto.ch
+Corrupted Name: FounderKarl Heinz Frankeser60 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2716
+Startup: LaunchMyStore
+Corrupted Name: FounderLaunchMyStore™ - Your Ecommerce Partner14 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2820
+Startup: PoopUp
+Corrupted Name: FounderMarc Lou233.2k followers on 𝕏
+Followers Field: undefined
+---
+ID: 2698
+Startup: ByeDispute
+Corrupted Name: FounderMarc Lou251.6k followers on 𝕏
+Followers Field: undefined
+---
+ID: 2770
+Startup: SQL Academy
+Corrupted Name: FounderNick39 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2588
+Startup: Linkerflow
+Corrupted Name: FounderLinkerFlow3 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2741
+Startup: LogoLlama
+Corrupted Name: FounderCraig Barber862 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2742
+Startup: DigiBusinessCard
+Corrupted Name: FounderBenny771 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2790
+Startup: BlogSEO
+Corrupted Name: FounderVincent Josse191 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2598
+Startup: WriteHybrid
+Corrupted Name: FounderHuzefa190 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2690
+Startup: NextNative
+Corrupted Name: FounderDenis Tarasenko606 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2652
+Startup: ProxyHunter
+Corrupted Name: FounderWindmark28 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2614
+Startup: ChatRAG
+Corrupted Name: FounderCarlos Marcial25.2k followers on 𝕏
+Followers Field: undefined
+---
+ID: 2617
+Startup: Tona | The Sidepreneur
+Corrupted Name: FounderTona1,853 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2754
+Startup: Bidder iQ
+Corrupted Name: FounderWhitlock290 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2621
+Startup: Sight AI
+Corrupted Name: FounderGrant Cooper1,932 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2792
+Startup: INVESTIGALO.COM.MX
+Corrupted Name: FounderDaniel Peimbert280 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2622
+Startup: DJ Cara
+Corrupted Name: FounderVlad263 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2626
+Startup: AI Renamer
+Corrupted Name: FounderOzgur Ozer2,146 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2628
+Startup: BundlyAI
+Corrupted Name: FounderBundlyAI15 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2631
+Startup: Southern East Inc.
+Corrupted Name: FounderRishit Patel1,271 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2654
+Startup: Synaps Media
+Corrupted Name: FounderSynaps Media22 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2744
+Startup: RetroUI Pro
+Corrupted Name: FounderArif Hossain610 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2655
+Startup: easyapp.site
+Corrupted Name: FoundersunshineLx555 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2775
+Startup: Kayodedcreative
+Corrupted Name: FounderMichael345 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2637
+Startup: Dictation Daddy
+Corrupted Name: FounderRahul bansal 👀711 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2776
+Startup: Brainrot.mov
+Corrupted Name: Founderrohan425 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2777
+Startup: Fiddl.art
+Corrupted Name: Founderfiddlart511 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2639
+Startup: El Chapo
+Corrupted Name: Founderfricoben5,104 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2809
+Startup: verycheap
+Corrupted Name: FounderYassr1,358 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2642
+Startup: Plantrip
+Corrupted Name: FounderKevin Labianco1,316 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2778
+Startup: veegen.ai
+Corrupted Name: FounderLafe865 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2773
+Startup: BioAge
+Corrupted Name: FounderMarc Lou250.5k followers on 𝕏
+Followers Field: undefined
+---
+ID: 2619
+Startup: GPT Watermark Remover (SOLD!)
+Corrupted Name: FounderAleksandar Jovanovic430 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2821
+Startup: Stupidpreneur
+Corrupted Name: FounderShashank140 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2757
+Startup: Aprende Vibe Coding
+Corrupted Name: FounderJon Kraayenbrink41 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2758
+Startup: WorkbookPDF
+Corrupted Name: FounderMarc Lou233.2k followers on 𝕏
+Followers Field: undefined
+---
+ID: 2824
+Startup: MediaFast
+Corrupted Name: FounderArthur4,545 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2620
+Startup: Mock Interview Pro
+Corrupted Name: FounderAndre Henrique Mendes84 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2625
+Startup: Mail Sweeper
+Corrupted Name: FounderRyan Anderson318 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2627
+Startup: MagicChat.ai
+Corrupted Name: FounderSanskar Tiwari3,572 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2659
+Startup: PDFBolt
+Corrupted Name: FounderMichał Szymanowski68 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2629
+Startup: AI Resources
+Corrupted Name: FounderCatalin132.1k followers on 𝕏
+Followers Field: undefined
+---
+ID: 2661
+Startup: EmailChecker
+Corrupted Name: FounderDr. Maen K Househ8,485 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2662
+Startup: Fast SaaS
+Corrupted Name: FounderSalim Aboubacar19 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2663
+Startup: KMPShip
+Corrupted Name: FounderVivien Mahé1,306 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2699
+Startup: conviertetuestado.com
+Corrupted Name: FounderEduardo Garza336 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2780
+Startup: Capiii by Kevin Schindler
+Corrupted Name: FounderKevin Michael Schindler118 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2666
+Startup: Corey Chiu - 2
+Corrupted Name: FounderCorey Chiu9,246 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2644
+Startup: Nowledge Mem
+Corrupted Name: FounderNowledge Mem759 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2632
+Startup: AutoMealPlanner
+Corrupted Name: FounderGeorge 💻732 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2759
+Startup: Algomax
+Corrupted Name: FounderVirgile RIETSCH1,588 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2733
+Startup: Flowtion
+Corrupted Name: FounderMarco Elizalde1,500 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2734
+Startup: cvtailor.ai
+Corrupted Name: Foundercvtailor.ai17 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2670
+Startup: MintMVP
+Corrupted Name: FounderAl Wassi Khan59 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2671
+Startup: Anchor
+Corrupted Name: FounderAdam Tomas Pangelinan231 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2793
+Startup: Free FDD Library
+Corrupted Name: FounderFree FDD Library2 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2700
+Startup: Vexly
+Corrupted Name: FounderVu Nguyen138 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2701
+Startup: PayRequest
+Corrupted Name: FounderGeert Jan Sloos3,011 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2810
+Startup: Victrays
+Corrupted Name: Founderjeeiee1,059 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2635
+Startup: Momo
+Corrupted Name: FounderCailyn Y.3,302 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2745
+Startup: uilayouts
+Corrupted Name: FounderNaymur Rahman392 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2721
+Startup: Evendeals
+Corrupted Name: FounderZahid67 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2826
+Startup: Revshare
+Corrupted Name: FounderEmil86 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2752
+Startup: n0code.tech
+Corrupted Name: FounderHans Plg184 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2672
+Startup: WasepJe.com
+Corrupted Name: Founderafrie irham3,483 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2638
+Startup: Agent Berlin
+Corrupted Name: FounderSherin (agentberlin.ai)449 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2640
+Startup: ToolJunction
+Corrupted Name: FounderDeepak1,208 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2811
+Startup: IndieHub
+Corrupted Name: FounderFox@MkSaaS.com8,409 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2641
+Startup: PferdeWert
+Corrupted Name: FounderPferdeWert.de1 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2645
+Startup: Qrblox
+Corrupted Name: FounderQrblox - QR app with AI23 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2812
+Startup: Indie.Deals
+Corrupted Name: FounderAdithya 🚀2,314 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2646
+Startup: DreamDraft
+Corrupted Name: FounderGadi גדי غادي250 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2677
+Startup: Vloren
+Corrupted Name: Founderahmed13 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2647
+Startup: PhotoGuruAI
+Corrupted Name: Founderdevhe4d754 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2756
+Startup: Ikiform
+Corrupted Name: Founderpreet2,955 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2648
+Startup: Let's Trip AI
+Corrupted Name: FounderAlon82 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2649
+Startup: AyeHigh
+Corrupted Name: FounderRaj Savaliya568 followers on 𝕏
+Followers Field: undefined
+---
+ID: 2675
+Startup: Commanigy
+Corrupted Name: FounderPeter Theill1,611 followers on 𝕏
+Followers Field: undefined
+---

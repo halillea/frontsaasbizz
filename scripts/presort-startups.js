@@ -21,11 +21,11 @@ function parseRevenue(val) {
     return Number(String(val).replace(/[^0-9.-]+/g, ''))
 }
 
-// Sort by MRR descending (top earners first)
-const sorted = [...startups].sort((a, b) => parseRevenue(b.mrr) - parseRevenue(a.mrr))
+// Sort by total_revenue descending (top earners first)
+const sorted = [...startups].sort((a, b) => parseRevenue(b.total_revenue) - parseRevenue(a.total_revenue))
 
 // Write back
 writeFileSync(jsonPath, JSON.stringify(sorted, null, 2))
 
-console.log(`✅ Sorted ${sorted.length} startups by MRR descending`)
-console.log(`   Top 3: ${sorted.slice(0, 3).map(s => `${s.startup_name} ($${parseRevenue(s.mrr).toLocaleString()})`).join(', ')}`)
+console.log(`✅ Sorted ${sorted.length} startups by total_revenue descending`)
+console.log(`   Top 3: ${sorted.slice(0, 3).map(s => `${s.startup_name} ($${parseRevenue(s.total_revenue).toLocaleString()})`).join(', ')}`)

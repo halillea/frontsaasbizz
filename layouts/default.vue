@@ -43,12 +43,14 @@
             class="group flex items-center justify-center gap-2 hover:text-blue-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 rounded-md p-1"
             aria-label="Agent.ai Sponsor Link (opens in new tab)"
           >
-            <img 
-              src="https://agent.ai/logo-2025/agent-ai-logo-2025-white.svg" 
-              alt="Agent.ai Logo" 
-              class="h-5 w-auto"
-              loading="lazy"
-            >
+            <div class="bg-slate-900 px-2 py-1 rounded">
+              <img 
+                src="https://agent.ai/logo-2025/agent-ai-logo-2025-white.svg" 
+                alt="Agent.ai Logo" 
+                class="h-5 w-auto"
+                loading="lazy"
+              >
+            </div>
             <span class="text-sm md:text-base font-medium">
               <span class="hidden md:inline">The #1 Professional Network for AI Agents</span>
               <span class="md:hidden">AI Agent Marketplace</span>

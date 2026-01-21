@@ -1,5 +1,5 @@
 <template>
-  <div class="glass-card rounded-2xl p-6 border border-white/5 bg-slate-800/50">
+  <div :class="themeColor === 'white' ? 'bg-slate-100 border-slate-200' : 'bg-slate-800/50 border-white/5'" class="glass-card rounded-2xl p-6 border">
     <div class="flex items-center gap-3 mb-4">
       <div class="w-10 h-10 rounded-xl bg-green-500 flex items-center justify-center shadow-lg shadow-green-500/20">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -10,9 +10,9 @@
     </div>
 
     <div class="flex gap-2 mb-6">
-      <span class="px-3 py-1 bg-slate-700/50 rounded-full text-xs font-medium text-slate-300">Valuation</span>
-      <span class="px-3 py-1 bg-slate-700/50 rounded-full text-xs font-medium text-slate-300">VC</span>
-      <span class="px-3 py-1 bg-slate-700/50 rounded-full text-xs font-medium text-slate-300">Finance</span>
+      <span :class="themeColor === 'white' ? 'bg-slate-200 text-slate-600' : 'bg-slate-700/50 text-slate-300'" class="px-3 py-1 rounded-full text-xs font-medium">Valuation</span>
+      <span :class="themeColor === 'white' ? 'bg-slate-200 text-slate-600' : 'bg-slate-700/50 text-slate-300'" class="px-3 py-1 rounded-full text-xs font-medium">VC</span>
+      <span :class="themeColor === 'white' ? 'bg-slate-200 text-slate-600' : 'bg-slate-700/50 text-slate-300'" class="px-3 py-1 rounded-full text-xs font-medium">Finance</span>
     </div>
 
     <!-- Live Preview Card -->
@@ -79,6 +79,9 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { parseRevenue } from '~/utils/helpers'
+import { useTheme } from '~/composables/useTheme'
+
+const { themeColor } = useTheme()
 
 const props = defineProps({
   revenue: {
