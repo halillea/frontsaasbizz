@@ -41,6 +41,7 @@ export interface Ad {
   id: number
   name: string
   emoji: string
+  logoUrl?: string
   copy: string
   bg: string
   href?: string

@@ -1,8 +1,9 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
+import allSponsors from '~/content/sponsors.json'
 import type { Ad } from '~/types/startup'
 
-/** Blue-themed color palette for ad backgrounds */
-const BLUE_PALETTE = ['#eff6ff', '#dbeafe', '#e0f2fe', '#cffafe', '#e0e7ff'] as const
+/** Fallback emojis when no logo is available */
+const FALLBACK_EMOJIS = ['🚀', '⚡', '🔥', '💎', '💰', '📈', '🎯', '⭐', '🌟', '✨'] as const
 
 /** Rotation interval in milliseconds (12 seconds) */
 const ROTATION_INTERVAL = 12000
@@ -10,26 +11,32 @@ const ROTATION_INTERVAL = 12000
 /**
  * Composable for managing advertisement display and rotation.
  * 
- * Provides 12 placeholder ads divided into 2 groups of 6,
- * rotating between groups every 15 seconds.
+ * Loads sponsors from sponsors.json and displays them in rotating groups.
  * 
  * @returns {Object} Ad management utilities
  * @returns {Ref<number>} adGroupIndex - Current ad group (0 or 1)
  * @returns {ComputedRef<Ad[]>} currentRightAds - Currently visible ads (6 items)
- * 
- * @example
- * const { currentRightAds } = useAds()
- * // Use currentRightAds.value in template
  */
 export function useAds() {
-  /** Mock ad inventory - 12 placeholder ads */
-  const adInventory: Ad[] = Array.from({ length: 12 }, (_, i) => ({
-    id: i,
-    name: `Partner ${i + 1}`,
-    emoji: (['🚀', '⚡', '🔥', '💎', '💰', '📈', '🎯', '⭐'][i % 8] || '🚀'),
-    copy: 'Scale your SaaS faster. Join 500+ founders who trust us.',
-    bg: (BLUE_PALETTE[i % 5] || BLUE_PALETTE[0])
+  // Filter active sponsors only
+  const activeSponsors = (allSponsors as any[]).filter(s => s.status === 'active')
+
+  // Map sponsors to Ad format
+  const adInventory: Ad[] = activeSponsors.map((sponsor, i) => ({
+    id: sponsor.id || i,
+    name: sponsor.business_name || sponsor.startup_name || 'Sponsor',
+    emoji: FALLBACK_EMOJIS[i % FALLBACK_EMOJIS.length] || '🚀',
+    logoUrl: sponsor.logo_url || '',
+    copy: sponsor.tagline || sponsor.description || 'Check out our sponsor',
+    href: sponsor.website_url || '#',
+    bg: '#eff6ff'
   }))
+
+  // Ensure we have at least 12 ads for rotation (pad with duplicates if needed)
+  while (adInventory.length < 12 && adInventory.length > 0) {
+    const sourceAd = adInventory[adInventory.length % activeSponsors.length]!
+    adInventory.push({ ...sourceAd, id: Date.now() + adInventory.length })
+  }
 
   const adGroupIndex = ref(0)
   let adInterval: ReturnType<typeof setInterval> | null = null
@@ -65,3 +72,4 @@ export function useAds() {
     currentRightAds
   }
 }
+

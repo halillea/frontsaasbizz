@@ -74,8 +74,8 @@
 
     <!-- Main Layout Container -->
     <main id="main-content" class="max-w-[1420px] mx-auto px-4 sm:px-6 lg:px-8 pt-0 pb-6" role="main">
-      <!-- Ticker Band -->
-      <SaasBizzIndex />
+      <!-- Ticker Band (hidden on admin) -->
+      <SaasBizzIndex v-if="!isAdminPage" />
       
       <div :class="isAdminPage ? 'grid grid-cols-1' : 'grid grid-cols-1 lg:grid-cols-12 gap-6 items-start'">
 

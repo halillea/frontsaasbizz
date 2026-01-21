@@ -1,0 +1,2 @@
+const e=[{id:1768505432734,created_at:"2026-01-15T19:30:32.735Z",status:"pending_review",business_name:"digilemon is back on track",website_url:"https://deltaroi.com",logo_url:"https://i0.wp.com/seomr.com/wp-content/uploads/2025/11/logoSeoMr21090.jpg",tagline:"Maximize your Return on Investment",description:`How to improve Website Conversion
+Agencies love to lie about the conversion rate they can achieve. Some funnels selling services…`,keywords:"roi, return on investment",contact_email:"halillea@gmail.com"}];export{e as default};

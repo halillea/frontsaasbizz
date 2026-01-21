@@ -130,6 +130,10 @@ describe('formatFollowers', () => {
     it('handles 999 (just under threshold)', () => {
         expect(formatFollowers(999)).toBe('999')
     })
+
+    it('returns original string for invalid non-numeric input', () => {
+        expect(formatFollowers('not a number')).toBe('not a number')
+    })
 })
 
 describe('isValidGrowth', () => {

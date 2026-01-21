@@ -130,7 +130,8 @@
 
       <!-- Sponsors Tab -->
       <div v-if="activeTab === 'sponsors'" class="space-y-4">
-        <div class="flex items-center justify-between">
+        <!-- Header with buttons (only show when not editing) -->
+        <div v-if="!showAddSponsor" class="flex items-center justify-between">
           <h2 class="text-lg font-bold text-white">Approved Sponsors</h2>
           <div class="flex items-center gap-2">
             <button @click="exportSponsorsCSV" class="bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold px-3 py-2 rounded-lg uppercase tracking-widest">
@@ -149,10 +150,157 @@
           </div>
         </div>
         
-        <div class="space-y-2">
+        <!-- INLINE SPONSOR FORM (replaces list when editing) -->
+        <div v-if="showAddSponsor" class="glass-card rounded-xl p-6">
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="text-xl font-black text-white uppercase">{{ editingSponsorId ? 'Edit Sponsor' : 'Add New Sponsor' }}</h3>
+            <button @click="closeAddSponsor" class="text-slate-400 hover:text-white text-sm uppercase tracking-widest font-bold">← Back to List</button>
+          </div>
+          
+          <form @submit.prevent="submitNewSponsor" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Business Name -->
+            <div class="space-y-2">
+              <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest">
+                Business Name <span class="text-red-500">*</span>
+              </label>
+              <input
+                v-model="sponsorForm.business_name"
+                type="text"
+                required
+                placeholder="e.g. Acme SaaS"
+                class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-slate-600"
+              >
+            </div>
+
+            <!-- Website URL -->
+            <div class="space-y-2">
+              <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest">
+                Website URL <span class="text-red-500">*</span>
+              </label>
+              <input
+                v-model="sponsorForm.website_url"
+                type="url"
+                required
+                placeholder="https://yourwebsite.com"
+                class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-slate-600"
+              >
+            </div>
+
+            <!-- Logo URL -->
+            <div class="space-y-2">
+              <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest">
+                Logo URL (Optional)
+              </label>
+              <input
+                v-model="sponsorForm.logo_url"
+                type="url"
+                placeholder="https://yourwebsite.com/logo.png"
+                class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-slate-600"
+              >
+            </div>
+
+            <!-- Status -->
+            <div class="space-y-2">
+              <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest">
+                Status
+              </label>
+              <select
+                v-model="sponsorForm.status"
+                class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="active">Active</option>
+                <option value="pending">Pending</option>
+                <option value="paused">Paused</option>
+              </select>
+            </div>
+
+            <!-- Tagline (full width) -->
+            <div class="space-y-2 md:col-span-2">
+              <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest">
+                Tagline (Optional)
+              </label>
+              <input
+                v-model="sponsorForm.tagline"
+                type="text"
+                maxlength="80"
+                placeholder="Short catchy phrase (max 80 chars)"
+                class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-slate-600"
+              >
+              <p class="text-xs text-slate-500">{{ sponsorForm.tagline.length }}/80 characters</p>
+            </div>
+
+            <!-- Description (full width) -->
+            <div class="space-y-2 md:col-span-2">
+              <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest">
+                Description (Optional)
+              </label>
+              <textarea
+                v-model="sponsorForm.description"
+                rows="3"
+                maxlength="500"
+                placeholder="Describe the business..."
+                class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-slate-600 resize-none"
+              ></textarea>
+              <p class="text-xs text-slate-500">{{ sponsorForm.description.length }}/500 characters</p>
+            </div>
+
+            <!-- Keywords -->
+            <div class="space-y-2">
+              <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest">
+                Keywords (Optional)
+              </label>
+              <input
+                v-model="sponsorForm.keywords"
+                type="text"
+                placeholder="saas, productivity (comma separated)"
+                class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-slate-600"
+              >
+            </div>
+
+            <!-- Contact Email -->
+            <div class="space-y-2">
+              <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest">
+                Contact Email <span class="text-red-500">*</span>
+              </label>
+              <input
+                v-model="sponsorForm.contact_email"
+                type="email"
+                required
+                placeholder="contact@company.com"
+                class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-slate-600"
+              >
+            </div>
+
+            <!-- Contact Name -->
+            <div class="space-y-2">
+              <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest">
+                Contact Name (Optional)
+              </label>
+              <input
+                v-model="sponsorForm.contact_name"
+                type="text"
+                placeholder="John Doe"
+                class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-slate-600"
+              >
+            </div>
+
+            <!-- Buttons (full width) -->
+            <div class="flex gap-3 pt-4 md:col-span-2">
+              <button type="button" @click="closeAddSponsor" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 rounded-xl transition-colors">
+                Cancel
+              </button>
+              <button type="submit" :disabled="isSavingSponsor" class="flex-1 bg-green-600 hover:bg-green-500 text-white font-bold py-3 rounded-xl transition-colors disabled:opacity-50">
+                {{ isSavingSponsor ? 'Saving...' : (editingSponsorId ? 'Update Sponsor' : 'Add Sponsor') }}
+              </button>
+            </div>
+          </form>
+        </div>
+        
+        <!-- SPONSOR LIST (only show when not editing) -->
+        <div v-else class="space-y-2">
           <div v-for="sponsor in activeSponsors" :key="sponsor.id" class="glass-card rounded-xl p-4 flex items-center justify-between">
             <div>
-              <div class="font-bold text-white">{{ sponsor.startup_name }}</div>
+              <div class="font-bold text-white">{{ sponsor.business_name || sponsor.startup_name }}</div>
               <div class="text-xs text-slate-400">{{ sponsor.website_url }}</div>
               <div class="text-xs text-green-400">{{ sponsor.status }}</div>
             </div>
@@ -249,73 +397,37 @@
           </div>
         </div>
 
-        <!-- Header -->
-        <div class="flex items-center justify-between">
+        <!-- Header (hide when editing) -->
+        <div v-if="!showArticleEditor" class="flex items-center justify-between">
           <h2 class="text-lg font-bold text-white">Manage Blog Articles</h2>
           <button @click="openArticleEditor(null)" class="bg-green-600 hover:bg-green-500 text-white text-xs font-bold px-4 py-2 rounded-lg uppercase tracking-widest">
             + New Article
           </button>
         </div>
         
-        <!-- Article List -->
-        <div class="space-y-2">
-          <div v-for="article in articles" :key="article.id" class="glass-card rounded-xl p-4">
-            <div class="flex items-start justify-between gap-4">
-              <div class="flex-1">
-                <div class="flex items-center gap-2 mb-1">
-                  <span 
-                    class="text-xs px-2 py-0.5 rounded uppercase font-bold"
-                    :class="article.status === 'published' ? 'bg-green-500/20 text-green-400' : article.status === 9 ? 'bg-red-500/20 text-red-400' : 'bg-yellow-500/20 text-yellow-400'"
-                  >
-                    {{ article.status === 9 ? 'Deleted' : article.status }}
-                  </span>
-                  <span class="text-xs text-slate-500">{{ article.category }}</span>
-                </div>
-                <div class="font-bold text-white">{{ article.title }}</div>
-                <div class="text-xs text-slate-400 mt-1">{{ article.excerpt?.slice(0, 100) }}...</div>
-                <div class="text-xs text-slate-500 mt-2">
-                  By {{ article.author }} • {{ formatDate(article.created_at) }}
-                </div>
-              </div>
-              <div class="flex items-center gap-3">
-                <button @click="openArticleEditor(article)" class="text-blue-400 hover:text-blue-300 text-xs uppercase tracking-widest font-bold">Edit</button>
-                <div class="relative">
-                  <button @click="toggleMenu('article', article.id)" class="text-slate-500 hover:text-slate-300 text-lg px-2">⋯</button>
-                  <div v-if="openMenuId === `article-${article.id}`" class="absolute right-0 top-8 bg-slate-800 border border-white/10 rounded-lg shadow-xl z-50 min-w-[120px]">
-                    <button @click="confirmDelete('article', article)" class="w-full text-left px-4 py-2 text-red-400 hover:bg-slate-700 text-xs uppercase tracking-widest font-bold rounded-lg">🗑️ Delete</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div v-if="articles.length === 0" class="text-center py-8 text-slate-500">No articles yet. Create your first one!</div>
-        </div>
-      </div>
-
-      <!-- Article Editor Modal -->
-      <div v-if="showArticleEditor" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-        <div class="bg-slate-900 border border-white/10 rounded-2xl p-6 max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+        <!-- INLINE ARTICLE FORM (replaces list when editing) -->
+        <div v-if="showArticleEditor" class="glass-card rounded-xl p-6">
           <div class="flex items-center justify-between mb-6">
             <h3 class="text-xl font-black text-white uppercase">{{ editingArticle ? 'Edit Article' : 'New Article' }}</h3>
-            <button @click="showArticleEditor = false" class="text-slate-400 hover:text-white text-2xl">&times;</button>
+            <button @click="showArticleEditor = false" class="text-slate-400 hover:text-white text-sm uppercase tracking-widest font-bold">← Back to List</button>
           </div>
           
           <form @submit.prevent="saveArticle" class="space-y-4">
-            <!-- Title -->
-            <div class="space-y-2">
-              <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest">Title <span class="text-red-500">*</span></label>
-              <input v-model="articleForm.title" type="text" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Article title...">
+            <!-- Title & Slug Row -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="space-y-2">
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest">Title <span class="text-red-500">*</span></label>
+                <input v-model="articleForm.title" type="text" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Article title...">
+              </div>
+              <div class="space-y-2">
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest">URL Slug <span class="text-red-500">*</span></label>
+                <input v-model="articleForm.slug" type="text" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="article-url-slug">
+                <p class="text-xs text-slate-500">/news/{{ articleForm.slug || 'article-slug' }}</p>
+              </div>
             </div>
 
-            <!-- Slug -->
-            <div class="space-y-2">
-              <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest">URL Slug <span class="text-red-500">*</span></label>
-              <input v-model="articleForm.slug" type="text" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="article-url-slug">
-              <p class="text-xs text-slate-500">/news/{{ articleForm.slug || 'article-slug' }}</p>
-            </div>
-
-            <!-- Category & Status Row -->
-            <div class="grid grid-cols-2 gap-4">
+            <!-- Category, Status & Author Row -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div class="space-y-2">
                 <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest">Category</label>
                 <input v-model="articleForm.category" type="text" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Trends, Growth, News...">
@@ -328,12 +440,10 @@
                   <option value="published">Published</option>
                 </select>
               </div>
-            </div>
-
-            <!-- Author -->
-            <div class="space-y-2">
-              <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest">Author</label>
-              <input v-model="articleForm.author" type="text" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Author name...">
+              <div class="space-y-2">
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest">Author</label>
+                <input v-model="articleForm.author" type="text" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Author name...">
+              </div>
             </div>
 
             <!-- Featured Image URL -->
@@ -367,7 +477,43 @@
             </div>
           </form>
         </div>
+        
+        <!-- Article List (hide when editing) -->
+        <div v-else class="space-y-2">
+          <div v-for="article in articles" :key="article.id" class="glass-card rounded-xl p-4">
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex-1">
+                <div class="flex items-center gap-2 mb-1">
+                  <span 
+                    class="text-xs px-2 py-0.5 rounded uppercase font-bold"
+                    :class="article.status === 'published' ? 'bg-green-500/20 text-green-400' : article.status === 9 ? 'bg-red-500/20 text-red-400' : 'bg-yellow-500/20 text-yellow-400'"
+                  >
+                    {{ article.status === 9 ? 'Deleted' : article.status }}
+                  </span>
+                  <span class="text-xs text-slate-500">{{ article.category }}</span>
+                </div>
+                <div class="font-bold text-white">{{ article.title }}</div>
+                <div class="text-xs text-slate-400 mt-1">{{ article.excerpt?.slice(0, 100) }}...</div>
+                <div class="text-xs text-slate-500 mt-2">
+                  By {{ article.author }} • {{ formatDate(article.created_at) }}
+                </div>
+              </div>
+              <div class="flex items-center gap-3">
+                <button @click="openArticleEditor(article)" class="text-blue-400 hover:text-blue-300 text-xs uppercase tracking-widest font-bold">Edit</button>
+                <div class="relative">
+                  <button @click="toggleMenu('article', article.id)" class="text-slate-500 hover:text-slate-300 text-lg px-2">⋯</button>
+                  <div v-if="openMenuId === `article-${article.id}`" class="absolute right-0 top-8 bg-slate-800 border border-white/10 rounded-lg shadow-xl z-50 min-w-[120px]">
+                    <button @click="confirmDelete('article', article)" class="w-full text-left px-4 py-2 text-red-400 hover:bg-slate-700 text-xs uppercase tracking-widest font-bold rounded-lg">🗑️ Delete</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div v-if="articles.length === 0" class="text-center py-8 text-slate-500">No articles yet. Create your first one!</div>
+        </div>
       </div>
+
+
 
       <!-- Delete Confirmation Modal -->
       <div v-if="deleteConfirm.show" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
@@ -391,6 +537,8 @@
           </div>
         </div>
       </div>
+
+
 
       <!-- Status Message -->
       <div v-if="statusMessage" class="fixed bottom-4 right-4 bg-green-600 text-white px-6 py-3 rounded-xl shadow-lg">
@@ -442,6 +590,107 @@ const deleteConfirm = ref({
   itemName: ''
 })
 const deleteConfirmInput = ref('')
+
+// Sponsor form state
+const isSavingSponsor = ref(false)
+const editingSponsorId = ref<number | null>(null)
+const sponsorForm = ref({
+  business_name: '',
+  website_url: '',
+  logo_url: '',
+  tagline: '',
+  description: '',
+  keywords: '',
+  contact_email: '',
+  contact_name: '',
+  status: 'active'
+})
+
+function resetSponsorForm() {
+  sponsorForm.value = {
+    business_name: '',
+    website_url: '',
+    logo_url: '',
+    tagline: '',
+    description: '',
+    keywords: '',
+    contact_email: '',
+    contact_name: '',
+    status: 'active'
+  }
+  editingSponsorId.value = null
+}
+
+function closeAddSponsor() {
+  showAddSponsor.value = false
+  resetSponsorForm()
+  // Ensure we stay on sponsors tab
+  activeTab.value = 'sponsors'
+}
+
+function editSponsor(sponsor: any) {
+  // Load sponsor data into form
+  editingSponsorId.value = sponsor.id
+  sponsorForm.value = {
+    business_name: sponsor.business_name || sponsor.startup_name || '',
+    website_url: sponsor.website_url || '',
+    logo_url: sponsor.logo_url || '',
+    tagline: sponsor.tagline || '',
+    description: sponsor.description || '',
+    keywords: sponsor.keywords || sponsor.category || '',
+    contact_email: sponsor.contact_email || '',
+    contact_name: sponsor.contact_name || '',
+    status: sponsor.status === 9 ? 'paused' : (sponsor.status || 'active')
+  }
+  showAddSponsor.value = true
+}
+
+async function submitNewSponsor() {
+  isSavingSponsor.value = true
+  
+  try {
+    if (editingSponsorId.value) {
+      // Edit mode - update existing sponsor
+      const index = sponsors.value.findIndex(s => s.id === editingSponsorId.value)
+      if (index !== -1) {
+        sponsors.value[index] = {
+          ...sponsors.value[index],
+          ...sponsorForm.value,
+          business_name: sponsorForm.value.business_name
+        }
+      }
+      statusMessage.value = `Sponsor "${sponsorForm.value.business_name}" updated successfully!`
+    } else {
+      // Add mode - create new sponsor
+      const newSponsor = {
+        id: Date.now(),
+        created_at: new Date().toISOString(),
+        ...sponsorForm.value,
+        mrr: 'Pending'
+      }
+      sponsors.value.push(newSponsor)
+      statusMessage.value = `Sponsor "${sponsorForm.value.business_name}" added successfully!`
+    }
+    
+    // Save to JSON file via API
+    const response = await fetch('/api/save-sponsors', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(sponsors.value)
+    })
+    
+    if (!response.ok) throw new Error('Failed to save sponsor')
+    
+    setTimeout(() => { statusMessage.value = '' }, 3000)
+    closeAddSponsor()
+  } catch (error) {
+    console.error('Error saving sponsor:', error)
+    statusMessage.value = 'Error saving sponsor. Please try again.'
+    setTimeout(() => { statusMessage.value = '' }, 3000)
+  } finally {
+    isSavingSponsor.value = false
+  }
+}
 
 const startups = ref<any[]>([...allStartups])
 const sponsors = ref<any[]>([...allSponsors])
@@ -512,13 +761,8 @@ function editStartup(startup: any) {
   showStatus(`Editing ${startup.startup_name} - Feature coming soon!`)
 }
 
-function editSponsor(sponsor: any) {
-  openMenuId.value = null
-  showStatus(`Editing ${sponsor.startup_name} - Feature coming soon!`)
-}
-
 // Sponsor Export/Import functions
-const SPONSOR_FIELDS = ['id', 'created_at', 'startup_name', 'website_url', 'logo_url', 'tagline', 'description', 'keywords', 'contact_email', 'contact_name', 'category', 'mrr', 'status']
+const SPONSOR_FIELDS = ['id', 'created_at', 'business_name', 'website_url', 'logo_url', 'tagline', 'description', 'keywords', 'contact_email', 'contact_name', 'status']
 
 function exportSponsorsCSV() {
   const data = activeSponsors.value
@@ -559,13 +803,13 @@ function exportSponsorsJSON() {
   showStatus(`Exported ${data.length} sponsors to JSON`)
 }
 
-function importSponsors(event: Event) {
+async function importSponsors(event: Event) {
   const input = event.target as HTMLInputElement
   const file = input.files?.[0]
   if (!file) return
   
   const reader = new FileReader()
-  reader.onload = (e) => {
+  reader.onload = async (e) => {
     try {
       const content = e.target?.result as string
       let imported: any[] = []
@@ -590,20 +834,36 @@ function importSponsors(event: Event) {
         return
       }
       
-      // Add imported sponsors with new IDs
+      // Add imported sponsors with new IDs (handle both business_name and startup_name)
       let addedCount = 0
       imported.forEach(s => {
-        if (s.startup_name) {
+        const name = s.business_name || s.startup_name
+        if (name) {
           sponsors.value.push({
             ...s,
-            id: Date.now() + addedCount,
-            status: s.status || 'approved'
+            id: s.id || (Date.now() + addedCount),
+            business_name: name,
+            created_at: s.created_at || new Date().toISOString(),
+            status: s.status || 'active'
           })
           addedCount++
         }
       })
       
-      showStatus(`Imported ${addedCount} sponsors`)
+      // Save to sponsors.json via API
+      try {
+        const response = await fetch('/api/save-sponsors', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(sponsors.value)
+        })
+        
+        if (!response.ok) throw new Error('Failed to save')
+        showStatus(`Imported and saved ${addedCount} sponsors`)
+      } catch (saveErr) {
+        console.error('Error saving sponsors:', saveErr)
+        showStatus(`Imported ${addedCount} sponsors (not saved to file - error)`)
+      }
     } catch (err) {
       showStatus('Error parsing file')
       console.error('Import error:', err)

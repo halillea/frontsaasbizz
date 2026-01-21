@@ -17,16 +17,16 @@ let xml = `<?xml version="1.0" encoding="UTF-8"?>
 
 // 3. Add Startup Pages
 startups.forEach(s => {
-  xml += `\n  <url><loc>${BASE_URL}/startup/${s.trustmrr_profile_url}/</loc><priority>0.8</priority></url>`;
+  xml += `\n  <url><loc>${BASE_URL}/startup/${s.trustmrr_link}/</loc><priority>0.8</priority></url>`;
 });
 
 // 4. Add Founder Pages (Filtering out the 3 broken ones)
 const founders = [...new Set(startups
-  .filter(s => s.founder_name && 
-               s.founder_name !== 'null,' && 
-               s.founder_name.length > 2 &&
-               !s.founder_name.includes('|') && 
-               !s.founder_name.includes('𝕏'))
+  .filter(s => s.founder_name &&
+    s.founder_name !== 'null,' &&
+    s.founder_name.length > 2 &&
+    !s.founder_name.includes('|') &&
+    !s.founder_name.includes('𝕏'))
   .map(s => s.founder_name))];
 
 founders.forEach(name => {
@@ -37,7 +37,7 @@ xml += '\n</urlset>';
 
 // 5. Ensure the public directory exists and write the file
 if (!fs.existsSync('./public')) {
-    fs.mkdirSync('./public');
+  fs.mkdirSync('./public');
 }
 
 fs.writeFileSync(outputPath, xml);

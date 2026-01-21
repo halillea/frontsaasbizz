@@ -1,12 +1,80 @@
 [
   {
-    "id": 1768496428519,
-    "created_at": "2026-01-15T17:00:28.519Z",
-    "startup_name": "digilemon is back",
-    "website_url": "https://deltaroi.com",
-    "tagline": "Maximize your Return on Investment",
-    "category": "roi , return on investment",
-    "mrr": "Pending",
-    "status": "pending"
+    "id": 1768977020310,
+    "created_at": "2026-01-21T06:30:20.310Z",
+    "business_name": "Hostipedia",
+    "website_url": "https://hostipedia.com/",
+    "logo_url": "",
+    "tagline": "Best hosting assessment now",
+    "description": "Up to date hosting reviews. Best hosting provider for 2026",
+    "keywords": "hosting, best hosting, nodejs hosting",
+    "contact_email": "halillea@gmail.com",
+    "contact_name": "HALILLE AZAMI",
+    "status": "active"
+  },
+  {
+    "id": 1768977283771,
+    "created_at": "2026-01-21T06:34:43.771Z",
+    "business_name": "SAASitron",
+    "website_url": "https://saasitron.com/",
+    "logo_url": "",
+    "tagline": "Find Your Perfect Boilerplate",
+    "description": "Launch Fast with a curated directory of SaaS boilerplates, SDKs, and starter kits to help you build faster.",
+    "keywords": "saas, SaaS boilerplates, SDK, starter kit, boilerplates",
+    "contact_email": "halillea@gmail.com",
+    "contact_name": "HALILLE AZAMI",
+    "status": "active"
+  },
+  {
+    "id": 1768977433817,
+    "created_at": "2026-01-21T06:37:13.817Z",
+    "business_name": "SeoMr",
+    "website_url": "https://seomr.com/",
+    "logo_url": "https://i0.wp.com/seomr.com/wp-content/uploads/2025/11/logoSeoMr21090.jpg",
+    "tagline": "Elevate Your Business with Proven SEO Strategies",
+    "description": "Unlock your website's potential with tailored SEO solutions that drive measurable growth and enhance visibility.",
+    "keywords": "seo, ranking, search engine optimization",
+    "contact_email": "halille@seomr.com",
+    "contact_name": "HALILLE AZAMI",
+    "status": "active"
+  },
+  {
+    "id": 1768977721534,
+    "created_at": "2026-01-21T06:42:01.534Z",
+    "business_name": "SubmissionLink",
+    "website_url": "https://submissionlink.com/",
+    "logo_url": "",
+    "tagline": "Get your business seen with a targeted link campaign",
+    "description": "Discover a comprehensive collection of business links tailored to your niche",
+    "keywords": "links building, link building, backlinks, backlink",
+    "contact_email": "halillea@gmail.com",
+    "contact_name": "HALILLE AZAMI",
+    "status": "active"
+  },
+  {
+    "id": 1768978057867,
+    "created_at": "2026-01-21T06:47:37.867Z",
+    "business_name": "Blotato",
+    "website_url": "https://blotato.com/?ref=halille",
+    "logo_url": "https://cdn.prod.website-files.com/6703f74a3a59fc67eff51da6/670a9fa6bb067d45c25ba59b_blotato-logo.webp",
+    "tagline": "Scale your brand with organic Social SEO",
+    "description": "All-in-one solution to create viral posts, carousels, slideshows, and AI videos, so you can distribute 50+ pieces of content per week to build your brand.",
+    "keywords": "content syndication, social media post, automated posting, auto post social media",
+    "contact_email": "halillea@gmail.com",
+    "contact_name": "HALILLE AZAMI",
+    "status": "active"
+  },
+  {
+    "id": 1768977020311,
+    "created_at": "2026-01-21T06:30:21.310Z",
+    "business_name": "Agent.ai",
+    "website_url": "https://agent.ai/",
+    "logo_url": "https://agent.ai/logo-2025/agent-ai-logo-2025-white.svg",
+    "tagline": "The #1 Professional Network for AI Agents",
+    "description": "The #1 Professional Marketplace for AI Agents. Where professionals build, find, and use AI agents that get real work done.",
+    "keywords": "ai agents, agent builder",
+    "contact_email": "halillea@gmail.com",
+    "contact_name": "HALILLE AZAMI",
+    "status": "active"
   }
 ]

@@ -23,7 +23,7 @@
         <div 
           v-for="startup in tickerStartups" 
           :key="startup.id"
-          class="flex items-baseline gap-3 text-xs"
+          class="flex items-baseline gap-1.5 text-xs"
         >
           <span class="font-bold transition-colors text-blue-500">
             {{ startup.startup_name }}
@@ -69,7 +69,7 @@
         <div 
           v-for="startup in tickerStartups" 
           :key="'dup-' + startup.id"
-          class="flex items-baseline gap-3 text-xs"
+          class="flex items-baseline gap-1.5 text-xs"
         >
           <span class="font-bold transition-colors text-blue-500">
             {{ startup.startup_name }}
@@ -116,23 +116,23 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import allStartups from '~/content/startups.json'
+import tickerData from '~/content/startups-ticker.json'
 import { useTheme } from '~/composables/useTheme'
 import { formatCurrency } from '~/utils/helpers'
+import type { Startup } from '~/types/startup'
 
 const { themeColor } = useTheme()
 
+// Pre-filtered ticker data from JSON - no runtime computation needed
+// Shuffle once on component mount for variety
 const tickerStartups = computed(() => {
-  return allStartups
-    .filter(s => {
-      // Handle legacy string MRR and new numeric MRR
-      // Filter criteria: Name < 10 chars, MRR not Pre-Revenue/0
-      const mrrStr = String(s.mrr).toLowerCase()
-      if (mrrStr === 'pre-revenue' || mrrStr === '$0' || s.mrr === 0) return false
-      
-      return s.startup_name && s.startup_name.length < 10
-    })
-    .slice(0, 25) // Take top 25 matches
+  const data = tickerData as Startup[]
+  const shuffled = [...data]
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+  }
+  return shuffled
 })
 
 function getGrowthColor(growth: string | number | null | undefined) {
@@ -156,7 +156,7 @@ function isPositiveGrowth(growth: string | number | null | undefined) {
 }
 
 .animate-ticker {
-  animation: ticker 60s linear infinite; /* Slowed down slightly for readability */
+  animation: ticker 360s linear infinite;
 }
 
 .glass-strip:hover .animate-ticker {
