@@ -37,17 +37,21 @@
         <!-- CENTER: Main Sponsor Banner -->
         <div class="flex-1 flex justify-center text-center">
           <a
-            href="https://saasitron.com"
+            href="https://agent.ai/"
             target="_blank"
             rel="noopener noreferrer"
-            class="group flex flex-col md:flex-row items-center justify-center gap-2 md:gap-3 hover:text-blue-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 rounded-md p-1"
-            aria-label="SAASitron Sponsor Link (opens in new tab)"
+            class="group flex items-center justify-center gap-2 hover:text-blue-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 rounded-md p-1"
+            aria-label="Agent.ai Sponsor Link (opens in new tab)"
           >
-
-            <span class="text-sm md:text-base font-medium truncate max-w-[200px] md:max-w-none">
-              <span class="font-bold text-blue-400">SAASitron:</span>
-              <span class="hidden md:inline">Stop coding from scratch. Ship in days.</span>
-              <span class="md:hidden">Ship your SaaS in days.</span>
+            <img 
+              src="https://agent.ai/logo-2025/agent-ai-logo-2025-white.svg" 
+              alt="Agent.ai Logo" 
+              class="h-5 w-auto"
+              loading="lazy"
+            >
+            <span class="text-sm md:text-base font-medium">
+              <span class="hidden md:inline">The #1 Professional Network for AI Agents</span>
+              <span class="md:hidden">AI Agent Marketplace</span>
             </span>
             <span class="group-hover:translate-x-1 transition-transform text-base" aria-hidden="true">→</span>
           </a>

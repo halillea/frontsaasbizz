@@ -104,12 +104,12 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import allStartups from '~/content/startups.json'
-import { parseRevenue } from '~/utils/helpers'
 import type { Startup } from '~/types/startup'
 
 const EARNER_PER_PAGE = 30
 const RECENT_PER_PAGE = 20
 
+// Data is pre-sorted by MRR descending (run scripts/presort-startups.js)
 const startups = allStartups as Startup[]
 
 // Loading state
@@ -122,16 +122,17 @@ onMounted(() => {
 const topEarnersPage = ref(1)
 const recentPage = ref(1)
 
-// Simple sort + slice - computed caches result
-const topEarners = computed(() =>
-  [...startups].sort((a, b) => parseRevenue(b.mrr) - parseRevenue(a.mrr)).slice(0, 150)
-)
+// Top earners: already sorted by MRR in JSON, just slice
+const topEarners = computed(() => startups.slice(0, 150))
 
-const recentlyAdded = computed(() =>
-  [...startups].sort((a, b) =>
+// Recent: need to slice from the recently fetched (sort by date still needed)
+// Pre-compute once and cache in the computed
+const recentlyAdded = computed(() => {
+  const byDate = [...startups].sort((a, b) =>
     new Date(b.fetched_at || 0).getTime() - new Date(a.fetched_at || 0).getTime()
-  ).slice(0, 60)
-)
+  )
+  return byDate.slice(0, 60)
+})
 
 // Paginated data
 const paginatedTopEarners = computed(() => {
