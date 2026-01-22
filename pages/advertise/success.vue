@@ -271,6 +271,9 @@ async function handleSubmit() {
 }
 
 useHead({
-  title: 'Complete Your Ad - SaaSBizz'
+  title: 'Complete Your Ad - SaaSBizz',
+  meta: [
+    { name: 'robots', content: 'noindex, nofollow' }
+  ]
 })
 </script>

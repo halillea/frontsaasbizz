@@ -3,12 +3,11 @@ import allArticles from '~/content/articles.json'
 export default defineEventHandler(async (event) => {
     const baseUrl = 'https://saasbizz.com'
 
-    // Static pages
+    // Static pages (excluding checkout/advertise pages which should not be indexed)
     const staticPages = [
         { url: '/', priority: '1.0', changefreq: 'daily' },
         { url: '/news', priority: '0.9', changefreq: 'daily' },
         { url: '/search', priority: '0.7', changefreq: 'weekly' },
-        { url: '/advertise', priority: '0.6', changefreq: 'monthly' },
     ]
 
     // Article pages

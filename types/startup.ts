@@ -45,4 +45,5 @@ export interface Ad {
   copy: string
   bg: string
   href?: string
+  domain?: string
 }

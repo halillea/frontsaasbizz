@@ -146,6 +146,27 @@
                 <a href="https://www.linkedin.com/in/halille-azami-33b432165/" target="_blank" rel="noopener noreferrer" class="hover:text-slate-400">LinkedIn</a>
               </div>
             </div>
+            <!-- Built By Credit -->
+            <div class="mt-6 pt-4 border-t border-white/5 flex items-center justify-center gap-2 text-[10px] text-slate-500">
+              <span>Built by</span>
+              <a 
+                href="https://x.com/1Halille" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                class="flex items-center gap-1.5 hover:text-slate-300 transition-colors"
+              >
+                <img 
+                  src="/halille-azami.jpg" 
+                  alt="Halille Azami" 
+                  class="w-5 h-5 rounded-full border border-slate-700"
+                >
+                <span class="font-medium">Halille Azami</span>
+              </a>
+              <span>with</span>
+              <span class="font-medium text-blue-400">Antigravity</span>
+              <span>&</span>
+              <span class="font-medium text-amber-400">Claude Code</span>
+            </div>
           </footer>
         </div>
 

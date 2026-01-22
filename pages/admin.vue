@@ -130,10 +130,43 @@
 
       <!-- Sponsors Tab -->
       <div v-if="activeTab === 'sponsors'" class="space-y-4">
+        <!-- SOLDOUT TOGGLE SECTION -->
+        <div class="glass-card rounded-xl p-4 border-2" :class="advertisingSoldout ? 'border-red-500/50 bg-red-500/5' : 'border-green-500/30 bg-green-500/5'">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <span class="text-2xl">{{ advertisingSoldout ? '🚫' : '✅' }}</span>
+              <div>
+                <div class="font-bold text-white">Advertising Status</div>
+                <div class="text-xs text-slate-400">
+                  {{ advertisingSoldout ? 'All spots are sold out. Visitors will be redirected to waitlist.' : 'Advertising spots are available for purchase.' }}
+                </div>
+              </div>
+            </div>
+            <button
+              @click="toggleSoldout"
+              :disabled="isSavingSettings"
+              class="px-4 py-2 rounded-lg font-bold text-sm uppercase tracking-widest transition-all"
+              :class="advertisingSoldout 
+                ? 'bg-green-600 hover:bg-green-500 text-white' 
+                : 'bg-red-600 hover:bg-red-500 text-white'"
+            >
+              {{ isSavingSettings ? 'Saving...' : (advertisingSoldout ? 'Enable Sales' : 'Mark Sold Out') }}
+            </button>
+          </div>
+        </div>
+
         <!-- Header with buttons (only show when not editing) -->
         <div v-if="!showAddSponsor" class="flex items-center justify-between">
           <h2 class="text-lg font-bold text-white">Approved Sponsors</h2>
           <div class="flex items-center gap-2">
+            <button 
+              v-if="hasOrderChanged" 
+              @click="saveSponsorsOrder" 
+              :disabled="isSavingOrder"
+              class="bg-green-600 hover:bg-green-500 text-white text-xs font-bold px-3 py-2 rounded-lg uppercase tracking-widest disabled:opacity-50"
+            >
+              {{ isSavingOrder ? 'Saving...' : '💾 Save Order' }}
+            </button>
             <button @click="exportSponsorsCSV" class="bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold px-3 py-2 rounded-lg uppercase tracking-widest">
               📤 Export CSV
             </button>
@@ -298,11 +331,29 @@
         
         <!-- SPONSOR LIST (only show when not editing) -->
         <div v-else class="space-y-2">
-          <div v-for="sponsor in activeSponsors" :key="sponsor.id" class="glass-card rounded-xl p-4 flex items-center justify-between">
-            <div>
-              <div class="font-bold text-white">{{ sponsor.business_name || sponsor.startup_name }}</div>
-              <div class="text-xs text-slate-400">{{ sponsor.website_url }}</div>
-              <div class="text-xs text-green-400">{{ sponsor.status }}</div>
+          <div v-for="(sponsor, index) in activeSponsors" :key="sponsor.id" class="glass-card rounded-xl p-4 flex items-center justify-between">
+            <!-- Left: Position + Up/Down buttons -->
+            <div class="flex items-center gap-3">
+              <div class="flex flex-col gap-1">
+                <button 
+                  @click="moveSponsorUp(index)" 
+                  :disabled="index === 0"
+                  class="text-slate-400 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed text-sm px-1"
+                  title="Move up"
+                >↑</button>
+                <button 
+                  @click="moveSponsorDown(index)" 
+                  :disabled="index === activeSponsors.length - 1"
+                  class="text-slate-400 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed text-sm px-1"
+                  title="Move down"
+                >↓</button>
+              </div>
+              <span class="text-slate-500 font-mono text-xs w-6">#{{ index + 1 }}</span>
+              <div>
+                <div class="font-bold text-white">{{ sponsor.business_name || sponsor.startup_name }}</div>
+                <div class="text-xs text-slate-400">{{ sponsor.website_url }}</div>
+                <div class="text-xs text-green-400">{{ sponsor.status }}</div>
+              </div>
             </div>
             <div class="flex items-center gap-3">
               <button @click="editSponsor(sponsor)" class="text-blue-400 hover:text-blue-300 text-xs uppercase tracking-widest font-bold">Edit</button>
@@ -562,6 +613,51 @@ const showAddStartup = ref(false)
 const showAddSponsor = ref(false)
 const openMenuId = ref<string | null>(null)
 
+// Advertising soldout state
+const advertisingSoldout = ref(false)
+const isSavingSettings = ref(false)
+
+async function loadSettings() {
+  try {
+    const response = await fetch('/api/settings')
+    if (response.ok) {
+      const settings = await response.json()
+      advertisingSoldout.value = settings.advertising_soldout || false
+    }
+  } catch (e) {
+    console.error('Failed to load settings:', e)
+  }
+}
+
+async function toggleSoldout() {
+  isSavingSettings.value = true
+  const newValue = !advertisingSoldout.value
+  
+  try {
+    const response = await fetch('/api/settings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ advertising_soldout: newValue })
+    })
+    
+    if (response.ok) {
+      advertisingSoldout.value = newValue
+      statusMessage.value = newValue 
+        ? 'Advertising marked as SOLD OUT. Visitors will be redirected.' 
+        : 'Advertising is now AVAILABLE for purchase.'
+      setTimeout(() => { statusMessage.value = '' }, 3000)
+    } else {
+      throw new Error('Failed to save settings')
+    }
+  } catch (e) {
+    console.error('Failed to toggle soldout:', e)
+    statusMessage.value = 'Error updating settings. Please try again.'
+    setTimeout(() => { statusMessage.value = '' }, 3000)
+  } finally {
+    isSavingSettings.value = false
+  }
+}
+
 // Article editor state
 const showArticleEditor = ref(false)
 const editingArticle = ref<any>(null)
@@ -593,6 +689,8 @@ const deleteConfirmInput = ref('')
 
 // Sponsor form state
 const isSavingSponsor = ref(false)
+const isSavingOrder = ref(false)
+const originalSponsorOrder = ref<number[]>([])
 const editingSponsorId = ref<number | null>(null)
 const sponsorForm = ref({
   business_name: '',
@@ -692,6 +790,69 @@ async function submitNewSponsor() {
   }
 }
 
+// Sponsor ordering functions
+const hasOrderChanged = computed(() => {
+  if (originalSponsorOrder.value.length === 0) return false
+  const currentOrder = sponsors.value.filter(s => s.status !== 9).map(s => s.id)
+  return JSON.stringify(currentOrder) !== JSON.stringify(originalSponsorOrder.value)
+})
+
+function moveSponsorUp(index: number) {
+  const active = sponsors.value.filter(s => s.status !== 9)
+  if (index <= 0 || index >= active.length) return
+  
+  // Find actual indices in the full sponsors array
+  const currentSponsor = active[index]
+  const prevSponsor = active[index - 1]
+  const currentIdx = sponsors.value.findIndex(s => s.id === currentSponsor.id)
+  const prevIdx = sponsors.value.findIndex(s => s.id === prevSponsor.id)
+  
+  // Swap
+  const temp = sponsors.value[currentIdx]
+  sponsors.value[currentIdx] = sponsors.value[prevIdx]
+  sponsors.value[prevIdx] = temp
+}
+
+function moveSponsorDown(index: number) {
+  const active = sponsors.value.filter(s => s.status !== 9)
+  if (index < 0 || index >= active.length - 1) return
+  
+  // Find actual indices in the full sponsors array
+  const currentSponsor = active[index]
+  const nextSponsor = active[index + 1]
+  const currentIdx = sponsors.value.findIndex(s => s.id === currentSponsor.id)
+  const nextIdx = sponsors.value.findIndex(s => s.id === nextSponsor.id)
+  
+  // Swap
+  const temp = sponsors.value[currentIdx]
+  sponsors.value[currentIdx] = sponsors.value[nextIdx]
+  sponsors.value[nextIdx] = temp
+}
+
+async function saveSponsorsOrder() {
+  isSavingOrder.value = true
+  try {
+    const response = await fetch('/api/save-sponsors', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(sponsors.value)
+    })
+    
+    if (!response.ok) throw new Error('Failed to save order')
+    
+    // Update original order to reflect saved state
+    originalSponsorOrder.value = sponsors.value.filter(s => s.status !== 9).map(s => s.id)
+    statusMessage.value = 'Sponsor order saved successfully!'
+    setTimeout(() => { statusMessage.value = '' }, 3000)
+  } catch (error) {
+    console.error('Error saving sponsor order:', error)
+    statusMessage.value = 'Error saving order. Please try again.'
+    setTimeout(() => { statusMessage.value = '' }, 3000)
+  } finally {
+    isSavingOrder.value = false
+  }
+}
+
 const startups = ref<any[]>([...allStartups])
 const sponsors = ref<any[]>([...allSponsors])
 const articles = ref<any[]>([...allArticles])
@@ -718,12 +879,18 @@ onMounted(async () => {
     isAuthenticated.value = sessionStorage.getItem('saasbizz-admin-auth') === 'authenticated'
   }
   
+  // Load settings (soldout status)
+  await loadSettings()
+  
   try {
     const adverts = await import('~/content/toreview_advert.json')
     pendingAdverts.value = adverts.default
   } catch (e) {
     pendingAdverts.value = []
   }
+  
+  // Store original sponsor order for change detection
+  originalSponsorOrder.value = sponsors.value.filter(s => s.status !== 9).map(s => s.id)
 
   if (typeof window !== 'undefined') {
     document.addEventListener('click', (e) => {

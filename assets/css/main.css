@@ -118,6 +118,11 @@
   color: #1e293b !important;
 }
 
+/* Exception: Keep text-white as white in lateral ads (dark backgrounds) */
+[data-theme="white"] aside[role="complementary"] .text-white {
+  color: #ffffff !important;
+}
+
 [data-theme="white"] .text-slate-200,
 [data-theme="white"] .text-slate-300 {
   color: #475569 !important;

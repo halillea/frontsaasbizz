@@ -22,15 +22,26 @@ export function useAds() {
   const activeSponsors = (allSponsors as any[]).filter(s => s.status === 'active')
 
   // Map sponsors to Ad format
-  const adInventory: Ad[] = activeSponsors.map((sponsor, i) => ({
-    id: sponsor.id || i,
-    name: sponsor.business_name || sponsor.startup_name || 'Sponsor',
-    emoji: FALLBACK_EMOJIS[i % FALLBACK_EMOJIS.length] || '🚀',
-    logoUrl: sponsor.logo_url || '',
-    copy: sponsor.tagline || sponsor.description || 'Check out our sponsor',
-    href: sponsor.website_url || '#',
-    bg: '#eff6ff'
-  }))
+  const adInventory: Ad[] = activeSponsors.map((sponsor, i) => {
+    // Extract domain from website_url
+    let domain = ''
+    try {
+      if (sponsor.website_url) {
+        domain = new URL(sponsor.website_url).hostname.replace('www.', '')
+      }
+    } catch { domain = '' }
+
+    return {
+      id: sponsor.id || i,
+      name: sponsor.business_name || sponsor.startup_name || 'Sponsor',
+      emoji: FALLBACK_EMOJIS[i % FALLBACK_EMOJIS.length] || '🚀',
+      logoUrl: sponsor.logo_url || '',
+      copy: sponsor.tagline || sponsor.description || 'Check out our sponsor',
+      href: sponsor.website_url || '#',
+      domain,
+      bg: '#eff6ff'
+    }
+  })
 
   // Ensure we have at least 12 ads for rotation (pad with duplicates if needed)
   while (adInventory.length < 12 && adInventory.length > 0) {
