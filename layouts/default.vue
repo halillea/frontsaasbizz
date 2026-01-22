@@ -1,5 +1,11 @@
 <template>
   <div class="min-h-screen bg-[#030712] font-sans text-slate-200 selection:bg-blue-500/30 selection:text-blue-200">
+    <!-- Mobile Ad Ticker (fixed top, mobile only) -->
+    <MobileAdTicker v-if="!isAdminPage" />
+    
+    <!-- Mobile padding to account for fixed ticker -->
+    <div :class="{ 'pt-9 lg:pt-0': !isAdminPage }">
+    
     <!-- Skip to content link for accessibility -->
     <a
       href="#main-content"
@@ -185,6 +191,7 @@
 
       </div>
     </main>
+    </div><!-- Close mobile padding wrapper -->
   </div>
 </template>
 
