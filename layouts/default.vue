@@ -192,12 +192,16 @@
       </div>
     </main>
     </div><!-- Close mobile padding wrapper -->
+    
+    <!-- Vercel Analytics -->
+    <Analytics />
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { Analytics } from '@vercel/analytics/nuxt'
 import { useAds } from '~/composables/useAds'
 import { useTheme } from '~/composables/useTheme'
 
