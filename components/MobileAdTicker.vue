@@ -37,7 +37,9 @@
           :href="ad.href"
           target="_blank"
           rel="noopener noreferrer"
+          aria-hidden="true"
           class="flex items-center gap-2 text-white/90 hover:text-white transition-colors"
+          tabindex="-1"
         >
           <img 
             v-if="ad.logoUrl" 

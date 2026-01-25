@@ -1,114 +1,109 @@
 <template>
-  <div 
-    class="w-full h-11 flex items-center gap-3 p-1.5 mb-1 rounded-2xl border transition-colors duration-300"
-    :class="themeColor === 'white' ? 'bg-slate-50 border-slate-200' : 'bg-slate-800/50 border-white/5'"
-  >
-    <!-- Label (Directly on outer bg) -->
-    <div class="pl-3 shrink-0">
-      <span 
-        class="text-xs font-black uppercase tracking-widest whitespace-nowrap"
-        :class="themeColor === 'white' ? 'text-blue-900' : 'text-blue-400'"
+  <div class="w-full h-10 flex items-center overflow-hidden relative group cursor-default select-none">
+    <!-- Gradient Masks for smooth fade edges -->
+    <div class="absolute left-0 top-0 bottom-0 w-8 z-10 bg-gradient-to-r from-[--market-bar-bg] to-transparent pointer-events-none"></div>
+    <div class="absolute right-0 top-0 bottom-0 w-8 z-10 bg-gradient-to-l from-[--market-bar-bg] to-transparent pointer-events-none"></div>
+
+    <!-- Ticker Track -->
+    <div class="flex items-center gap-12 whitespace-nowrap animate-ticker pl-4 hover:pause-animation">
+      <div 
+        v-for="startup in tickerStartups" 
+        :key="startup.id"
+        class="flex items-baseline gap-2 text-xs font-medium"
       >
-        SaaSBizz Index
-      </span>
-    </div>
-
-    <!-- Inner Ticker Container (The white box) -->
-    <div 
-      class="flex-1 h-full overflow-hidden relative flex items-center rounded-xl border transition-colors duration-300"
-      :class="themeColor === 'white' ? 'bg-white border-slate-200 shadow-sm' : 'bg-slate-100/95 border-white/10'"
-    >
-      <!-- Ticker Track -->
-      <div class="flex items-center gap-6 whitespace-nowrap animate-ticker pl-4">
-        <div 
-          v-for="startup in tickerStartups" 
-          :key="startup.id"
-          class="flex items-baseline gap-1.5 text-xs"
-        >
-          <span class="font-bold transition-colors text-blue-500">
-            {{ startup.startup_name }}
-          </span>
-          <span class="font-black font-mono text-black transition-colors">
-            {{ formatCurrency(startup.mrr) }}
-          </span>
-          
-          <!-- Growth Indicator -->
-          <span 
-            class="font-bold flex items-center gap-1"
-            :class="getGrowthColor(startup.mom_growth)"
-            v-if="startup.mom_growth"
-          >
-            <!-- Up Arrow (Positive) -->
-            <svg 
-              v-if="isPositiveGrowth(startup.mom_growth)" 
-              xmlns="http://www.w3.org/2000/svg" 
-              class="h-3 w-3 stroke-[3]" 
-              fill="none" 
-              viewBox="0 0 24 24" 
-              stroke="currentColor"
-            >
-              <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-            </svg>
-            <!-- Down Arrow (Negative) -->
-            <svg 
-              v-else 
-              xmlns="http://www.w3.org/2000/svg" 
-              class="h-3 w-3 stroke-[3]" 
-              fill="none" 
-              viewBox="0 0 24 24" 
-              stroke="currentColor"
-            >
-              <path stroke-linecap="round" stroke-linejoin="round" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
-            </svg>
-            
-            {{ startup.mom_growth }}{{ typeof startup.mom_growth === 'number' ? '%' : '' }}
-          </span>
-        </div>
+        <span class="text-slate-400 hover:text-white transition-colors">
+          {{ startup.startup_name }}
+        </span>
+        <span class="font-mono text-slate-300">
+          {{ formatCurrency(startup.mrr) }}
+        </span>
         
-        <!-- Duplicated items for seamless loop -->
-        <div 
-          v-for="startup in tickerStartups" 
-          :key="'dup-' + startup.id"
-          class="flex items-baseline gap-1.5 text-xs"
+        <!-- Growth Indicator -->
+        <span 
+          class="flex items-center gap-0.5 text-[10px] font-bold"
+          :class="getGrowthColor(startup.mom_growth)"
+          v-if="startup.mom_growth"
         >
-          <span class="font-bold transition-colors text-blue-500">
-            {{ startup.startup_name }}
-          </span>
-          <span class="font-black font-mono text-black transition-colors">
-            {{ formatCurrency(startup.mrr) }}
-          </span>
-          
-          <span 
-            class="font-bold flex items-center gap-1"
-            :class="getGrowthColor(startup.mom_growth)"
-            v-if="startup.mom_growth"
+          <!-- Up Arrow (Positive) -->
+          <svg 
+            v-if="isPositiveGrowth(startup.mom_growth)" 
+            xmlns="http://www.w3.org/2000/svg" 
+            class="h-2.5 w-2.5" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor"
+            stroke-width="3"
+            stroke-linecap="round" 
+            stroke-linejoin="round" 
           >
-            <!-- Up Arrow (Positive) -->
-            <svg 
-              v-if="isPositiveGrowth(startup.mom_growth)" 
-              xmlns="http://www.w3.org/2000/svg" 
-              class="h-3 w-3 stroke-[3]" 
-              fill="none" 
-              viewBox="0 0 24 24" 
-              stroke="currentColor"
-            >
-              <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-            </svg>
-            <!-- Down Arrow (Negative) -->
-            <svg 
-              v-else 
-              xmlns="http://www.w3.org/2000/svg" 
-              class="h-3 w-3 stroke-[3]" 
-              fill="none" 
-              viewBox="0 0 24 24" 
-              stroke="currentColor"
-            >
-              <path stroke-linecap="round" stroke-linejoin="round" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
-            </svg>
+            <path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+          </svg>
+          <!-- Down Arrow (Negative) -->
+          <svg 
+            v-else 
+            xmlns="http://www.w3.org/2000/svg" 
+            class="h-2.5 w-2.5" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor"
+            stroke-width="3" 
+            stroke-linecap="round" 
+            stroke-linejoin="round" 
+          >
+            <path d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
+          </svg>
+          
+          {{ startup.mom_growth }}{{ typeof startup.mom_growth === 'number' ? '%' : '' }}
+        </span>
+      </div>
+      
+      <!-- Duplicated items for seamless loop -->
+      <div 
+        v-for="startup in tickerStartups" 
+        :key="'dup-' + startup.id"
+        class="flex items-baseline gap-2 text-xs font-medium"
+      >
+        <span class="text-slate-400 hover:text-white transition-colors">
+          {{ startup.startup_name }}
+        </span>
+        <span class="font-mono text-slate-300">
+          {{ formatCurrency(startup.mrr) }}
+        </span>
+        
+        <span 
+          class="flex items-center gap-0.5 text-[10px] font-bold"
+          :class="getGrowthColor(startup.mom_growth)"
+          v-if="startup.mom_growth"
+        >
+          <svg 
+            v-if="isPositiveGrowth(startup.mom_growth)" 
+            xmlns="http://www.w3.org/2000/svg" 
+            class="h-2.5 w-2.5" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor"
+            stroke-width="3"
+            stroke-linecap="round" 
+            stroke-linejoin="round" 
+          >
+            <path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+          </svg>
+          <svg 
+            v-else 
+            xmlns="http://www.w3.org/2000/svg" 
+            class="h-2.5 w-2.5" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor"
+            stroke-width="3" 
+            stroke-linecap="round" 
+            stroke-linejoin="round" 
+          >
+            <path d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
+          </svg>
 
-            {{ startup.mom_growth }}{{ typeof startup.mom_growth === 'number' ? '%' : '' }}
-          </span>
-        </div>
+          {{ startup.mom_growth }}{{ typeof startup.mom_growth === 'number' ? '%' : '' }}
+        </span>
       </div>
     </div>
   </div>
@@ -158,7 +153,7 @@ function isPositiveGrowth(growth: string | number | null | undefined) {
 }
 
 .animate-ticker {
-  animation: ticker 360s linear infinite;
+  animation: ticker 720s linear infinite;
 }
 
 .glass-strip:hover .animate-ticker {

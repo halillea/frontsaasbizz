@@ -1,12 +1,12 @@
 <template>
-  <div class="min-h-screen bg-[#030712] font-sans text-slate-200 selection:bg-blue-500/30 selection:text-blue-200">
-    <!-- Mobile Ad Ticker (fixed top, mobile only) -->
-    <MobileAdTicker v-if="!isAdminPage" />
+  <div class="min-h-screen bg-[--color-bg-main] font-sans text-slate-200 selection:bg-blue-500/30 selection:text-blue-200">
+    <!-- Mobile Ad Ticker - Keeping for mobile optimized experience, or consider hiding if Market Bar covers it -->
+    <MobileAdTicker v-if="!isAdminPage" class="lg:hidden" />
     
-    <!-- Mobile padding to account for fixed ticker -->
-    <div :class="{ 'pt-9 lg:pt-0': !isAdminPage }">
+    <!-- Mobile padding -->
+    <div :class="{ 'pt-10 lg:pt-0': !isAdminPage }">
     
-    <!-- Skip to content link for accessibility -->
+    <!-- Skip to content -->
     <a
       href="#main-content"
       class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded-md focus:outline-none"
@@ -14,103 +14,79 @@
       Skip to main content
     </a>
 
-    <!-- Top Header & Sponsor Banner (Merged) -->
+    <!-- Unified Calm Header -->
     <header 
       v-if="!isAdminPage" 
-      class="bg-slate-900 text-white border-b border-slate-800 relative z-50 pt-4 pb-4" 
+      class="sticky top-0 z-50 w-full transition-all duration-300 border-b border-white/5 backdrop-blur-md bg-[#020617]/80 supports-[backdrop-filter]:bg-[#020617]/80"
       role="banner"
     >
-      <div class="max-w-[1420px] mx-auto px-4 sm:px-6 lg:px-8 w-full flex items-center justify-between gap-2">
-        <!-- LEFT: Logo & Brand -->
+      <div class="max-w-[1420px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+        <!-- LEFT: Logo -->
         <NuxtLink 
           to="/" 
-          class="flex items-center gap-3 shrink-0 group focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-md p-1"
+          class="flex items-center gap-3 shrink-0 group focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg p-1"
           aria-label="SaaSBizz Home"
         >
           <img 
             src="/apple-touch-icon.png" 
             alt="SaaSBizz Logo" 
-            class="w-8 h-8 rounded shadow-lg group-hover:scale-105 transition-transform duration-300"
+            class="w-8 h-8 rounded-lg shadow-none border border-white/10 group-hover:border-blue-500/50 transition-colors duration-300"
             width="32"
             height="32"
           >
-          <div class="flex flex-col hidden sm:flex">
-            <span class="font-black text-lg tracking-tight text-white leading-none group-hover:text-blue-200 transition-colors">SaaSBizz</span>
-            <span class="text-[9px] uppercase tracking-[0.2em] text-blue-400 font-bold leading-none mt-0.5">Verified</span>
+          <div class="flex flex-col">
+            <span class="font-black text-xl tracking-tight text-white leading-none font-outfit">SaaSBizz</span>
           </div>
         </NuxtLink>
 
-        <!-- CENTER: Main Sponsor Banner -->
-        <div class="flex-1 flex justify-center text-center">
-          <a
-            href="https://agent.ai/"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="group flex items-center justify-center gap-2 hover:text-blue-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 rounded-md p-1"
-            aria-label="Agent.ai Sponsor Link (opens in new tab)"
-          >
-            <div class="bg-slate-900 px-2 py-1 rounded">
-              <img 
-                src="https://agent.ai/logo-2025/agent-ai-logo-2025-white.svg" 
-                alt="Agent.ai Logo" 
-                class="h-5 w-auto"
-                loading="lazy"
-              >
-            </div>
-            <span class="text-sm md:text-base font-medium">
-              <span class="hidden md:inline">The #1 Professional Network for AI Agents</span>
-              <span class="md:hidden">AI Agent Marketplace</span>
-            </span>
-            <span class="group-hover:translate-x-1 transition-transform text-base" aria-hidden="true">→</span>
-          </a>
-        </div>
+        <!-- CENTER: Navigation (Desktop) -->
+        <nav class="hidden md:flex items-center gap-8">
+          <NuxtLink to="/topmrr" class="text-sm font-medium text-slate-400 hover:text-white transition-colors">Top MRR</NuxtLink>
+          <NuxtLink to="/category" class="text-sm font-medium text-slate-400 hover:text-white transition-colors">Categories</NuxtLink>
+          <NuxtLink to="/search" class="text-sm font-medium text-slate-400 hover:text-white transition-colors">Search</NuxtLink>
+        </nav>
 
         <!-- RIGHT: Actions -->
         <div class="flex items-center gap-4 shrink-0">
           <ThemeSwitcher />
+          <!-- Primary CTA (Radius 8px standardized) -->
           <a
             href="/advertise/"
             target="_blank"
             rel="noopener noreferrer"
-            class="hidden md:flex text-[10px] uppercase font-bold tracking-widest transition-colors focus:outline-none border px-3 py-1.5 rounded-lg"
-            :class="themeColor === 'white' 
-              ? 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-white hover:text-blue-600' 
-              : 'bg-slate-800/50 border-transparent text-slate-400 hover:text-white hover:border-slate-700'"
-            aria-label="Advertise on SaaSBizz (opens in new tab)"
+            class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all text-slate-500 hover:text-blue-400"
+            aria-label="Advertise on SaaSBizz"
           >
             Advertise
           </a>
         </div>
       </div>
     </header>
+    
+    <div v-if="!isAdminPage" class="relative z-40 mt-3">
+      <div class="max-w-[1420px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-[--market-bar-bg] border border-white/5 rounded-xl overflow-hidden shadow-sm">
+          <SaasBizzIndex />
+        </div>
+      </div>
+    </div>
 
     <!-- Main Layout Container -->
-    <main id="main-content" class="max-w-[1420px] mx-auto px-4 sm:px-6 lg:px-8 pt-0 pb-6" role="main">
-      <!-- Ticker Band (hidden on admin) -->
-      <SaasBizzIndex v-if="!isAdminPage" />
+    <main id="main-content" class="max-w-[1420px] mx-auto px-4 sm:px-6 lg:px-8 py-3" role="main">
       
-      <div :class="isAdminPage ? 'grid grid-cols-1' : 'grid grid-cols-1 lg:grid-cols-12 gap-6 items-start'">
+      <div :class="isAdminPage ? 'grid grid-cols-1' : 'grid grid-cols-1 lg:grid-cols-12 gap-8 items-start'">
+        <!-- Center Column -->
+        <div :class="isAdminPage ? 'col-span-1' : 'col-span-1 lg:col-span-10 flex flex-col gap-8'">
+          
+          <ErrorBoundary>
+            <slot />
+          </ErrorBoundary>
 
-        <!-- Center Column (Navigation + Content) -->
-        <div :class="isAdminPage ? 'col-span-1' : 'col-span-1 lg:col-span-9 flex flex-col gap-6'">
-          <!-- Old Header Removed -->
-
-          <!-- Page Component Content -->
-          <section class="relative">
-            <!-- Ambient Glow -->
-            <div v-if="isHomePage" class="absolute -top-20 left-1/2 -translate-x-1/2 w-[500px] h-[300px] bg-blue-500/20 blur-[100px] -z-10 rounded-full pointer-events-none mix-blend-screen"></div>
-            
-            <ErrorBoundary>
-              <slot />
-            </ErrorBoundary>
-          </section>
-
-          <!-- New Footer Section -->
-          <footer class="mt-20 pt-12 border-t border-white/5 pb-12">
+          <!-- Footer (Large Module radius: rounded-2xl if it had a bg, but standard section spacing) -->
+          <footer class="mt-24 pt-16 border-t border-white/5 pb-16">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-              <!-- Column 1: Navigation (Center Aligned) -->
               <div class="space-y-6 text-center">
-                <h4 class="text-white font-black uppercase italic tracking-wider text-sm">Navigation</h4>
+                <h4 class="text-white font-black uppercase italic tracking-wider text-sm font-outfit">Navigation</h4>
                 <ul class="space-y-3 text-sm font-medium text-slate-400">
                   <li><NuxtLink to="/search" class="hover:text-blue-400 transition-colors">Search</NuxtLink></li>
                   <li><NuxtLink to="/advertise" class="hover:text-blue-400 transition-colors">Advertise</NuxtLink></li>
@@ -119,10 +95,8 @@
                   <li><NuxtLink to="/tos" class="hover:text-blue-400 transition-colors">Terms of Service</NuxtLink></li>
                 </ul>
               </div>
-
-              <!-- Column 2: Browse Startups 1 (Center Aligned) -->
               <div class="space-y-6 text-center">
-                <h4 class="text-white font-black uppercase italic tracking-wider text-sm">Browse Startups</h4>
+                <h4 class="text-white font-black uppercase italic tracking-wider text-sm font-outfit">Browse Startups</h4>
                 <div class="flex flex-col gap-3 text-sm font-medium text-slate-400">
                   <NuxtLink to="/category/ai" class="hover:text-blue-400 transition-colors">Artificial Intelligence</NuxtLink>
                   <NuxtLink to="/category/saas" class="hover:text-blue-400 transition-colors">SaaS</NuxtLink>
@@ -131,10 +105,8 @@
                   <NuxtLink to="/category/marketing" class="hover:text-blue-400 transition-colors">Marketing</NuxtLink>
                 </div>
               </div>
-
-              <!-- Column 3: Browse Startups 2 (Center Aligned) -->
               <div class="space-y-6 text-center">
-                <h4 class="text-white font-black uppercase italic tracking-wider text-sm">More Categories</h4>
+                <h4 class="text-white font-black uppercase italic tracking-wider text-sm font-outfit">More Categories</h4>
                 <div class="flex flex-col gap-3 text-sm font-medium text-slate-400">
                   <NuxtLink to="/category/ecommerce" class="hover:text-blue-400 transition-colors">E-commerce</NuxtLink>
                   <NuxtLink to="/category/productivity" class="hover:text-blue-400 transition-colors">Productivity</NuxtLink>
@@ -144,7 +116,7 @@
                 </div>
               </div>
             </div>
-            <div class="mt-12 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4 text-[10px] text-slate-600 font-bold uppercase tracking-widest">
+            <div class="mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4 text-[10px] text-slate-600 font-bold uppercase tracking-widest">
               <span>© 2026 SaaSBizz. Verified MRR Leaderboard.</span>
               <div class="flex items-center gap-6">
                 <ThemeSwitcher />
@@ -152,20 +124,10 @@
                 <a href="https://www.linkedin.com/in/halille-azami-33b432165/" target="_blank" rel="noopener noreferrer" class="hover:text-slate-400">LinkedIn</a>
               </div>
             </div>
-            <!-- Built By Credit -->
             <div class="mt-6 pt-4 border-t border-white/5 flex items-center justify-center gap-2 text-[10px] text-slate-500">
               <span>Built by</span>
-              <a 
-                href="https://x.com/1Halille" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                class="flex items-center gap-1.5 hover:text-slate-300 transition-colors"
-              >
-                <img 
-                  src="/halille-azami.jpg" 
-                  alt="Halille Azami" 
-                  class="w-5 h-5 rounded-full border border-slate-700"
-                >
+              <a href="https://x.com/1Halille" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 hover:text-slate-300 transition-colors">
+                <img src="/halille-azami.jpg" alt="Halille Azami" class="w-5 h-5 rounded-full border border-slate-700">
                 <span class="font-medium">Halille Azami</span>
               </a>
               <span>with</span>
@@ -176,10 +138,11 @@
           </footer>
         </div>
 
-        <!-- Right Sidebar Ads (hidden on admin) -->
-        <aside v-if="!isAdminPage" class="hidden lg:block lg:col-span-3 space-y-3 sticky top-0 mt-4" role="complementary" aria-label="Featured tools">
-          <!-- Optimized Blunt Transition: Keyed Div with Fade -->
-          <div :key="adGroupIndex" class="space-y-3 animate-fade-in">
+        <!-- Right Sidebar Ads -->
+        <aside v-if="!isAdminPage" class="hidden lg:block lg:col-span-2 space-y-4 sticky top-24" role="complementary" aria-label="Featured tools">
+           <!-- Removed Agent.ai banner from header -> ensure it appears here if needed or allow AdCard loop to handle it -->
+           <!-- The AdLoop logic likely handles the ads including Agent.ai if it's in the JSON/Logic. -->
+          <div :key="adGroupIndex" class="space-y-4 animate-fade-in">
             <div 
               v-for="(ad, index) in currentRightAds" 
               :key="ad.id"
@@ -191,9 +154,8 @@
 
       </div>
     </main>
-    </div><!-- Close mobile padding wrapper -->
+    </div>
     
-    <!-- Vercel Analytics -->
     <Analytics />
   </div>
 </template>

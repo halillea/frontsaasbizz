@@ -43,8 +43,8 @@ export function useAds() {
     }
   })
 
-  // Ensure we have at least 12 ads for rotation (pad with duplicates if needed)
-  while (adInventory.length < 12 && adInventory.length > 0) {
+  // Ensure we have at least 10 ads for rotation (pad with duplicates if needed)
+  while (adInventory.length < 10 && adInventory.length > 0) {
     const sourceAd = adInventory[adInventory.length % activeSponsors.length]!
     adInventory.push({ ...sourceAd, id: Date.now() + adInventory.length })
   }
@@ -52,11 +52,11 @@ export function useAds() {
   const adGroupIndex = ref(0)
   let adInterval: ReturnType<typeof setInterval> | null = null
 
-  /** Currently visible ads (6 items from current group) */
+  /** Currently visible ads (5 items from current group) */
   const currentRightAds = computed(() =>
     adInventory.slice(
-      adGroupIndex.value === 0 ? 0 : 6,
-      adGroupIndex.value === 0 ? 6 : 12
+      adGroupIndex.value === 0 ? 0 : 5,
+      adGroupIndex.value === 0 ? 5 : 10
     )
   )
 

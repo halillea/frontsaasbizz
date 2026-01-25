@@ -4,7 +4,7 @@
     <header class="flex items-center gap-3">
       <span class="text-3xl" aria-hidden="true">✨</span>
       <div>
-        <h1 class="text-3xl font-black tracking-tight text-white uppercase italic">
+        <h1 class="text-3xl font-black tracking-tight text-white italic">
           Recently Added
         </h1>
         <p class="text-slate-400 text-sm mt-1">Newest startups added to the leaderboard, sorted by date</p>
@@ -12,16 +12,16 @@
     </header>
 
     <!-- Column Headers -->
-    <div class="hidden lg:flex items-center gap-4 px-4 py-2 text-[10px] font-bold text-slate-500 uppercase tracking-widest border-b border-white/5">
+    <div class="hidden lg:flex items-center gap-4 px-4 py-2 text-[10px] font-bold text-slate-500 border-b border-white/5">
       <div class="w-[35%] flex gap-12">
         <span>Startup</span>
       </div>
       <div class="w-[65%] flex items-center gap-8 px-4 justify-end">
         <span class="w-[140px] text-left">Founder</span>
         <div class="flex gap-5 flex-shrink-0 text-right min-w-[280px] justify-end">
-          <span class="w-28">Total Revenue</span>
+          <span class="w-28">Total Rev</span>
           <span class="w-24">MRR</span>
-          <span class="w-16">Added</span>
+          <span class="w-16">Growth</span>
         </div>
       </div>
     </div>
@@ -88,7 +88,16 @@
               <div class="font-mono font-bold text-lg text-slate-200">{{ formatCurrency(startup.mrr) }}</div>
             </div>
             <div class="w-16 text-right">
-              <div class="font-mono text-xs text-slate-400">{{ formatDate(startup.fetched_at) }}</div>
+              <div 
+                class="font-mono text-xs font-bold"
+                :class="{
+                  'text-green-500': (startup.mom_growth || 0) > 0,
+                  'text-red-500': (startup.mom_growth || 0) < 0,
+                  'text-slate-400': !startup.mom_growth
+                }"
+              >
+                {{ startup.mom_growth ? `${startup.mom_growth > 0 ? '+' : ''}${startup.mom_growth}%` : '-' }}
+              </div>
             </div>
           </div>
         </div>

@@ -118,12 +118,42 @@ export function formatCurrency(val: number | string | null | undefined): string 
   if (typeof val === 'number') {
     return '$' + val.toLocaleString()
   }
-  // Return legacy strings as is if they already have $ symbol
   if (!val.includes('$')) {
     const num = parseRevenue(val)
     return '$' + num.toLocaleString()
   }
   return val
+}
+
+/**
+ * Format currency to compact display string (e.g. $1.2M, $850k).
+ * Uses standard suffxies (k, M, B) with 1 decimal place.
+ * 
+ * @param val - Currency value (number or string)
+ * @returns Formatted compact string
+ * 
+ * @example
+ * formatCompactCurrency(1200000)  // "$1.2M"
+ * formatCompactCurrency(850000)   // "$850k"
+ * formatCompactCurrency(null)     // "$0"
+ */
+export function formatCompactCurrency(val: number | string | null | undefined): string {
+  if (val === null || val === undefined) return '$0'
+
+  const num = typeof val === 'number' ? val : parseRevenue(val)
+  if (isNaN(num)) return '$0'
+
+  if (num >= 1_000_000_000) {
+    return '$' + (num / 1_000_000_000).toFixed(1).replace(/\.0$/, '') + 'B'
+  }
+  if (num >= 1_000_000) {
+    return '$' + (num / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M'
+  }
+  if (num >= 1_000) {
+    return '$' + (num / 1_000).toFixed(1).replace(/\.0$/, '') + 'k'
+  }
+
+  return '$' + num.toLocaleString()
 }
 
 /**

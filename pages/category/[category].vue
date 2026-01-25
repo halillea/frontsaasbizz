@@ -15,28 +15,11 @@
 
     <template v-else>
       <div v-if="paginatedStartups.length > 0">
-        <!-- Column Headers -->
-        <div class="hidden lg:flex items-center gap-4 px-4 py-1 mb-1 text-[10px] font-bold text-slate-500 uppercase tracking-widest border-b border-white/5">
-          <div class="w-[35%] flex gap-12">
-            <span>Startup</span>
-          </div>
-          <div class="w-[65%] flex items-center px-4">
-            <span class="w-[140px] text-left">Founder</span>
-            <span class="w-28 text-right ml-10">Total Revenue</span>
-            <span class="w-32 text-right ml-auto">MRR</span>
-            <span class="w-16 text-right ml-4">MoM Growth</span>
-          </div>
-        </div>
-
-        <!-- Startup List -->
-        <div class="space-y-2" role="list" :aria-label="'Startups in ' + formattedCategoryName">
-          <StartupCard
-            v-for="(startup, index) in paginatedStartups"
-            :key="startup.id"
-            :startup="startup"
-            :rank="(currentPage - 1) * ITEMS_PER_PAGE + index + 1"
-          />
-        </div>
+        <!-- Semantic Table -->
+        <TopEarnersTable 
+          :startups="paginatedStartups" 
+          :start-rank="(currentPage - 1) * ITEMS_PER_PAGE + 1"
+        />
 
         <!-- Pagination -->
         <Pagination

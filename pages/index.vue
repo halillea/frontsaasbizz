@@ -13,36 +13,47 @@
     <template v-else>
       <!-- Top Earners Section -->
       <section aria-labelledby="top-earners-heading">
-        <div class="flex items-center gap-3 mb-0">
-          <span class="text-2xl" aria-hidden="true">🏆</span>
-          <h2 id="top-earners-heading" class="text-2xl font-black tracking-tight text-white uppercase italic">
-            Top 30 Earners
-          </h2>
+        <!-- New Header Layout -->
+        <div class="mb-6 space-y-4">
+          <!-- Row 1: Label + Search (Centered) -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 items-center gap-4">
+            <span class="text-slate-400 font-medium text-[11px] uppercase tracking-wider text-center sm:text-left">Verified Revenue Leaderboard</span>
+            <div class="w-full sm:w-64 mx-auto place-self-center">
+              <SearchAutocomplete
+                v-model="searchQuery"
+                placeholder="Search startups or founders..."
+              />
+            </div>
+            <!-- Empty col for balance -->
+            <div class="hidden sm:block"></div>
+          </div>
+
+          <!-- Row 2: Title + Category (No Label) -->
+          <div class="flex flex-col sm:flex-row items-end justify-between gap-4 border-b border-white/5 pb-2">
+            <h1 id="top-earners-heading" class="text-base font-semibold tracking-tight text-white font-outfit">
+              Top 30 Earners
+            </h1>
+            <div class="w-full sm:w-48">
+              <BaseSelect
+                v-model="selectedCategory"
+                :options="categoryOptions"
+              />
+            </div>
+          </div>
         </div>
 
-        <!-- Column Headers -->
-        <div class="hidden lg:flex items-center gap-4 px-4 py-1 mb-1 text-[10px] font-bold text-slate-500 uppercase tracking-widest border-b border-white/5">
-          <div class="w-[35%] flex gap-12">
-            <span>Startup</span>
-          </div>
-          <div class="w-[65%] flex items-center px-4">
-            <span class="w-[140px] text-left">Founder</span>
-            <span class="w-28 text-right ml-10">Total Revenue</span>
-            <span class="w-32 text-right ml-auto">MRR</span>
-            <span class="w-16 text-right ml-4">MoM Growth</span>
-          </div>
-        </div>
-
-        <div class="space-y-2" role="list" aria-label="Top earning startups">
-          <StartupCard
-            v-for="(startup, index) in paginatedTopEarners"
-            :key="'earner-' + startup.id"
-            :startup="startup"
-            :rank="(topEarnersPage - 1) * EARNER_PER_PAGE + index + 1"
-          />
-        </div>
+        <!-- Semantic Table -->
+        <TopEarnersTable 
+          :startups="paginatedTopEarners" 
+          :start-rank="(topEarnersPage - 1) * EARNER_PER_PAGE + 1"
+          :sort-field="sortField"
+          :sort-direction="sortDirection"
+          @toggle-sort="toggleSort"
+        />
+        
         <!-- Pagination for Top Earners -->
         <Pagination
+          class="mt-8"
           :current-page="topEarnersPage"
           :total-pages="topEarnersTotalPages"
           item-name="top earners"
@@ -56,36 +67,39 @@
       <NewsBox />
 
       <!-- Recently Added Section -->
-      <section aria-labelledby="recent-heading" class="mt-16">
-        <div class="flex items-center gap-3 mb-0">
-          <span class="text-2xl" aria-hidden="true">✨</span>
-          <h2 id="recent-heading" class="text-2xl font-black tracking-tight text-white uppercase italic">
+      <section aria-labelledby="recent-heading" class="mt-12">
+        <div class="mb-2">
+          <h2 id="recent-heading" class="text-base font-semibold tracking-tight text-white font-outfit">
             Recently Added (20)
           </h2>
         </div>
 
-        <!-- Column Headers -->
-        <div class="hidden lg:flex items-center gap-4 px-4 py-1 mb-1 text-[10px] font-bold text-slate-500 uppercase tracking-widest border-b border-white/5">
-          <div class="w-[35%] flex gap-12">
-            <span>Startup</span>
-          </div>
-          <div class="w-[65%] flex items-center px-4">
-            <span class="w-[140px] text-left">Founder</span>
-            <span class="w-28 text-right ml-10">Total Revenue</span>
-            <span class="w-32 text-right ml-auto">MRR</span>
-            <span class="w-16 text-right ml-4">MoM Growth</span>
-          </div>
+        <!-- Semantic Table (Reusing layout) -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-white/10 text-[10px] uppercase tracking-widest text-slate-500 font-bold">
+                <th class="px-4 py-3 font-bold text-center w-12">#</th>
+                <th class="px-4 py-3 font-bold">Startup</th>
+                <th class="px-6 py-3 font-bold border-l border-white/5">Founder</th>
+                <th class="px-4 py-3 font-bold text-right border-l border-white/5">Total Rev</th>
+                <th class="px-4 py-3 font-bold text-right border-l border-white/5">MRR</th>
+                <th class="px-4 py-3 font-bold text-right border-l border-white/5">Growth</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-white/5" role="list">
+              <StartupCard
+                v-for="(startup, index) in paginatedRecentlyAdded"
+                :key="'recent-' + startup.id"
+                :startup="startup"
+              />
+            </tbody>
+          </table>
         </div>
 
-        <div class="space-y-2" role="list" aria-label="Recently added startups">
-          <StartupCard
-            v-for="startup in paginatedRecentlyAdded"
-            :key="'recent-' + startup.id"
-            :startup="startup"
-          />
-        </div>
         <!-- Pagination for Recently Added -->
         <Pagination
+          class="mt-8"
           :current-page="recentPage"
           :total-pages="recentTotalPages"
           item-name="recent startups"
@@ -102,15 +116,30 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import allStartups from '~/content/startups.json'
 import type { Startup } from '~/types/startup'
+import { useTableControls } from '~/composables/useTableControls'
+import SearchAutocomplete from '~/components/ui/SearchAutocomplete.vue'
+import BaseSelect from '~/components/ui/BaseSelect.vue'
 
 const EARNER_PER_PAGE = 30
 const RECENT_PER_PAGE = 20
 
-// Data is pre-sorted by MRR descending (run scripts/presort-startups.js)
+// Data is pre-sorted by MRR descending
 const startups = allStartups as Startup[]
+
+// Initialize Table Controls with ALL 150 top earners (or full filtered list)
+// We use the full 'startups' list so search works across everything
+const { 
+  searchQuery, 
+  selectedCategory, 
+  sortField, 
+  sortDirection,
+  categoryOptions, 
+  filteredData, 
+  toggleSort 
+} = useTableControls(startups)
 
 // Loading state
 const isLoading = ref(true)
@@ -122,11 +151,23 @@ onMounted(() => {
 const topEarnersPage = ref(1)
 const recentPage = ref(1)
 
-// Top earners: already sorted by MRR in JSON, just slice
-const topEarners = computed(() => startups.slice(0, 150))
+// Reset pagination when search/filter changes
+watch([searchQuery, selectedCategory], () => {
+  topEarnersPage.value = 1
+})
 
-// Recent: need to slice from the recently fetched (sort by date still needed)
-// Pre-compute once and cache in the computed
+// Filtered Data (driven by useTableControls)
+const allFilteredStartups = filteredData
+
+// Top earners: Slice from the FILTERED list
+const topEarners = computed(() => {
+  // If search/filter is active, show matches from sorting
+  // If no search, limit to top 150 for "Top Earners" logic, or just show all if filtered
+  // To keep it simple and powerful: Show all matches from the filter
+  return allFilteredStartups.value
+})
+
+// Recent: Independent computation for recent section
 const recentlyAdded = computed(() => {
   const byDate = [...startups].sort((a, b) =>
     new Date(b.fetched_at || 0).getTime() - new Date(a.fetched_at || 0).getTime()
@@ -134,7 +175,7 @@ const recentlyAdded = computed(() => {
   return byDate.slice(0, 60)
 })
 
-// Paginated data
+// Paginated data for Top Earners Table
 const paginatedTopEarners = computed(() => {
   const start = (topEarnersPage.value - 1) * EARNER_PER_PAGE
   return topEarners.value.slice(start, start + EARNER_PER_PAGE)
@@ -145,7 +186,6 @@ const paginatedRecentlyAdded = computed(() => {
   return recentlyAdded.value.slice(start, start + RECENT_PER_PAGE)
 })
 
-// Total pages
 const topEarnersTotalPages = computed(() => Math.ceil(topEarners.value.length / EARNER_PER_PAGE))
 const recentTotalPages = computed(() => Math.ceil(recentlyAdded.value.length / RECENT_PER_PAGE))
 
