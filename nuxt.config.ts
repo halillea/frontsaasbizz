@@ -24,6 +24,11 @@ export default defineNuxtConfig({
   // Enable SSR for static generation
   ssr: true,
 
+  // Server-side configuration (secrets)
+  runtimeConfig: {
+    resendApiKey: '' // Overridden by NUXT_RESEND_API_KEY environment variable
+  },
+
   // Vercel-optimized Nitro configuration
   nitro: {
     preset: 'vercel', // Optimizes for Vercel serverless/edge runtime

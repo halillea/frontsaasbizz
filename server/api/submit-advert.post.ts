@@ -47,7 +47,8 @@ export default defineEventHandler(async (event) => {
 
         // 4. Send email notification via Resend
         try {
-            const resend = new Resend('re_LnHahLeZ_7n1fkUuGnnradvvHaRkrgvAv');
+            const config = useRuntimeConfig()
+            const resend = new Resend(config.resendApiKey);
             const { data, error } = await resend.emails.send({
                 from: 'onboarding@resend.dev',
                 to: ['info@totakeaction.com'],
