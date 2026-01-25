@@ -1,5 +1,6 @@
 import { promises as fs } from 'node:fs'
 import path from 'node:path'
+import { Resend } from 'resend'
 
 export default defineEventHandler(async (event) => {
     const body = await readBody(event)
@@ -44,23 +45,42 @@ export default defineEventHandler(async (event) => {
         adverts.push(newEntry)
         await fs.writeFile(advertsPath, JSON.stringify(adverts, null, 2), 'utf-8')
 
-        // 4. Log email notification (in production, use nodemailer or email service)
-        console.log('========================================')
-        console.log('[EMAIL NOTIFICATION]')
-        console.log('========================================')
-        console.log(`To: info@totakeaction.com`)
-        console.log(`Subject: New Ad Submission: ${body.business_name}`)
-        console.log('')
-        console.log('Business Details:')
-        console.log(`  Name: ${body.business_name}`)
-        console.log(`  URL: ${body.website_url}`)
-        console.log(`  Logo: ${body.logo_url || 'Not provided'}`)
-        console.log(`  Tagline: ${body.tagline || 'Not provided'}`)
-        console.log(`  Description: ${body.description || 'Not provided'}`)
-        console.log(`  Keywords: ${body.keywords || 'None'}`)
-        console.log(`  Contact Email: ${body.contact_email}`)
-        console.log(`  Contact Name: ${body.contact_name || 'Not provided'}`)
-        console.log('========================================')
+        // 4. Send email notification via Resend
+        try {
+            const resend = new Resend('re_LnHahLeZ_7n1fkUuGnnradvvHaRkrgvAv');
+            const { data, error } = await resend.emails.send({
+                from: 'onboarding@resend.dev',
+                to: ['info@totakeaction.com'],
+                subject: `New Ad Submission: ${body.business_name}`,
+                html: `
+                <h1>New Advertisement Submission</h1>
+                <h2>Business Details</h2>
+                <ul>
+                    <li><strong>Name:</strong> ${body.business_name}</li>
+                    <li><strong>URL:</strong> <a href="${body.website_url}">${body.website_url}</a></li>
+                    <li><strong>Logo:</strong> ${body.logo_url || 'Not provided'}</li>
+                    <li><strong>Tagline:</strong> ${body.tagline || 'Not provided'}</li>
+                    <li><strong>Description:</strong> ${body.description || 'Not provided'}</li>
+                    <li><strong>Keywords:</strong> ${body.keywords || 'None'}</li>
+                </ul>
+                <h2>Contact Information</h2>
+                <ul>
+                    <li><strong>Email:</strong> ${body.contact_email}</li>
+                    <li><strong>Name:</strong> ${body.contact_name || 'Not provided'}</li>
+                </ul>
+                <p><strong>Submitted at:</strong> ${new Date().toISOString()}</p>
+                `
+            });
+
+            if (error) {
+                console.error('Resend API Error:', error);
+            } else {
+                console.log('Resend Email Sent:', data);
+            }
+        } catch (e) {
+            console.error('Failed to send email via Resend:', e);
+            // Non-blocking error
+        }
 
         return {
             success: true,

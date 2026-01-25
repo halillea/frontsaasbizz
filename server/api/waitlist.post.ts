@@ -1,5 +1,6 @@
 import { promises as fs } from 'node:fs'
 import path from 'node:path'
+import { Resend } from 'resend'
 
 export default defineEventHandler(async (event) => {
     const body = await readBody(event)
@@ -125,6 +126,32 @@ This person wants to be notified when advertising spots become available on SaaS
     // - SendGrid: await sgMail.send({ ... })
     // - Nodemailer: await transporter.sendMail({ ... })
 
-    // For now, we just log it - the entry is saved to waitlist.json
-    return true
+    try {
+        const resend = new Resend('re_LnHahLeZ_7n1fkUuGnnradvvHaRkrgvAv');
+        const { data, error } = await resend.emails.send({
+            from: 'onboarding@resend.dev',
+            to: ['info@totakeaction.com'],
+            subject: data.subject,
+            html: `
+            <h1>${data.subject}</h1>
+            <p><strong>Name:</strong> ${data.name}</p>
+            <p><strong>Email:</strong> ${data.email}</p>
+            <p><strong>Phone:</strong> ${data.phone || 'Not provided'}</p>
+            <p><strong>Time:</strong> ${new Date().toISOString()}</p>
+            <hr>
+            <p>This person wants to be notified when advertising spots become available on SaaSBizz.</p>
+            `
+        });
+
+        if (error) {
+            console.error('Resend API Error:', error);
+            return false;
+        }
+
+        console.log('Resend Email Sent:', data);
+        return true;
+    } catch (e) {
+        console.error('Failed to send email via Resend:', e);
+        return false;
+    }
 }
