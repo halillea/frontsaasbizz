@@ -46,7 +46,11 @@ export default defineEventHandler(async (event) => {
 
         // 4. Append and save
         waitlist.push(newEntry)
-        await fs.writeFile(waitlistPath, JSON.stringify(waitlist, null, 2), 'utf-8')
+        try {
+            await fs.writeFile(waitlistPath, JSON.stringify(waitlist, null, 2), 'utf-8')
+        } catch (fsError) {
+            console.warn('Failed to save to local file (expected on serverless):', fsError)
+        }
 
         // 5. Log email notification (in production, use nodemailer or email service)
         console.log('========================================')

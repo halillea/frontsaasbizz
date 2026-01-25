@@ -43,7 +43,11 @@ export default defineEventHandler(async (event) => {
 
         // 3. Append and save
         adverts.push(newEntry)
-        await fs.writeFile(advertsPath, JSON.stringify(adverts, null, 2), 'utf-8')
+        try {
+            await fs.writeFile(advertsPath, JSON.stringify(adverts, null, 2), 'utf-8')
+        } catch (fsError) {
+            console.warn('Failed to save to local file (expected on serverless):', fsError)
+        }
 
         // 4. Send email notification via Resend
         try {
