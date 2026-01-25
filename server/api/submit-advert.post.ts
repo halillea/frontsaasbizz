@@ -50,7 +50,7 @@ export default defineEventHandler(async (event) => {
             const config = useRuntimeConfig()
             const resend = new Resend(config.resendApiKey);
             const { data, error } = await resend.emails.send({
-                from: 'onboarding@resend.dev',
+                from: 'info@envoi.saasbizz.com',
                 to: ['info@totakeaction.com'],
                 subject: `New Ad Submission: ${body.business_name}`,
                 html: `

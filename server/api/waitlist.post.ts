@@ -129,8 +129,8 @@ This person wants to be notified when advertising spots become available on SaaS
     try {
         const config = useRuntimeConfig()
         const resend = new Resend(config.resendApiKey);
-        const { data, error } = await resend.emails.send({
-            from: 'onboarding@resend.dev',
+        const { data: emailResult, error } = await resend.emails.send({
+            from: 'info@envoi.saasbizz.com',
             to: ['info@totakeaction.com'],
             subject: data.subject,
             html: `
@@ -149,7 +149,7 @@ This person wants to be notified when advertising spots become available on SaaS
             return false;
         }
 
-        console.log('Resend Email Sent:', data);
+        console.log('Resend Email Sent:', emailResult);
         return true;
     } catch (e) {
         console.error('Failed to send email via Resend:', e);
