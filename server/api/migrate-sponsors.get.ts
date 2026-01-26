@@ -1,17 +1,12 @@
-import { promises as fs } from 'node:fs'
-import path from 'node:path'
 import { serverSupabaseServiceRole } from '#supabase/server'
+import sponsors from '~/content/sponsors.json'
 
 export default defineEventHandler(async (event) => {
     const client = serverSupabaseServiceRole(event)
-    const sponsorsPath = path.resolve(process.cwd(), 'content/sponsors.json')
 
     try {
-        const fileData = await fs.readFile(sponsorsPath, 'utf-8')
-        const sponsors = JSON.parse(fileData)
-
         // Clean up data for database insert
-        const records = sponsors.map((s: any) => ({
+        const records = (sponsors as any[]).map((s: any) => ({
             created_at: s.created_at || new Date().toISOString(),
             business_name: s.business_name || s.startup_name,
             website_url: s.website_url,
@@ -28,7 +23,7 @@ export default defineEventHandler(async (event) => {
         // Upsert to Supabase
         const { error, count } = await client
             .from('sponsors')
-            .upsert(records, { onConflict: 'website_url', ignoreDuplicates: false })
+            .upsert(records as any, { onConflict: 'website_url', ignoreDuplicates: false })
 
         if (error) throw error
 
