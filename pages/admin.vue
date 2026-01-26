@@ -670,7 +670,7 @@ async function loadSettings() {
 
 // Initial Load
 onMounted(() => {
-  if (user.value) {
+  if (isAuthenticated.value) {
     loadSponsors()
     loadArticles()
     loadSettings()
