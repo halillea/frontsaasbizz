@@ -605,14 +605,21 @@ import allStartups from '~/content/startups.json' // Keep startups local for now
 // deleted static imports for sponsors/articles
 
 // Supabase Client
+// Supabase Client
 const supabase = useSupabaseClient()
-const user = useSupabaseUser()
+// const user = useSupabaseUser() // Disable Supabase auth check for now, using SessionStorage
 
 // Local State (initially empty, fetched from DB)
 const sponsors = ref<any[]>([])
 const articles = ref<any[]>([])
 
-const isAuthenticated = computed(() => !!user.value)
+const isAuthenticated = ref(false)
+
+onMounted(() => {
+  if (typeof window !== 'undefined' && sessionStorage.getItem('saasbizz-admin-auth') === 'authenticated') {
+    isAuthenticated.value = true
+  }
+})
 // ... rest of state ...
 const activeTab = ref('blog')
 const startupSearch = ref('')
