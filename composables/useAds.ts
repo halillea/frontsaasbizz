@@ -1,4 +1,4 @@
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import type { Ad } from '~/types/startup'
 
 /** Fallback emojis when no logo is available */
@@ -39,16 +39,19 @@ export function useAds() {
     })
   })
 
-  // Populate inventory on client/server
-  if (data.value) {
-    adInventory.value = [...data.value]
+  // Watch for data availability
+  watch(data, (newVal) => {
+    if (newVal) {
+      const ads = [...newVal]
 
-    // Pad if needed
-    while (adInventory.value.length < 10 && adInventory.value.length > 0) {
-      const sourceAd = adInventory.value[adInventory.value.length % data.value.length]!
-      adInventory.value.push({ ...sourceAd, id: Date.now() + adInventory.value.length })
+      // Pad if needed
+      while (ads.length < 10 && ads.length > 0) {
+        const sourceAd = ads[ads.length % newVal.length]!
+        ads.push({ ...sourceAd, id: Date.now() + ads.length })
+      }
+      adInventory.value = ads
     }
-  }
+  }, { immediate: true })
 
   const adGroupIndex = ref(0)
   let adInterval: ReturnType<typeof setInterval> | null = null
