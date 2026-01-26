@@ -1,34 +1,23 @@
-import { promises as fs } from 'node:fs'
-import path from 'node:path'
+import { serverSupabaseServiceRole } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
     const body = await readBody(event)
-    const settingsPath = path.resolve(process.cwd(), 'content/settings.json')
+    const client = serverSupabaseServiceRole(event)
 
     try {
-        // Read existing settings
-        let settings = {}
-        try {
-            const fileData = await fs.readFile(settingsPath, 'utf-8')
-            settings = JSON.parse(fileData)
-        } catch (e) {
-            settings = { advertising_soldout: false }
-        }
+        // Upsert setting to DB
+        const { error } = await client
+            .from('settings')
+            .upsert({
+                key: 'advertising_soldout',
+                value: { advertising_soldout: body.advertising_soldout }
+            })
 
-        // Merge new settings
-        const updatedSettings = {
-            ...settings,
-            ...body
-        }
-
-        // Save settings
-        await fs.writeFile(settingsPath, JSON.stringify(updatedSettings, null, 2), 'utf-8')
-
-        console.log('[Settings Updated]', updatedSettings)
+        if (error) throw error
 
         return {
             success: true,
-            settings: updatedSettings
+            settings: { advertising_soldout: body.advertising_soldout }
         }
     } catch (error: any) {
         console.error('Settings API Error:', error)

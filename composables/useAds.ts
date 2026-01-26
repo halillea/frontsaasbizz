@@ -1,5 +1,4 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
-import allSponsors from '~/content/sponsors.json'
 import type { Ad } from '~/types/startup'
 
 /** Fallback emojis when no logo is available */
@@ -8,45 +7,47 @@ const FALLBACK_EMOJIS = ['🚀', '⚡', '🔥', '💎', '💰', '📈', '🎯', 
 /** Rotation interval in milliseconds (12 seconds) */
 const ROTATION_INTERVAL = 12000
 
-/**
- * Composable for managing advertisement display and rotation.
- * 
- * Loads sponsors from sponsors.json and displays them in rotating groups.
- * 
- * @returns {Object} Ad management utilities
- * @returns {Ref<number>} adGroupIndex - Current ad group (0 or 1)
- * @returns {ComputedRef<Ad[]>} currentRightAds - Currently visible ads (6 items)
- */
 export function useAds() {
-  // Filter active sponsors only
-  const activeSponsors = (allSponsors as any[]).filter(s => s.status === 'active')
+  const adInventory = ref<Ad[]>([])
 
-  // Map sponsors to Ad format
-  const adInventory: Ad[] = activeSponsors.map((sponsor, i) => {
-    // Extract domain from website_url
-    let domain = ''
-    try {
-      if (sponsor.website_url) {
-        domain = new URL(sponsor.website_url).hostname.replace('www.', '')
-      }
-    } catch { domain = '' }
+  // Use async data to fetch sponsors once (SSR compatible)
+  const { data } = useAsyncData('ads-inventory', async () => {
+    const supabase = useSupabaseClient()
+    const { data: sponsors } = await supabase
+      .from('sponsors')
+      .select('*')
+      .eq('status', 'active')
 
-    return {
-      id: sponsor.id || i,
-      name: sponsor.business_name || sponsor.startup_name || 'Sponsor',
-      emoji: FALLBACK_EMOJIS[i % FALLBACK_EMOJIS.length] || '🚀',
-      logoUrl: sponsor.logo_url || '',
-      copy: sponsor.tagline || sponsor.description || 'Check out our sponsor',
-      href: sponsor.website_url || '#',
-      domain,
-      bg: '#eff6ff'
-    }
+    return (sponsors || []).map((sponsor: any, i: number) => {
+      let domain = ''
+      try {
+        if (sponsor.website_url) {
+          domain = new URL(sponsor.website_url).hostname.replace('www.', '')
+        }
+      } catch { domain = '' }
+
+      return {
+        id: sponsor.id || i,
+        name: sponsor.business_name || sponsor.startup_name || 'Sponsor',
+        emoji: FALLBACK_EMOJIS[i % FALLBACK_EMOJIS.length] || '🚀',
+        logoUrl: sponsor.logo_url || '',
+        copy: sponsor.tagline || sponsor.description || 'Check out our sponsor',
+        href: sponsor.website_url || '#',
+        domain,
+        bg: '#eff6ff'
+      } as Ad
+    })
   })
 
-  // Ensure we have at least 10 ads for rotation (pad with duplicates if needed)
-  while (adInventory.length < 10 && adInventory.length > 0) {
-    const sourceAd = adInventory[adInventory.length % activeSponsors.length]!
-    adInventory.push({ ...sourceAd, id: Date.now() + adInventory.length })
+  // Populate inventory on client/server
+  if (data.value) {
+    adInventory.value = [...data.value]
+
+    // Pad if needed
+    while (adInventory.value.length < 10 && adInventory.value.length > 0) {
+      const sourceAd = adInventory.value[adInventory.value.length % data.value.length]!
+      adInventory.value.push({ ...sourceAd, id: Date.now() + adInventory.value.length })
+    }
   }
 
   const adGroupIndex = ref(0)
@@ -54,7 +55,7 @@ export function useAds() {
 
   /** Currently visible ads (5 items from current group) */
   const currentRightAds = computed(() =>
-    adInventory.slice(
+    adInventory.value.slice(
       adGroupIndex.value === 0 ? 0 : 5,
       adGroupIndex.value === 0 ? 5 : 10
     )

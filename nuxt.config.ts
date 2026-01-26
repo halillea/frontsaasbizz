@@ -16,13 +16,18 @@ export default defineNuxtConfig({
   },
 
   // Modules: Tailwind + Image + Fonts (Vercel optimization)
-  modules: ['@nuxtjs/tailwindcss', '@nuxt/image', '@nuxt/fonts'],
+  modules: ['@nuxtjs/tailwindcss', '@nuxt/image', '@nuxt/fonts', '@nuxtjs/supabase'],
 
   // CRITICAL: Main CSS file
   css: ['~/assets/css/main.css'],
 
   // Enable SSR for static generation
   ssr: true,
+
+  // Supabase Configuration
+  supabase: {
+    redirect: false
+  },
 
   // Server-side configuration (secrets)
   runtimeConfig: {

@@ -1,34 +1,21 @@
-import { promises as fs } from 'node:fs'
-import path from 'node:path'
 import { Resend } from 'resend'
+import { serverSupabaseServiceRole } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
     const body = await readBody(event)
+    const client = serverSupabaseServiceRole(event)
 
-    // Validate required fields (only business_name, website_url, contact_email are required)
+    // Validate required fields
     if (!body.business_name || !body.website_url || !body.contact_email) {
         throw createError({
             statusCode: 400,
-            statusMessage: 'Missing required fields: business_name, website_url, and contact_email are required'
+            statusMessage: 'Missing required fields'
         })
     }
 
-    const advertsPath = path.resolve(process.cwd(), 'content/toreview_advert.json')
-
     try {
-        // 1. Read existing adverts
-        let adverts = []
-        try {
-            const fileData = await fs.readFile(advertsPath, 'utf-8')
-            adverts = JSON.parse(fileData)
-        } catch (e) {
-            // File might not exist yet
-            adverts = []
-        }
-
-        // 2. Prepare new entry
+        // 1. Insert into Supabase (Sponsors table with status='pending_review')
         const newEntry = {
-            id: Date.now(),
             created_at: new Date().toISOString(),
             status: 'pending_review',
             business_name: body.business_name,
@@ -41,15 +28,13 @@ export default defineEventHandler(async (event) => {
             contact_name: body.contact_name || null
         }
 
-        // 3. Append and save
-        adverts.push(newEntry)
-        try {
-            await fs.writeFile(advertsPath, JSON.stringify(adverts, null, 2), 'utf-8')
-        } catch (fsError) {
-            console.warn('Failed to save to local file (expected on serverless):', fsError)
-        }
+        const { error: dbError } = await client
+            .from('sponsors')
+            .insert(newEntry)
 
-        // 4. Send email notification via Resend
+        if (dbError) throw dbError
+
+        // 2. Send email notification via Resend
         try {
             const config = useRuntimeConfig()
             const resend = new Resend(config.resendApiKey);
@@ -89,7 +74,7 @@ export default defineEventHandler(async (event) => {
 
         return {
             success: true,
-            message: 'Advertisement submission received and saved for review'
+            message: 'Advertisement submitted successfully'
         }
     } catch (error: any) {
         console.error('API Error:', error)

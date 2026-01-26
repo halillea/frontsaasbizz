@@ -601,11 +601,19 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import allStartups from '~/content/startups.json'
-import allSponsors from '~/content/sponsors.json'
-import allArticles from '~/content/articles.json'
+import allStartups from '~/content/startups.json' // Keep startups local for now until migrated
+// deleted static imports for sponsors/articles
 
-const isAuthenticated = ref(false)
+// Supabase Client
+const supabase = useSupabaseClient()
+const user = useSupabaseUser()
+
+// Local State (initially empty, fetched from DB)
+const sponsors = ref<any[]>([])
+const articles = ref<any[]>([])
+
+const isAuthenticated = computed(() => !!user.value)
+// ... rest of state ...
 const activeTab = ref('blog')
 const startupSearch = ref('')
 const statusMessage = ref('')
@@ -617,42 +625,76 @@ const openMenuId = ref<string | null>(null)
 const advertisingSoldout = ref(false)
 const isSavingSettings = ref(false)
 
-async function loadSettings() {
-  try {
-    const response = await fetch('/api/settings')
-    if (response.ok) {
-      const settings = await response.json()
-      advertisingSoldout.value = settings.advertising_soldout || false
-    }
-  } catch (e) {
-    console.error('Failed to load settings:', e)
+// Load Data from Supabase
+async function loadSponsors() {
+  const { data, error } = await supabase
+    .from('sponsors')
+    .select('*')
+    .order('created_at', { ascending: false })
+  
+  if (data) {
+    sponsors.value = data
   }
 }
 
+async function loadArticles() {
+  const { data, error } = await supabase
+    .from('articles')
+    .select('*')
+    .order('created_at', { ascending: false })
+    
+  if (data) {
+    articles.value = data
+  }
+}
+
+// Settings loading (from DB "settings" table)
+async function loadSettings() {
+  const { data, error } = await supabase
+    .from('settings')
+    .select('value')
+    .eq('key', 'advertising_soldout')
+    .single()
+    
+  if (data?.value) {
+    advertisingSoldout.value = data.value.advertising_soldout
+  }
+}
+
+// Initial Load
+onMounted(() => {
+  if (user.value) {
+    loadSponsors()
+    loadArticles()
+    loadSettings()
+  }
+})
+
+// Toggle Soldout (Save to DB)
 async function toggleSoldout() {
   isSavingSettings.value = true
   const newValue = !advertisingSoldout.value
   
   try {
-    const response = await fetch('/api/settings', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ advertising_soldout: newValue })
-    })
+    const { error } = await supabase
+      .from('settings')
+      .upsert({ 
+        key: 'advertising_soldout', 
+        value: { advertising_soldout: newValue } 
+      })
     
-    if (response.ok) {
+    if (!error) {
       advertisingSoldout.value = newValue
       statusMessage.value = newValue 
-        ? 'Advertising marked as SOLD OUT. Visitors will be redirected.' 
-        : 'Advertising is now AVAILABLE for purchase.'
+        ? 'Advertising marked as SOLD OUT.' 
+        : 'Advertising is now AVAILABLE.'
       setTimeout(() => { statusMessage.value = '' }, 3000)
     } else {
-      throw new Error('Failed to save settings')
+      throw error
     }
   } catch (e) {
     console.error('Failed to toggle soldout:', e)
-    statusMessage.value = 'Error updating settings. Please try again.'
-    setTimeout(() => { statusMessage.value = '' }, 3000)
+    statusMessage.value = 'Error updating settings.'
   } finally {
     isSavingSettings.value = false
   }

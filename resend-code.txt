@@ -1,0 +1,10 @@
+import { Resend } from 'resend';
+
+const resend = new Resend('re_LnHahLeZ_7n1fkUuGnnradvvHaRkrgvAv');
+
+resend.emails.send({
+  from: 'onboarding@resend.dev',
+  to: 'info@totakeaction.com',
+  subject: 'Hello World',
+  html: '<p>Congrats on sending your <strong>first email</strong>!</p>'
+});

@@ -59,19 +59,30 @@
   </div>
 </template>
 
+
 <script setup lang="ts">
 import { computed } from 'vue'
-import allSponsors from '~/content/sponsors.json'
 import type { Ad } from '~/types/startup'
 
 /** Fallback emojis when no logo is available */
 const FALLBACK_EMOJIS = ['🚀', '⚡', '🔥', '💎', '💰', '📈', '🎯', '⭐', '🌟', '✨'] as const
 
+// Fetch active sponsors from Supabase
+const { data: sponsors } = await useAsyncData('ticker-sponsors', async () => {
+    const supabase = useSupabaseClient()
+    const { data } = await supabase
+        .from('sponsors')
+        .select('*')
+        .eq('status', 'active')
+        .order('id', { ascending: false })
+    return data || []
+})
+
 // Filter active sponsors and map to Ad format
 const allAds = computed<Ad[]>(() => {
-  const activeSponsors = (allSponsors as any[]).filter(s => s.status === 'active')
+  const activeSponsors = sponsors.value || []
   
-  return activeSponsors.map((sponsor, i) => {
+  return activeSponsors.map((sponsor: any, i: number) => {
     let domain = ''
     try {
       if (sponsor.website_url) {
