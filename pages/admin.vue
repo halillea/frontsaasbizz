@@ -896,8 +896,7 @@ async function saveSponsorsOrder() {
 }
 
 const startups = ref<any[]>([...allStartups])
-const sponsors = ref<any[]>([...allSponsors])
-const articles = ref<any[]>([...allArticles])
+// const sponsors and articles removed (already declared above)
 const pendingAdverts = ref<any[]>([])
 
 // Filter out deleted items (status === 9)
